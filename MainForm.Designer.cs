@@ -39,7 +39,7 @@
             // 
             this.btnCreateLobby.BackColor = System.Drawing.SystemColors.Window;
             this.btnCreateLobby.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnCreateLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnCreateLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnCreateLobby.Location = new System.Drawing.Point(217, 38);
             this.btnCreateLobby.Name = "btnCreateLobby";
             this.btnCreateLobby.Size = new System.Drawing.Size(426, 58);
@@ -51,7 +51,7 @@
             // btnConnectToLobby
             // 
             this.btnConnectToLobby.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnConnectToLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnConnectToLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnConnectToLobby.Location = new System.Drawing.Point(217, 120);
             this.btnConnectToLobby.Name = "btnConnectToLobby";
             this.btnConnectToLobby.Size = new System.Drawing.Size(426, 58);
@@ -63,7 +63,7 @@
             // btnPackCreator
             // 
             this.btnPackCreator.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnPackCreator.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnPackCreator.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnPackCreator.Location = new System.Drawing.Point(217, 205);
             this.btnPackCreator.Name = "btnPackCreator";
             this.btnPackCreator.Size = new System.Drawing.Size(426, 58);
@@ -75,7 +75,7 @@
             // btnAboutProgramm
             // 
             this.btnAboutProgramm.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnAboutProgramm.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnAboutProgramm.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnAboutProgramm.Location = new System.Drawing.Point(217, 284);
             this.btnAboutProgramm.Name = "btnAboutProgramm";
             this.btnAboutProgramm.Size = new System.Drawing.Size(426, 58);
@@ -87,7 +87,7 @@
             // btnExit
             // 
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnExit.Location = new System.Drawing.Point(217, 367);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(426, 58);
