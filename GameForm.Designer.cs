@@ -30,23 +30,26 @@
         {
             this.picCanvas = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.txtInput = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
+            this.txtInput = new System.Windows.Forms.TextBox();
+            this.btnSend = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.pnlTools = new System.Windows.Forms.Panel();
-            this.btnColor = new System.Windows.Forms.Button();
-            this.btnRed = new System.Windows.Forms.Button();
-            this.btnGreen = new System.Windows.Forms.Button();
-            this.btnBlue = new System.Windows.Forms.Button();
-            this.btnYellow = new System.Windows.Forms.Button();
-            this.btnFill = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
+            this.btnFill = new System.Windows.Forms.Button();
+            this.btnYellow = new System.Windows.Forms.Button();
+            this.btnBlue = new System.Windows.Forms.Button();
+            this.btnGreen = new System.Windows.Forms.Button();
+            this.btnRed = new System.Windows.Forms.Button();
+            this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
+            this.tbRadius = new System.Windows.Forms.TrackBar();
+            this.lblRadius = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlTools.SuspendLayout();
             this.pnlCanvas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).BeginInit();
             this.SuspendLayout();
             // 
             // picCanvas
@@ -70,17 +73,26 @@
             this.panel1.Size = new System.Drawing.Size(238, 661);
             this.panel1.TabIndex = 1;
             // 
-            // btnExit
+            // txtChat
             // 
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnExit.Location = new System.Drawing.Point(0, 626);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(238, 35);
-            this.btnExit.TabIndex = 6;
-            this.btnExit.Text = "Выход";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.txtChat.BackColor = System.Drawing.SystemColors.Window;
+            this.txtChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtChat.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtChat.Location = new System.Drawing.Point(0, 0);
+            this.txtChat.Multiline = true;
+            this.txtChat.Name = "txtChat";
+            this.txtChat.ReadOnly = true;
+            this.txtChat.Size = new System.Drawing.Size(238, 566);
+            this.txtChat.TabIndex = 9;
+            // 
+            // txtInput
+            // 
+            this.txtInput.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtInput.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtInput.Location = new System.Drawing.Point(0, 566);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(238, 25);
+            this.txtInput.TabIndex = 8;
             // 
             // btnSend
             // 
@@ -94,29 +106,22 @@
             this.btnSend.Text = "Отправить";
             this.btnSend.UseVisualStyleBackColor = true;
             // 
-            // txtInput
+            // btnExit
             // 
-            this.txtInput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.txtInput.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtInput.Location = new System.Drawing.Point(0, 566);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(238, 25);
-            this.txtInput.TabIndex = 8;
-            // 
-            // txtChat
-            // 
-            this.txtChat.BackColor = System.Drawing.SystemColors.Window;
-            this.txtChat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtChat.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtChat.Location = new System.Drawing.Point(0, 0);
-            this.txtChat.Multiline = true;
-            this.txtChat.Name = "txtChat";
-            this.txtChat.ReadOnly = true;
-            this.txtChat.Size = new System.Drawing.Size(238, 566);
-            this.txtChat.TabIndex = 9;
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnExit.Location = new System.Drawing.Point(0, 626);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(238, 35);
+            this.btnExit.TabIndex = 6;
+            this.btnExit.Text = "Выход";
+            this.btnExit.UseVisualStyleBackColor = true;
             // 
             // pnlTools
             // 
+            this.pnlTools.Controls.Add(this.lblRadius);
+            this.pnlTools.Controls.Add(this.tbRadius);
             this.pnlTools.Controls.Add(this.btnClear);
             this.pnlTools.Controls.Add(this.btnFill);
             this.pnlTools.Controls.Add(this.btnYellow);
@@ -130,40 +135,25 @@
             this.pnlTools.Size = new System.Drawing.Size(896, 70);
             this.pnlTools.TabIndex = 2;
             // 
-            // btnColor
+            // btnClear
             // 
-            this.btnColor.Location = new System.Drawing.Point(20, 10);
-            this.btnColor.Name = "btnColor";
-            this.btnColor.Size = new System.Drawing.Size(50, 50);
-            this.btnColor.TabIndex = 0;
-            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnClear.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnClear.Location = new System.Drawing.Point(590, 10);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(140, 50);
+            this.btnClear.TabIndex = 6;
+            this.btnClear.Text = "Очистить холст";
+            this.btnClear.UseVisualStyleBackColor = true;
             // 
-            // btnRed
+            // btnFill
             // 
-            this.btnRed.BackColor = System.Drawing.Color.Red;
-            this.btnRed.Location = new System.Drawing.Point(100, 10);
-            this.btnRed.Name = "btnRed";
-            this.btnRed.Size = new System.Drawing.Size(50, 50);
-            this.btnRed.TabIndex = 1;
-            this.btnRed.UseVisualStyleBackColor = false;
-            // 
-            // btnGreen
-            // 
-            this.btnGreen.BackColor = System.Drawing.Color.Lime;
-            this.btnGreen.Location = new System.Drawing.Point(180, 10);
-            this.btnGreen.Name = "btnGreen";
-            this.btnGreen.Size = new System.Drawing.Size(50, 50);
-            this.btnGreen.TabIndex = 2;
-            this.btnGreen.UseVisualStyleBackColor = false;
-            // 
-            // btnBlue
-            // 
-            this.btnBlue.BackColor = System.Drawing.Color.Blue;
-            this.btnBlue.Location = new System.Drawing.Point(260, 10);
-            this.btnBlue.Name = "btnBlue";
-            this.btnBlue.Size = new System.Drawing.Size(50, 50);
-            this.btnBlue.TabIndex = 3;
-            this.btnBlue.UseVisualStyleBackColor = false;
+            this.btnFill.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnFill.Location = new System.Drawing.Point(420, 10);
+            this.btnFill.Name = "btnFill";
+            this.btnFill.Size = new System.Drawing.Size(140, 50);
+            this.btnFill.TabIndex = 5;
+            this.btnFill.Text = "Залить цветом";
+            this.btnFill.UseVisualStyleBackColor = true;
             // 
             // btnYellow
             // 
@@ -174,25 +164,40 @@
             this.btnYellow.TabIndex = 4;
             this.btnYellow.UseVisualStyleBackColor = false;
             // 
-            // btnFill
+            // btnBlue
             // 
-            this.btnFill.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnFill.Location = new System.Drawing.Point(476, 10);
-            this.btnFill.Name = "btnFill";
-            this.btnFill.Size = new System.Drawing.Size(157, 50);
-            this.btnFill.TabIndex = 5;
-            this.btnFill.Text = "Залить цветом";
-            this.btnFill.UseVisualStyleBackColor = true;
+            this.btnBlue.BackColor = System.Drawing.Color.Blue;
+            this.btnBlue.Location = new System.Drawing.Point(260, 10);
+            this.btnBlue.Name = "btnBlue";
+            this.btnBlue.Size = new System.Drawing.Size(50, 50);
+            this.btnBlue.TabIndex = 3;
+            this.btnBlue.UseVisualStyleBackColor = false;
             // 
-            // btnClear
+            // btnGreen
             // 
-            this.btnClear.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnClear.Location = new System.Drawing.Point(675, 10);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(157, 50);
-            this.btnClear.TabIndex = 6;
-            this.btnClear.Text = "Очистить холст";
-            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnGreen.BackColor = System.Drawing.Color.Lime;
+            this.btnGreen.Location = new System.Drawing.Point(180, 10);
+            this.btnGreen.Name = "btnGreen";
+            this.btnGreen.Size = new System.Drawing.Size(50, 50);
+            this.btnGreen.TabIndex = 2;
+            this.btnGreen.UseVisualStyleBackColor = false;
+            // 
+            // btnRed
+            // 
+            this.btnRed.BackColor = System.Drawing.Color.Red;
+            this.btnRed.Location = new System.Drawing.Point(100, 10);
+            this.btnRed.Name = "btnRed";
+            this.btnRed.Size = new System.Drawing.Size(50, 50);
+            this.btnRed.TabIndex = 1;
+            this.btnRed.UseVisualStyleBackColor = false;
+            // 
+            // btnColor
+            // 
+            this.btnColor.Location = new System.Drawing.Point(20, 10);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(50, 50);
+            this.btnColor.TabIndex = 0;
+            this.btnColor.UseVisualStyleBackColor = true;
             // 
             // pnlCanvas
             // 
@@ -202,6 +207,27 @@
             this.pnlCanvas.Name = "pnlCanvas";
             this.pnlCanvas.Size = new System.Drawing.Size(896, 591);
             this.pnlCanvas.TabIndex = 3;
+            // 
+            // tbRadius
+            // 
+            this.tbRadius.LargeChange = 1;
+            this.tbRadius.Location = new System.Drawing.Point(760, 10);
+            this.tbRadius.Minimum = 1;
+            this.tbRadius.Name = "tbRadius";
+            this.tbRadius.Size = new System.Drawing.Size(114, 45);
+            this.tbRadius.TabIndex = 7;
+            this.tbRadius.Value = 5;
+            // 
+            // lblRadius
+            // 
+            this.lblRadius.AutoSize = true;
+            this.lblRadius.BackColor = System.Drawing.Color.Transparent;
+            this.lblRadius.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRadius.Location = new System.Drawing.Point(774, 40);
+            this.lblRadius.Name = "lblRadius";
+            this.lblRadius.Size = new System.Drawing.Size(88, 17);
+            this.lblRadius.TabIndex = 8;
+            this.lblRadius.Text = "Размер кисти";
             // 
             // GameForm
             // 
@@ -221,7 +247,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnlTools.ResumeLayout(false);
+            this.pnlTools.PerformLayout();
             this.pnlCanvas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -243,5 +271,7 @@
         private System.Windows.Forms.Button btnGreen;
         private System.Windows.Forms.Button btnRed;
         private System.Windows.Forms.Panel pnlCanvas;
+        private System.Windows.Forms.Label lblRadius;
+        private System.Windows.Forms.TrackBar tbRadius;
     }
 }

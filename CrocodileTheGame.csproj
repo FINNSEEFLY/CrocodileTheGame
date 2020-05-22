@@ -52,17 +52,23 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FindLobbyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindLobbyForm.Designer.cs">
+      <DependentUpon>FindLobbyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="HostLobbyForm.cs">
+    <Compile Include="LobbyHostForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HostLobbyForm.Designer.cs">
-      <DependentUpon>HostLobbyForm.cs</DependentUpon>
+    <Compile Include="LobbyHostForm.Designer.cs">
+      <DependentUpon>LobbyHostForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LobbyPlayerForm.cs">
       <SubType>Form</SubType>
@@ -87,11 +93,14 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FindLobbyForm.resx">
+      <DependentUpon>FindLobbyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HostLobbyForm.resx">
-      <DependentUpon>HostLobbyForm.cs</DependentUpon>
+    <EmbeddedResource Include="LobbyHostForm.resx">
+      <DependentUpon>LobbyHostForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LobbyPlayerForm.resx">
       <DependentUpon>LobbyPlayerForm.cs</DependentUpon>

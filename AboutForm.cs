@@ -12,14 +12,17 @@ namespace CrocodileTheGame
 {
     public partial class AboutForm : Form
     {
+        public event OpenLatest OpenMainWindow;
+        public delegate void OpenLatest();
         public AboutForm()
         {
             InitializeComponent();
         }
 
-        private void txtAbout_TextChanged(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
-
+            OpenMainWindow();
+            Dispose();
         }
     }
 }

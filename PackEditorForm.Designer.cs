@@ -29,21 +29,23 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.tbWord = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.lblWord = new System.Windows.Forms.Label();
             this.btnEdit = new System.Windows.Forms.Button();
+            this.lblWord = new System.Windows.Forms.Label();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.tbWord = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.ltWords = new System.Windows.Forms.ListBox();
+            this.btnCreate = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCreate);
             this.panel1.Controls.Add(this.btnEdit);
             this.panel1.Controls.Add(this.lblWord);
             this.panel1.Controls.Add(this.btnAdd);
@@ -57,38 +59,44 @@
             this.panel1.Size = new System.Drawing.Size(194, 451);
             this.panel1.TabIndex = 0;
             // 
-            // panel2
+            // btnEdit
             // 
-            this.panel2.Controls.Add(this.ltWords);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(470, 451);
-            this.panel2.TabIndex = 1;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnEdit.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnEdit.Location = new System.Drawing.Point(20, 126);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(152, 23);
+            this.btnEdit.TabIndex = 10;
+            this.btnEdit.Text = "Изменить";
+            this.btnEdit.UseVisualStyleBackColor = true;
             // 
-            // btnExit
+            // lblWord
             // 
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnExit.Location = new System.Drawing.Point(0, 415);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(194, 36);
-            this.btnExit.TabIndex = 4;
-            this.btnExit.Text = "Выход";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.lblWord.AutoSize = true;
+            this.lblWord.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblWord.Location = new System.Drawing.Point(40, 20);
+            this.lblWord.Name = "lblWord";
+            this.lblWord.Size = new System.Drawing.Size(112, 17);
+            this.lblWord.TabIndex = 9;
+            this.lblWord.Text = "Работа с словами";
             // 
-            // btnLoad
+            // btnAdd
             // 
-            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnLoad.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnLoad.Location = new System.Drawing.Point(0, 379);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(194, 36);
-            this.btnLoad.TabIndex = 5;
-            this.btnLoad.Text = "Загрузить";
-            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnAdd.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnAdd.Location = new System.Drawing.Point(20, 88);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(152, 23);
+            this.btnAdd.TabIndex = 8;
+            this.btnAdd.Text = "Добавить";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // tbWord
+            // 
+            this.tbWord.Location = new System.Drawing.Point(20, 52);
+            this.tbWord.Name = "tbWord";
+            this.tbWord.Size = new System.Drawing.Size(152, 20);
+            this.tbWord.TabIndex = 7;
             // 
             // btnSave
             // 
@@ -102,45 +110,39 @@
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
             // 
-            // tbWord
+            // btnLoad
             // 
-            this.tbWord.Location = new System.Drawing.Point(20, 52);
-            this.tbWord.Name = "tbWord";
-            this.tbWord.Size = new System.Drawing.Size(152, 20);
-            this.tbWord.TabIndex = 7;
+            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnLoad.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnLoad.Location = new System.Drawing.Point(0, 379);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(194, 36);
+            this.btnLoad.TabIndex = 5;
+            this.btnLoad.Text = "Загрузить";
+            this.btnLoad.UseVisualStyleBackColor = true;
             // 
-            // btnAdd
+            // btnExit
             // 
-            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnAdd.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnAdd.Location = new System.Drawing.Point(20, 88);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(152, 23);
-            this.btnAdd.TabIndex = 8;
-            this.btnAdd.Text = "Добавить";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnExit.Location = new System.Drawing.Point(0, 415);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(194, 36);
+            this.btnExit.TabIndex = 4;
+            this.btnExit.Text = "Выход";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // lblWord
+            // panel2
             // 
-            this.lblWord.AutoSize = true;
-            this.lblWord.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblWord.Location = new System.Drawing.Point(40, 20);
-            this.lblWord.Name = "lblWord";
-            this.lblWord.Size = new System.Drawing.Size(112, 17);
-            this.lblWord.TabIndex = 9;
-            this.lblWord.Text = "Работа с словами";
-            this.lblWord.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // btnEdit
-            // 
-            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnEdit.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnEdit.Location = new System.Drawing.Point(20, 126);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(152, 23);
-            this.btnEdit.TabIndex = 10;
-            this.btnEdit.Text = "Изменить";
-            this.btnEdit.UseVisualStyleBackColor = true;
+            this.panel2.Controls.Add(this.ltWords);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(470, 451);
+            this.panel2.TabIndex = 1;
             // 
             // ltWords
             // 
@@ -151,7 +153,19 @@
             this.ltWords.Location = new System.Drawing.Point(0, 0);
             this.ltWords.Name = "ltWords";
             this.ltWords.Size = new System.Drawing.Size(470, 451);
-            this.ltWords.TabIndex = 0;
+            this.ltWords.TabIndex = 2;
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnCreate.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnCreate.Location = new System.Drawing.Point(0, 307);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(194, 36);
+            this.btnCreate.TabIndex = 11;
+            this.btnCreate.Text = "Создать";
+            this.btnCreate.UseVisualStyleBackColor = true;
             // 
             // PackEditorForm
             // 
@@ -175,7 +189,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblWord;
         private System.Windows.Forms.Button btnAdd;
@@ -183,6 +196,8 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ListBox ltWords;
+        private System.Windows.Forms.Button btnCreate;
     }
 }

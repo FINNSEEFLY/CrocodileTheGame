@@ -12,14 +12,22 @@ namespace CrocodileTheGame
 {
     public partial class MainForm : Form
     {
+        private LobbyHostForm lobbyHostForm;
+        private FindLobbyForm findLobbyForm;
+        private PackEditorForm packEditorForm;
+        private AboutForm aboutForm;
+        private LobbyPlayerForm lobbyPlayer;
+        private GameForm gameform;
         public MainForm()
-        {
+        { 
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCreateLobby_Click(object sender, EventArgs e)
         {
-
+            lobbyHostForm = new LobbyHostForm();
+            lobbyHostForm.OpenMainWindow += OpenMainWindow;
+            DisplayForm(lobbyHostForm);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -29,17 +37,34 @@ namespace CrocodileTheGame
 
         private void btnConnectToLobby_Click(object sender, EventArgs e)
         {
-
+            findLobbyForm = new FindLobbyForm();
+            findLobbyForm.OpenMainWindow += OpenMainWindow;
+            DisplayForm(findLobbyForm);
         }
 
         private void btnPackCreator_Click(object sender, EventArgs e)
         {
-
+            packEditorForm = new PackEditorForm();
+            packEditorForm.OpenMainWindow += OpenMainWindow;
+            DisplayForm(packEditorForm);
         }
 
         private void btnAboutProgramm_Click(object sender, EventArgs e)
         {
+            aboutForm = new AboutForm();
+            aboutForm.OpenMainWindow += OpenMainWindow;
+            DisplayForm(aboutForm);
+        }
 
+        public void DisplayForm(Form form)
+        {
+            form.Show();
+            this.Hide();
+        }
+
+        public void OpenMainWindow()
+        {
+            this.Show();
         }
     }
 }

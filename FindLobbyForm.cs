@@ -10,13 +10,19 @@ using System.Windows.Forms;
 
 namespace CrocodileTheGame
 {
-    public partial class LobbyPlayerForm : Form
+    public partial class FindLobbyForm : Form
     {
         public event OpenLatest OpenMainWindow;
         public delegate void OpenLatest();
-        public LobbyPlayerForm()
+        public FindLobbyForm()
         {
             InitializeComponent();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            OpenMainWindow();
+            Dispose();
         }
     }
 }

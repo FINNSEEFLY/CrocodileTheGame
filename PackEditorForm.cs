@@ -12,14 +12,17 @@ namespace CrocodileTheGame
 {
     public partial class PackEditorForm : Form
     {
+        public event OpenLatest OpenMainWindow;
+        public delegate void OpenLatest();
         public PackEditorForm()
         {
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
-
+            OpenMainWindow();
+            Dispose();
         }
     }
 }

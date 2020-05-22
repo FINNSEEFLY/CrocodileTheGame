@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.pnlInfo = new System.Windows.Forms.Panel();
-            this.lbPlayers = new System.Windows.Forms.ListBox();
-            this.btnExit = new System.Windows.Forms.Button();
             this.lblListOfPlayers = new System.Windows.Forms.Label();
+            this.ltPlayers = new System.Windows.Forms.ListBox();
+            this.btnExit = new System.Windows.Forms.Button();
             this.pnlInfo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,16 +44,27 @@
             this.pnlInfo.Size = new System.Drawing.Size(344, 39);
             this.pnlInfo.TabIndex = 3;
             // 
-            // lbPlayers
+            // lblListOfPlayers
             // 
-            this.lbPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbPlayers.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbPlayers.FormattingEnabled = true;
-            this.lbPlayers.ItemHeight = 22;
-            this.lbPlayers.Location = new System.Drawing.Point(0, 39);
-            this.lbPlayers.Name = "lbPlayers";
-            this.lbPlayers.Size = new System.Drawing.Size(344, 396);
-            this.lbPlayers.TabIndex = 5;
+            this.lblListOfPlayers.AutoSize = true;
+            this.lblListOfPlayers.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblListOfPlayers.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblListOfPlayers.Location = new System.Drawing.Point(90, 5);
+            this.lblListOfPlayers.Name = "lblListOfPlayers";
+            this.lblListOfPlayers.Size = new System.Drawing.Size(174, 28);
+            this.lblListOfPlayers.TabIndex = 1;
+            this.lblListOfPlayers.Text = "Список игроков";
+            // 
+            // ltPlayers
+            // 
+            this.ltPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ltPlayers.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ltPlayers.FormattingEnabled = true;
+            this.ltPlayers.ItemHeight = 22;
+            this.ltPlayers.Location = new System.Drawing.Point(0, 39);
+            this.ltPlayers.Name = "ltPlayers";
+            this.ltPlayers.Size = new System.Drawing.Size(344, 396);
+            this.ltPlayers.TabIndex = 5;
             // 
             // btnExit
             // 
@@ -67,24 +78,13 @@
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
             // 
-            // lblListOfPlayers
-            // 
-            this.lblListOfPlayers.AutoSize = true;
-            this.lblListOfPlayers.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblListOfPlayers.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblListOfPlayers.Location = new System.Drawing.Point(90, 5);
-            this.lblListOfPlayers.Name = "lblListOfPlayers";
-            this.lblListOfPlayers.Size = new System.Drawing.Size(174, 28);
-            this.lblListOfPlayers.TabIndex = 1;
-            this.lblListOfPlayers.Text = "Список игроков";
-            // 
             // LobbyPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(344, 471);
-            this.Controls.Add(this.lbPlayers);
+            this.Controls.Add(this.ltPlayers);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.pnlInfo);
             this.MaximumSize = new System.Drawing.Size(360, 510);
@@ -100,7 +100,7 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlInfo;
-        private System.Windows.Forms.ListBox lbPlayers;
+        private System.Windows.Forms.ListBox ltPlayers;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblListOfPlayers;
     }

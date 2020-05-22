@@ -12,6 +12,8 @@ namespace CrocodileTheGame
 {
     public partial class GameForm : Form
     {
+        public event OpenLatest OpenMainWindow;
+        public delegate void OpenLatest();
         public GameForm()
         {
             InitializeComponent();

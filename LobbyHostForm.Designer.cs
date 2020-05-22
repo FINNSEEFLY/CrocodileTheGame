@@ -1,6 +1,6 @@
 ﻿namespace CrocodileTheGame
 {
-    partial class HostLobbyForm
+    partial class LobbyHostForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             this.btnStartGame = new System.Windows.Forms.Button();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.lblListOfPlayers = new System.Windows.Forms.Label();
-            this.lbPlayers = new System.Windows.Forms.ListBox();
+            this.ltPlayers = new System.Windows.Forms.ListBox();
             this.btnKick = new System.Windows.Forms.Button();
             this.pnlInfo.SuspendLayout();
             this.SuspendLayout();
@@ -48,6 +48,7 @@
             this.btnExit.TabIndex = 0;
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnStartGame
             // 
@@ -81,16 +82,16 @@
             this.lblListOfPlayers.TabIndex = 0;
             this.lblListOfPlayers.Text = "Список игроков";
             // 
-            // lbPlayers
+            // ltPlayers
             // 
-            this.lbPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbPlayers.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbPlayers.FormattingEnabled = true;
-            this.lbPlayers.ItemHeight = 22;
-            this.lbPlayers.Location = new System.Drawing.Point(0, 39);
-            this.lbPlayers.Name = "lbPlayers";
-            this.lbPlayers.Size = new System.Drawing.Size(344, 360);
-            this.lbPlayers.TabIndex = 3;
+            this.ltPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ltPlayers.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ltPlayers.FormattingEnabled = true;
+            this.ltPlayers.ItemHeight = 22;
+            this.ltPlayers.Location = new System.Drawing.Point(0, 39);
+            this.ltPlayers.Name = "ltPlayers";
+            this.ltPlayers.Size = new System.Drawing.Size(344, 360);
+            this.ltPlayers.TabIndex = 3;
             // 
             // btnKick
             // 
@@ -104,22 +105,21 @@
             this.btnKick.Text = "Выгнать игрока";
             this.btnKick.UseVisualStyleBackColor = true;
             // 
-            // HostLobbyForm
+            // LobbyHostForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(344, 471);
             this.Controls.Add(this.btnKick);
-            this.Controls.Add(this.lbPlayers);
+            this.Controls.Add(this.ltPlayers);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.btnStartGame);
             this.Controls.Add(this.btnExit);
             this.MaximumSize = new System.Drawing.Size(360, 510);
             this.MinimumSize = new System.Drawing.Size(360, 510);
-            this.Name = "HostLobbyForm";
+            this.Name = "LobbyHostForm";
             this.Text = "Лобби (Создатель)";
-            this.Load += new System.EventHandler(this.HostLobbyForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.ResumeLayout(false);
@@ -132,7 +132,7 @@
         private System.Windows.Forms.Button btnStartGame;
         private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.Label lblListOfPlayers;
-        private System.Windows.Forms.ListBox lbPlayers;
+        private System.Windows.Forms.ListBox ltPlayers;
         private System.Windows.Forms.Button btnKick;
     }
 }

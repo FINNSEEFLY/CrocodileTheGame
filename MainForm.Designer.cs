@@ -46,7 +46,7 @@
             this.btnCreateLobby.TabIndex = 0;
             this.btnCreateLobby.Text = "Создать лобби";
             this.btnCreateLobby.UseVisualStyleBackColor = false;
-            this.btnCreateLobby.Click += new System.EventHandler(this.button1_Click);
+            this.btnCreateLobby.Click += new System.EventHandler(this.btnCreateLobby_Click);
             // 
             // btnConnectToLobby
             // 

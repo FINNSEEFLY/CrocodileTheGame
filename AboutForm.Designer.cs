@@ -47,7 +47,6 @@
             this.txtAbout.ReadOnly = true;
             this.txtAbout.Size = new System.Drawing.Size(304, 401);
             this.txtAbout.TabIndex = 0;
-            this.txtAbout.TextChanged += new System.EventHandler(this.txtAbout_TextChanged);
             // 
             // btnExit
             // 
@@ -59,6 +58,7 @@
             this.btnExit.TabIndex = 5;
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // pnlInfo
             // 
