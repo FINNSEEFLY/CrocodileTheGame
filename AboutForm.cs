@@ -12,8 +12,6 @@ namespace CrocodileTheGame
 {
     public partial class AboutForm : Form
     {
-        public event OpenLatest OpenMainWindow;
-        public delegate void OpenLatest();
         public AboutForm()
         {
             InitializeComponent();
@@ -21,7 +19,6 @@ namespace CrocodileTheGame
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            OpenMainWindow();
             Dispose();
         }
     }

@@ -39,6 +39,7 @@
             // 
             // btnUpdate
             // 
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnUpdate.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -82,6 +83,7 @@
             // 
             // btnConnect
             // 
+            this.btnConnect.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnConnect.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnConnect.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -94,6 +96,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));

@@ -7,13 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Net;
 
 namespace CrocodileTheGame
 {
     public partial class LobbyHostForm : Form
     {
-        public event OpenLatest OpenMainWindow;
-        public delegate void OpenLatest();
+        const int NUM_OF_UDP_PACKET = 50;
+        private string LocalIP;
+        private string NickName;
+        private bool IsWaiting;
+        private UdpClient UdpListener;
+        private string UdpBroadcastAddress;
+        private List<User> UserList;
+        private TcpListener TcpListener;
+        private object locker = new object();
+        public event StringTransfer TakeNickname;
+        public event StringTransfer TakeLocalIP;
+        public delegate string StringTransfer();
         public LobbyHostForm()
         {
             InitializeComponent();
@@ -21,8 +33,146 @@ namespace CrocodileTheGame
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            OpenMainWindow();
+            Owner.Show();
             Dispose();
+        }
+
+        private void LobbyHostForm_Load(object sender, EventArgs e)
+        {
+            NickName = TakeNickname();
+            LocalIP = TakeLocalIP();
+            UdpBroadcastAddress = CalcBroadcastAddress(LocalIP);
+            MessageBox.Show("Nickname = " + NickName + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
+            IsWaiting = true;
+            UserList = new List<User>();
+            Task.Factory.StartNew(ListenBroadcastUDP);
+        }
+
+        public string CalcBroadcastAddress(string localip)
+        {
+            var ipInBytes = IPAddress.Parse(localip).GetAddressBytes();
+            ipInBytes[3] = 255;
+            return new IPAddress(ipInBytes).ToString();
+        }
+
+        private void ListenBroadcastUDP()
+        {
+            UdpListener = new UdpClient((int)UdpFamily.BroadcastPort);
+            UdpListener.EnableBroadcast = true;
+            while (IsWaiting)
+            {
+                try
+                {
+                    IPEndPoint remoteHost = null;
+                    var recievedData = UdpListener.Receive(ref remoteHost);
+                    if (recievedData[0] == (int)UdpFamily.TypeClientRequest)
+                    {
+                        var udpClient = new UdpClient(UdpBroadcastAddress, (int)UdpFamily.BroadcastPort);
+                        udpClient.EnableBroadcast = true;
+                        var nicknameBytes = Encoding.UTF8.GetBytes(NickName);
+                        var data = new byte[nicknameBytes.Length + 1];
+                        data[0] = (byte)UdpFamily.TypeServerExist;
+                        Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
+                        for (int i = 0; i < NUM_OF_UDP_PACKET; i++)
+                        {
+                            udpClient.Send(data, data.Length);
+                        }
+                        udpClient.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+        private void ListeningForConnections()
+        {
+            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), (int)TcpFamily.DefaultPort);
+            TcpListener.Start();
+            while (IsWaiting)
+            {
+                try
+                {
+                    var user = new User();
+                    user.tcpClient = TcpListener.AcceptTcpClient();
+                    user.IPv4Address = ((IPEndPoint)user.tcpClient.Client.RemoteEndPoint).Address;
+                    user.stream = user.tcpClient.GetStream();
+                    lock (locker)
+                    {
+                        user.SendUserList(UserList);
+                    }
+                    UserList.Add(user);
+                    Task.Factory.StartNew(() => ListenTCP(users[users.IndexOf(user)]));
+                }
+                catch { }
+            }
+        }
+        private void ListenTCP(User user)
+        {
+            while (user.Listen)
+            {
+                if (user.stream.DataAvailable)
+                {
+                    var typeAndLength = user.ReciveTypeAndLength();
+                    var messageType = typeAndLength[0];
+                    var messageLength = BitConverter.ToInt32(typeAndLength, 1);
+                    if (messageLength == 0)
+                    {
+                        switch (messageType)
+                        {
+                            case TYPE_DISCONNECT:
+                                user.Listen = false;
+                                DisplayUserDisconnected(user.IPv4Address, user.Username);
+                                users.Remove(user);
+                                user.Dispose();
+                                break;
+
+                            case TYPE_REQUEST_CHAT_HISTORY:
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    user.SendChatHistory(txtMessageHistory.Text);
+                                }));
+                                break;
+                        }
+                    }
+                    else if (user.stream.DataAvailable)
+                    {
+                        var data = user.RecieveMessage(messageLength);
+                        switch (messageType)
+                        {
+                            case TYPE_CONNECT:
+                                user.Username = Encoding.Unicode.GetString(data, 0, data.Length);
+                                DisplayUserConnected(user.IPv4Address, user.Username);
+                                break;
+
+                            case TYPE_MESSAGE:
+                                string message = Encoding.Unicode.GetString(data, 0, data.Length);
+                                DisplayAMessage(message, user.IPv4Address, user.Username);
+                                break;
+
+                            case TYPE_CHANGE_NAME:
+                                string usernameNew = Encoding.Unicode.GetString(data, 0, data.Length);
+                                DisplayChangeNameMessage(user.IPv4Address, user.Username, usernameNew);
+                                user.Username = usernameNew;
+                                break;
+
+                            case TYPE_RESPONSE_CHAT_HISTORY:
+                                string chatHistory = Encoding.Unicode.GetString(data, 0, data.Length);
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    if (txtMessageHistory.Text.Length < chatHistory.Length)
+                                    {
+
+                                        txtMessageHistory.Text = chatHistory;
+                                    }
+                                }));
+                                break;
+                            default: throw new Exception("Неизвестный тип пакета");
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -35,21 +35,21 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlTools = new System.Windows.Forms.Panel();
+            this.lblRadius = new System.Windows.Forms.Label();
+            this.tbRadius = new System.Windows.Forms.TrackBar();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnFill = new System.Windows.Forms.Button();
-            this.btnYellow = new System.Windows.Forms.Button();
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnGreen = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
+            this.btnBlack = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
-            this.tbRadius = new System.Windows.Forms.TrackBar();
-            this.lblRadius = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlTools.SuspendLayout();
-            this.pnlCanvas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).BeginInit();
+            this.pnlCanvas.SuspendLayout();
             this.SuspendLayout();
             // 
             // picCanvas
@@ -96,6 +96,7 @@
             // 
             // btnSend
             // 
+            this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSend.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSend.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -108,6 +109,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -124,10 +126,10 @@
             this.pnlTools.Controls.Add(this.tbRadius);
             this.pnlTools.Controls.Add(this.btnClear);
             this.pnlTools.Controls.Add(this.btnFill);
-            this.pnlTools.Controls.Add(this.btnYellow);
             this.pnlTools.Controls.Add(this.btnBlue);
             this.pnlTools.Controls.Add(this.btnGreen);
             this.pnlTools.Controls.Add(this.btnRed);
+            this.pnlTools.Controls.Add(this.btnBlack);
             this.pnlTools.Controls.Add(this.btnColor);
             this.pnlTools.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlTools.Location = new System.Drawing.Point(0, 591);
@@ -135,8 +137,31 @@
             this.pnlTools.Size = new System.Drawing.Size(896, 70);
             this.pnlTools.TabIndex = 2;
             // 
+            // lblRadius
+            // 
+            this.lblRadius.AutoSize = true;
+            this.lblRadius.BackColor = System.Drawing.Color.Transparent;
+            this.lblRadius.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRadius.Location = new System.Drawing.Point(774, 40);
+            this.lblRadius.Name = "lblRadius";
+            this.lblRadius.Size = new System.Drawing.Size(88, 17);
+            this.lblRadius.TabIndex = 8;
+            this.lblRadius.Text = "Размер кисти";
+            // 
+            // tbRadius
+            // 
+            this.tbRadius.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.tbRadius.LargeChange = 1;
+            this.tbRadius.Location = new System.Drawing.Point(760, 10);
+            this.tbRadius.Minimum = 1;
+            this.tbRadius.Name = "tbRadius";
+            this.tbRadius.Size = new System.Drawing.Size(114, 45);
+            this.tbRadius.TabIndex = 7;
+            this.tbRadius.Value = 5;
+            // 
             // btnClear
             // 
+            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClear.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnClear.Location = new System.Drawing.Point(590, 10);
             this.btnClear.Name = "btnClear";
@@ -147,6 +172,7 @@
             // 
             // btnFill
             // 
+            this.btnFill.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnFill.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnFill.Location = new System.Drawing.Point(420, 10);
             this.btnFill.Name = "btnFill";
@@ -155,44 +181,49 @@
             this.btnFill.Text = "Залить цветом";
             this.btnFill.UseVisualStyleBackColor = true;
             // 
-            // btnYellow
-            // 
-            this.btnYellow.BackColor = System.Drawing.Color.Yellow;
-            this.btnYellow.Location = new System.Drawing.Point(340, 10);
-            this.btnYellow.Name = "btnYellow";
-            this.btnYellow.Size = new System.Drawing.Size(50, 50);
-            this.btnYellow.TabIndex = 4;
-            this.btnYellow.UseVisualStyleBackColor = false;
-            // 
             // btnBlue
             // 
             this.btnBlue.BackColor = System.Drawing.Color.Blue;
-            this.btnBlue.Location = new System.Drawing.Point(260, 10);
+            this.btnBlue.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBlue.Location = new System.Drawing.Point(340, 10);
             this.btnBlue.Name = "btnBlue";
             this.btnBlue.Size = new System.Drawing.Size(50, 50);
-            this.btnBlue.TabIndex = 3;
+            this.btnBlue.TabIndex = 4;
             this.btnBlue.UseVisualStyleBackColor = false;
             // 
             // btnGreen
             // 
             this.btnGreen.BackColor = System.Drawing.Color.Lime;
-            this.btnGreen.Location = new System.Drawing.Point(180, 10);
+            this.btnGreen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGreen.Location = new System.Drawing.Point(260, 10);
             this.btnGreen.Name = "btnGreen";
             this.btnGreen.Size = new System.Drawing.Size(50, 50);
-            this.btnGreen.TabIndex = 2;
+            this.btnGreen.TabIndex = 3;
             this.btnGreen.UseVisualStyleBackColor = false;
             // 
             // btnRed
             // 
             this.btnRed.BackColor = System.Drawing.Color.Red;
-            this.btnRed.Location = new System.Drawing.Point(100, 10);
+            this.btnRed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRed.Location = new System.Drawing.Point(180, 10);
             this.btnRed.Name = "btnRed";
             this.btnRed.Size = new System.Drawing.Size(50, 50);
-            this.btnRed.TabIndex = 1;
+            this.btnRed.TabIndex = 2;
             this.btnRed.UseVisualStyleBackColor = false;
+            // 
+            // btnBlack
+            // 
+            this.btnBlack.BackColor = System.Drawing.Color.Black;
+            this.btnBlack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBlack.Location = new System.Drawing.Point(100, 10);
+            this.btnBlack.Name = "btnBlack";
+            this.btnBlack.Size = new System.Drawing.Size(50, 50);
+            this.btnBlack.TabIndex = 1;
+            this.btnBlack.UseVisualStyleBackColor = false;
             // 
             // btnColor
             // 
+            this.btnColor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnColor.Location = new System.Drawing.Point(20, 10);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(50, 50);
@@ -207,27 +238,6 @@
             this.pnlCanvas.Name = "pnlCanvas";
             this.pnlCanvas.Size = new System.Drawing.Size(896, 591);
             this.pnlCanvas.TabIndex = 3;
-            // 
-            // tbRadius
-            // 
-            this.tbRadius.LargeChange = 1;
-            this.tbRadius.Location = new System.Drawing.Point(760, 10);
-            this.tbRadius.Minimum = 1;
-            this.tbRadius.Name = "tbRadius";
-            this.tbRadius.Size = new System.Drawing.Size(114, 45);
-            this.tbRadius.TabIndex = 7;
-            this.tbRadius.Value = 5;
-            // 
-            // lblRadius
-            // 
-            this.lblRadius.AutoSize = true;
-            this.lblRadius.BackColor = System.Drawing.Color.Transparent;
-            this.lblRadius.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRadius.Location = new System.Drawing.Point(774, 40);
-            this.lblRadius.Name = "lblRadius";
-            this.lblRadius.Size = new System.Drawing.Size(88, 17);
-            this.lblRadius.TabIndex = 8;
-            this.lblRadius.Text = "Размер кисти";
             // 
             // GameForm
             // 
@@ -248,8 +258,8 @@
             this.panel1.PerformLayout();
             this.pnlTools.ResumeLayout(false);
             this.pnlTools.PerformLayout();
-            this.pnlCanvas.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).EndInit();
+            this.pnlCanvas.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -266,10 +276,10 @@
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnFill;
-        private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnGreen;
         private System.Windows.Forms.Button btnRed;
+        private System.Windows.Forms.Button btnBlack;
         private System.Windows.Forms.Panel pnlCanvas;
         private System.Windows.Forms.Label lblRadius;
         private System.Windows.Forms.TrackBar tbRadius;

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
 
 namespace CrocodileTheGame
 {
@@ -19,15 +21,18 @@ namespace CrocodileTheGame
         private LobbyPlayerForm lobbyPlayer;
         private GameForm gameform;
         public MainForm()
-        { 
+        {
             InitializeComponent();
         }
 
         private void btnCreateLobby_Click(object sender, EventArgs e)
         {
             lobbyHostForm = new LobbyHostForm();
-            lobbyHostForm.OpenMainWindow += OpenMainWindow;
-            DisplayForm(lobbyHostForm);
+            lobbyHostForm.TakeNickname += GiveNickname;
+            lobbyHostForm.TakeLocalIP += GiveLocalIP;
+            lobbyHostForm.Owner = this;
+            lobbyHostForm.Show();
+            Hide();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -38,33 +43,53 @@ namespace CrocodileTheGame
         private void btnConnectToLobby_Click(object sender, EventArgs e)
         {
             findLobbyForm = new FindLobbyForm();
-            findLobbyForm.OpenMainWindow += OpenMainWindow;
-            DisplayForm(findLobbyForm);
+            findLobbyForm.Owner = this;
+            findLobbyForm.Show();
+            Hide();
         }
 
         private void btnPackCreator_Click(object sender, EventArgs e)
         {
             packEditorForm = new PackEditorForm();
-            packEditorForm.OpenMainWindow += OpenMainWindow;
-            DisplayForm(packEditorForm);
+            packEditorForm.Owner = this;
+            packEditorForm.Show();
+            Hide();
         }
 
         private void btnAboutProgramm_Click(object sender, EventArgs e)
         {
             aboutForm = new AboutForm();
-            aboutForm.OpenMainWindow += OpenMainWindow;
-            DisplayForm(aboutForm);
+            aboutForm.Owner = this;
+            aboutForm.ShowDialog();
         }
 
-        public void DisplayForm(Form form)
+        public string GiveNickname()
         {
-            form.Show();
-            this.Hide();
+            string nickname = tbNickName.Text.Trim();
+            if (nickname == "")
+            {
+                var random = new Random();
+                nickname = "Player#" + random.Next(1,9999);
+            }
+            return nickname;
         }
-
-        public void OpenMainWindow()
+        
+        public string GiveLocalIP()
         {
-            this.Show();
+            string localIP;
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
+            try
+            {
+                socket.Connect("8.8.8.8", 65530);
+                IPEndPoint point = socket.LocalEndPoint as IPEndPoint;
+                localIP = point.Address.ToString();
+            }
+            catch
+            {
+                IPEndPoint point = socket.LocalEndPoint as IPEndPoint;
+                localIP = point.Address.ToString();
+            }
+            return localIP;
         }
     }
 }

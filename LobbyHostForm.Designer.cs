@@ -39,6 +39,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -52,6 +53,7 @@
             // 
             // btnStartGame
             // 
+            this.btnStartGame.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartGame.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnStartGame.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnStartGame.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -95,6 +97,7 @@
             // 
             // btnKick
             // 
+            this.btnKick.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnKick.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnKick.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnKick.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -120,6 +123,7 @@
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "LobbyHostForm";
             this.Text = "Лобби (Создатель)";
+            this.Load += new System.EventHandler(this.LobbyHostForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.ResumeLayout(false);

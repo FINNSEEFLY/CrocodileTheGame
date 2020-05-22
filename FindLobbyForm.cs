@@ -12,8 +12,6 @@ namespace CrocodileTheGame
 {
     public partial class FindLobbyForm : Form
     {
-        public event OpenLatest OpenMainWindow;
-        public delegate void OpenLatest();
         public FindLobbyForm()
         {
             InitializeComponent();
@@ -21,7 +19,7 @@ namespace CrocodileTheGame
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            OpenMainWindow();
+            Owner.Show();
             Dispose();
         }
     }

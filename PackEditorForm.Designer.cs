@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCreate = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.lblWord = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -38,7 +39,6 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.ltWords = new System.Windows.Forms.ListBox();
-            this.btnCreate = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -59,8 +59,22 @@
             this.panel1.Size = new System.Drawing.Size(194, 451);
             this.panel1.TabIndex = 0;
             // 
+            // btnCreate
+            // 
+            this.btnCreate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnCreate.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnCreate.Location = new System.Drawing.Point(0, 307);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(194, 36);
+            this.btnCreate.TabIndex = 11;
+            this.btnCreate.Text = "Создать";
+            this.btnCreate.UseVisualStyleBackColor = true;
+            // 
             // btnEdit
             // 
+            this.btnEdit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnEdit.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnEdit.Location = new System.Drawing.Point(20, 126);
@@ -82,6 +96,7 @@
             // 
             // btnAdd
             // 
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnAdd.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnAdd.Location = new System.Drawing.Point(20, 88);
@@ -100,6 +115,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSave.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -112,6 +128,7 @@
             // 
             // btnLoad
             // 
+            this.btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLoad.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLoad.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -124,6 +141,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -154,18 +172,6 @@
             this.ltWords.Name = "ltWords";
             this.ltWords.Size = new System.Drawing.Size(470, 451);
             this.ltWords.TabIndex = 2;
-            // 
-            // btnCreate
-            // 
-            this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnCreate.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCreate.Location = new System.Drawing.Point(0, 307);
-            this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(194, 36);
-            this.btnCreate.TabIndex = 11;
-            this.btnCreate.Text = "Создать";
-            this.btnCreate.UseVisualStyleBackColor = true;
             // 
             // PackEditorForm
             // 

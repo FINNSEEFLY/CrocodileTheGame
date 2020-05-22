@@ -12,8 +12,6 @@ namespace CrocodileTheGame
 {
     public partial class LobbyPlayerForm : Form
     {
-        public event OpenLatest OpenMainWindow;
-        public delegate void OpenLatest();
         public LobbyPlayerForm()
         {
             InitializeComponent();
