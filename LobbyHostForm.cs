@@ -22,7 +22,6 @@ namespace CrocodileTheGame
         private string UdpBroadcastAddress;
         private List<User> UserList;
         private TcpListener TcpListener;
-        private object locker = new object();
         public event StringTransfer TakeNickname;
         public event StringTransfer TakeLocalIP;
         public delegate string StringTransfer();
@@ -34,6 +33,10 @@ namespace CrocodileTheGame
         private void btnExit_Click(object sender, EventArgs e)
         {
             Owner.Show();
+            Disconnect();
+            IsWaiting = false;
+            UdpListener.Dispose();
+            TcpListener.Stop();
             Dispose();
         }
 
@@ -87,7 +90,7 @@ namespace CrocodileTheGame
                 }
             }
         }
-       
+
         private void ListeningForConnections()
         {
             TcpListener = new TcpListener(IPAddress.Parse(LocalIP), (int)TcpFamily.DefaultPort);
@@ -100,17 +103,14 @@ namespace CrocodileTheGame
                     user.tcpClient = TcpListener.AcceptTcpClient();
                     user.IPv4Address = ((IPEndPoint)user.tcpClient.Client.RemoteEndPoint).Address;
                     user.stream = user.tcpClient.GetStream();
-                    lock (locker)
-                    {
-                        user.SendUserList(UserList);
-                    }
                     UserList.Add(user);
+                    SendUsersList();
                     Task.Factory.StartNew(() => ListenTCP(UserList[UserList.IndexOf(user)]));
                 }
                 catch { }
             }
         }
-        
+
         private void ListenTCP(User user)
         {
             while (user.Listen)
@@ -140,6 +140,9 @@ namespace CrocodileTheGame
                                 user.Listen = false;
                                 UserList.Remove(user);
                                 user.Dispose();
+                            }
+                            finally
+                            {
                                 SendUsersList();
                             }
                             break;
@@ -148,6 +151,17 @@ namespace CrocodileTheGame
                     }
                 }
             }
+        }
+
+        private void Disconnect()
+        {
+            foreach (var user in UserList)
+            {
+                user.Listen = false;
+                user.SendDisconnect();
+                user.Dispose();
+            }
+            UserList.Clear();
         }
 
         private void SendUsersList()

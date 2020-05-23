@@ -83,6 +83,17 @@ namespace CrocodileTheGame
             return returnData;
         }
 
+        public void SendDisconnect()
+        {
+            try
+            {
+                var data = new byte[5];
+                data[0] = (int)TcpFamily.TypeDisconnect;
+                stream.Write(data, 0, data.Length);
+            }
+            catch { };
+        }
+
         public void Dispose()
         {
             try

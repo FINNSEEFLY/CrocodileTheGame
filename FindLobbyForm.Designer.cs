@@ -63,6 +63,7 @@
             // 
             // pnlInfo
             // 
+            this.pnlInfo.BackColor = System.Drawing.SystemColors.Window;
             this.pnlInfo.Controls.Add(this.lblServerLIst);
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfo.Location = new System.Drawing.Point(0, 0);
