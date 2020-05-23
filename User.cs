@@ -12,16 +12,21 @@ namespace CrocodileTheGame
     {
         public TcpClient tcpClient;
         public NetworkStream stream;
-        private object locker = new object();
         public string Username { get; set; }
         public IPAddress IPv4Address { get; set; }
         public bool Listen { get; set; } = true;
 
-        public void SendUserList(List<User> list)
+        public User()
+        {
+            var rand = new Random();
+            Username = "Player#" + rand.Next(0, 9999);
+        }
+
+        public bool SendUserList(List<User> list)
         {
             int countOfUsers = list.Count;
             int lengthNicknames = 0;
-            lock (locker)
+            try
             {
                 foreach (User user in list)
                 {
@@ -45,8 +50,39 @@ namespace CrocodileTheGame
                 int zero = 0;
                 var zeroBytes = BitConverter.GetBytes(zero);
                 Buffer.BlockCopy(zeroBytes, 0, data, offset, zeroBytes.Length);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
+
+        public byte[] ReciveTypeAndLength()
+        {
+            try
+            {
+                var receiveData = new byte[5];
+                var numOfReciviedBytes = stream.Read(receiveData, 0, receiveData.Length);
+                var returnData = new byte[numOfReciviedBytes];
+                Buffer.BlockCopy(receiveData, 0, returnData, 0, numOfReciviedBytes);
+                return returnData;
+            }
+            catch
+            {
+                return new byte[5];
+            }
+        }
+
+        public byte[] ReceiveMessage(int messagelength)
+        {
+            var receiveData = new byte[messagelength];
+            var numOfReceivedBytes = stream.Read(receiveData, 0, receiveData.Length);
+            var returnData = new byte[numOfReceivedBytes];
+            Buffer.BlockCopy(receiveData, 0, returnData, 0, numOfReceivedBytes);
+            return returnData;
+        }
+
         public void Dispose()
         {
             try

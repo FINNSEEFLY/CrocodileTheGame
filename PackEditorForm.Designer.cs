@@ -61,7 +61,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCreate.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnCreate.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -74,7 +74,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEdit.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnEdit.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnEdit.Location = new System.Drawing.Point(20, 126);
@@ -96,7 +96,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnAdd.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnAdd.Location = new System.Drawing.Point(20, 88);
@@ -115,7 +115,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSave.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -128,7 +128,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoad.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnLoad.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLoad.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -141,7 +141,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));

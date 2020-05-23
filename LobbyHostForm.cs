@@ -46,6 +46,7 @@ namespace CrocodileTheGame
             IsWaiting = true;
             UserList = new List<User>();
             Task.Factory.StartNew(ListenBroadcastUDP);
+            Task.Factory.StartNew(ListeningForConnections);
         }
 
         public string CalcBroadcastAddress(string localip)
@@ -86,6 +87,7 @@ namespace CrocodileTheGame
                 }
             }
         }
+       
         private void ListeningForConnections()
         {
             TcpListener = new TcpListener(IPAddress.Parse(LocalIP), (int)TcpFamily.DefaultPort);
@@ -103,11 +105,12 @@ namespace CrocodileTheGame
                         user.SendUserList(UserList);
                     }
                     UserList.Add(user);
-                    Task.Factory.StartNew(() => ListenTCP(users[users.IndexOf(user)]));
+                    Task.Factory.StartNew(() => ListenTCP(UserList[UserList.IndexOf(user)]));
                 }
                 catch { }
             }
         }
+        
         private void ListenTCP(User user)
         {
             while (user.Listen)
@@ -117,61 +120,53 @@ namespace CrocodileTheGame
                     var typeAndLength = user.ReciveTypeAndLength();
                     var messageType = typeAndLength[0];
                     var messageLength = BitConverter.ToInt32(typeAndLength, 1);
-                    if (messageLength == 0)
+                    switch (messageType)
                     {
-                        switch (messageType)
-                        {
-                            case TYPE_DISCONNECT:
+                        case (int)TcpFamily.typeFailed:
+                        case (int)TcpFamily.TypeDisconnect:
+                            user.Listen = false;
+                            UserList.Remove(user);
+                            user.Dispose();
+                            SendUsersList();
+                            break;
+                        case (int)TcpFamily.typeNickname:
+                            try
+                            {
+                                var message = user.ReceiveMessage(messageLength);
+                                user.Username = Encoding.UTF8.GetString(message);
+                            }
+                            catch
+                            {
                                 user.Listen = false;
-                                DisplayUserDisconnected(user.IPv4Address, user.Username);
-                                users.Remove(user);
+                                UserList.Remove(user);
                                 user.Dispose();
-                                break;
-
-                            case TYPE_REQUEST_CHAT_HISTORY:
-                                this.Invoke(new MethodInvoker(() =>
-                                {
-                                    user.SendChatHistory(txtMessageHistory.Text);
-                                }));
-                                break;
-                        }
-                    }
-                    else if (user.stream.DataAvailable)
-                    {
-                        var data = user.RecieveMessage(messageLength);
-                        switch (messageType)
-                        {
-                            case TYPE_CONNECT:
-                                user.Username = Encoding.Unicode.GetString(data, 0, data.Length);
-                                DisplayUserConnected(user.IPv4Address, user.Username);
-                                break;
-
-                            case TYPE_MESSAGE:
-                                string message = Encoding.Unicode.GetString(data, 0, data.Length);
-                                DisplayAMessage(message, user.IPv4Address, user.Username);
-                                break;
-
-                            case TYPE_CHANGE_NAME:
-                                string usernameNew = Encoding.Unicode.GetString(data, 0, data.Length);
-                                DisplayChangeNameMessage(user.IPv4Address, user.Username, usernameNew);
-                                user.Username = usernameNew;
-                                break;
-
-                            case TYPE_RESPONSE_CHAT_HISTORY:
-                                string chatHistory = Encoding.Unicode.GetString(data, 0, data.Length);
-                                this.Invoke(new MethodInvoker(() =>
-                                {
-                                    if (txtMessageHistory.Text.Length < chatHistory.Length)
-                                    {
-
-                                        txtMessageHistory.Text = chatHistory;
-                                    }
-                                }));
-                                break;
-                            default: throw new Exception("Неизвестный тип пакета");
-                        }
+                                SendUsersList();
+                            }
+                            break;
+                        default:
+                            throw new Exception("Неизвестный тип пакета!");
                     }
                 }
+            }
+        }
+
+        private void SendUsersList()
+        {
+            bool Failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.SendUserList(UserList))
+                {
+                    user.Listen = false;
+                    UserList.Remove(user);
+                    user.Dispose();
+                    Failed = true;
+                    break;
+                }
+            }
+            if (Failed)
+            {
+                SendUsersList();
             }
         }
     }

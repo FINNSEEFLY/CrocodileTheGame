@@ -96,7 +96,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSend.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnSend.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSend.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -109,7 +109,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -150,7 +150,7 @@
             // 
             // tbRadius
             // 
-            this.tbRadius.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.tbRadius.Cursor = System.Windows.Forms.Cursors.Default;
             this.tbRadius.LargeChange = 1;
             this.tbRadius.Location = new System.Drawing.Point(760, 10);
             this.tbRadius.Minimum = 1;
@@ -161,7 +161,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClear.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnClear.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnClear.Location = new System.Drawing.Point(590, 10);
             this.btnClear.Name = "btnClear";
@@ -172,7 +172,7 @@
             // 
             // btnFill
             // 
-            this.btnFill.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFill.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnFill.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnFill.Location = new System.Drawing.Point(420, 10);
             this.btnFill.Name = "btnFill";
@@ -184,7 +184,7 @@
             // btnBlue
             // 
             this.btnBlue.BackColor = System.Drawing.Color.Blue;
-            this.btnBlue.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBlue.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnBlue.Location = new System.Drawing.Point(340, 10);
             this.btnBlue.Name = "btnBlue";
             this.btnBlue.Size = new System.Drawing.Size(50, 50);
@@ -194,7 +194,7 @@
             // btnGreen
             // 
             this.btnGreen.BackColor = System.Drawing.Color.Lime;
-            this.btnGreen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGreen.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnGreen.Location = new System.Drawing.Point(260, 10);
             this.btnGreen.Name = "btnGreen";
             this.btnGreen.Size = new System.Drawing.Size(50, 50);
@@ -204,7 +204,7 @@
             // btnRed
             // 
             this.btnRed.BackColor = System.Drawing.Color.Red;
-            this.btnRed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRed.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnRed.Location = new System.Drawing.Point(180, 10);
             this.btnRed.Name = "btnRed";
             this.btnRed.Size = new System.Drawing.Size(50, 50);
@@ -214,7 +214,7 @@
             // btnBlack
             // 
             this.btnBlack.BackColor = System.Drawing.Color.Black;
-            this.btnBlack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBlack.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnBlack.Location = new System.Drawing.Point(100, 10);
             this.btnBlack.Name = "btnBlack";
             this.btnBlack.Size = new System.Drawing.Size(50, 50);
@@ -223,7 +223,7 @@
             // 
             // btnColor
             // 
-            this.btnColor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnColor.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnColor.Location = new System.Drawing.Point(20, 10);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(50, 50);

@@ -34,6 +34,7 @@
             this.lblListOfPlayers = new System.Windows.Forms.Label();
             this.ltPlayers = new System.Windows.Forms.ListBox();
             this.btnKick = new System.Windows.Forms.Button();
+            this.btnLoadPack = new System.Windows.Forms.Button();
             this.pnlInfo.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnExit.Location = new System.Drawing.Point(0, 435);
+            this.btnExit.Location = new System.Drawing.Point(0, 465);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(344, 36);
             this.btnExit.TabIndex = 0;
@@ -57,7 +58,7 @@
             this.btnStartGame.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnStartGame.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnStartGame.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnStartGame.Location = new System.Drawing.Point(0, 399);
+            this.btnStartGame.Location = new System.Drawing.Point(0, 429);
             this.btnStartGame.Name = "btnStartGame";
             this.btnStartGame.Size = new System.Drawing.Size(344, 36);
             this.btnStartGame.TabIndex = 1;
@@ -92,7 +93,7 @@
             this.ltPlayers.ItemHeight = 22;
             this.ltPlayers.Location = new System.Drawing.Point(0, 39);
             this.ltPlayers.Name = "ltPlayers";
-            this.ltPlayers.Size = new System.Drawing.Size(344, 360);
+            this.ltPlayers.Size = new System.Drawing.Size(344, 390);
             this.ltPlayers.TabIndex = 3;
             // 
             // btnKick
@@ -101,26 +102,40 @@
             this.btnKick.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnKick.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnKick.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnKick.Location = new System.Drawing.Point(0, 363);
+            this.btnKick.Location = new System.Drawing.Point(0, 393);
             this.btnKick.Name = "btnKick";
             this.btnKick.Size = new System.Drawing.Size(344, 36);
             this.btnKick.TabIndex = 4;
             this.btnKick.Text = "Выгнать игрока";
             this.btnKick.UseVisualStyleBackColor = true;
             // 
+            // btnLoadPack
+            // 
+            this.btnLoadPack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadPack.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnLoadPack.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnLoadPack.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnLoadPack.Location = new System.Drawing.Point(0, 357);
+            this.btnLoadPack.Name = "btnLoadPack";
+            this.btnLoadPack.Size = new System.Drawing.Size(344, 36);
+            this.btnLoadPack.TabIndex = 5;
+            this.btnLoadPack.Text = "Загрузить комплект слов";
+            this.btnLoadPack.UseVisualStyleBackColor = true;
+            // 
             // LobbyHostForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(344, 471);
+            this.ClientSize = new System.Drawing.Size(344, 501);
+            this.Controls.Add(this.btnLoadPack);
             this.Controls.Add(this.btnKick);
             this.Controls.Add(this.ltPlayers);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.btnStartGame);
             this.Controls.Add(this.btnExit);
-            this.MaximumSize = new System.Drawing.Size(360, 510);
-            this.MinimumSize = new System.Drawing.Size(360, 510);
+            this.MaximumSize = new System.Drawing.Size(360, 540);
+            this.MinimumSize = new System.Drawing.Size(360, 540);
             this.Name = "LobbyHostForm";
             this.Text = "Лобби (Создатель)";
             this.Load += new System.EventHandler(this.LobbyHostForm_Load);
@@ -138,5 +153,6 @@
         private System.Windows.Forms.Label lblListOfPlayers;
         private System.Windows.Forms.ListBox ltPlayers;
         private System.Windows.Forms.Button btnKick;
+        private System.Windows.Forms.Button btnLoadPack;
     }
 }
