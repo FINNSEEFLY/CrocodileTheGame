@@ -42,18 +42,20 @@ namespace CrocodileTheGame
                     var recievedData = UdpListener.Receive(ref remoteHost);
                     if (recievedData[0] == UdpFamily.TYPE_SERVER_EXIST)
                     {
-                        if (!LobbyExist(remoteHost.Address)) {
-                            var lobby = new Server();
-                            lobby.IPv4Address = remoteHost.Address;
-                            lobby.Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1);
-                            LobbyList.Add(lobby);
-                            UpdateLobbyList();
+                        if (!LobbyExist(remoteHost.Address))
+                        {
+                            LobbyList.Add(new Server() { Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1), IPv4Address = remoteHost.Address });
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                UpdateLobbyList();
+                            }));
+                            
                         }
                     }
                 }
                 catch //(Exception e)
                 {
-                   // MessageBox.Show(e.Message);
+                    // MessageBox.Show(e.Message);
                 }
             }
         }
@@ -79,6 +81,11 @@ namespace CrocodileTheGame
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
             Task.Factory.StartNew(ListenBroadcastUDP);
+            /*var list = new List<Server>();
+            list.Add(new Server() { Username = "GOvno", IPv4Address = IPAddress.Parse("192.168.100.12") });
+            ltLobby.DataSource = list;
+            ltLobby.DisplayMember = "Username";
+            ltLobby.ValueMember = "IPv4Address";*/
         }
 
         public void ClearServerList()
@@ -122,17 +129,17 @@ namespace CrocodileTheGame
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
         }
-        
+
         private bool LobbyExist(IPAddress ip)
         {
             bool result = false;
-            foreach(var lobby in LobbyList)
+            foreach (var lobby in LobbyList)
             {
                 if (lobby.IPv4Address.Equals(ip))
                 {
                     result = true;
                     break;
-                } 
+                }
             }
             return result;
         }
