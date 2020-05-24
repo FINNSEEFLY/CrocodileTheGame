@@ -41,7 +41,7 @@ namespace CrocodileTheGame
                     var recievedData = UdpListener.Receive(ref remoteHost);
                     if (recievedData[0] == UdpFamily.TYPE_SERVER_EXIST)
                     {
-                        if (LobbyExist(remoteHost.Address)) {
+                        if (!LobbyExist(remoteHost.Address)) {
                             var lobby = new Server();
                             lobby.IPv4Address = remoteHost.Address;
                             lobby.Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1);
