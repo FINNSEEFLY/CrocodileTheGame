@@ -18,6 +18,7 @@ namespace CrocodileTheGame
         private string NickName;
         private string UdpBroadcastAddress;
         private bool IsListening;
+        private bool IsUpdating;
         private UdpClient UdpListener;
         private List<Server> LobbyList;
         public event StringTransfer TakeNickname;
@@ -92,7 +93,7 @@ namespace CrocodileTheGame
             LobbyList.Clear();
             UpdateLobbyList();
         }
-        
+
         public void SendFindMessage()
         {
             var udpClient = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
@@ -108,8 +109,13 @@ namespace CrocodileTheGame
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            ClearServerList();
-            SendFindMessage();
+            if (!IsUpdating)
+            {
+                IsUpdating = true;
+                ClearServerList();
+                SendFindMessage();
+                IsUpdating = false;
+            }
         }
         private void UpdateLobbyList()
         {
