@@ -166,7 +166,7 @@ namespace CrocodileTheGame
                 lobbyPlayerForm.TakeIP += GiveIP;
                 lobbyPlayerForm.TakeNickname += GiveNickname;
                 lobbyPlayerForm.TakeServer += GiveServer;
-                lobbyPlayerForm.Back += BackToMain();
+                lobbyPlayerForm.Back += BackToMain;
                 lobbyPlayerForm.Show();
                 this.Hide();
                 MessageBox.Show("Подключение установлено");
