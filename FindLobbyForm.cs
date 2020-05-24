@@ -23,6 +23,7 @@ namespace CrocodileTheGame
         private List<Server> LobbyList;
         public event StringTransfer TakeNickname;
         public delegate string StringTransfer();
+
         public FindLobbyForm()
         {
             InitializeComponent();
@@ -40,17 +41,11 @@ namespace CrocodileTheGame
                     var recievedData = UdpListener.Receive(ref remoteHost);
                     if (recievedData[0] == UdpFamily.TYPE_SERVER_EXIST)
                     {
-                        var server = new Server();
-                        server.IPv4Address = remoteHost.Address;
-                        server.Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1);
-                        if (!LobbyList.Contains(server))
-                        {
-                            LobbyList.Add(server);
-                            UpdateLobbyList();
-                        }
-                        else
-                        {
-                            server.Dispose();
+                        if (LobbyExist(remoteHost.Address)) {
+                            var lobby = new Server();
+                            lobby.IPv4Address = remoteHost.Address;
+                            lobby.Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1);
+                            LobbyList.Add(lobby);
                         }
                     }
                 }
@@ -123,6 +118,20 @@ namespace CrocodileTheGame
             ltLobby.DataSource = LobbyList;
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
+        }
+        
+        private bool LobbyExist(IPAddress ip)
+        {
+            bool result = false;
+            foreach(var lobby in LobbyList)
+            {
+                if (lobby.IPv4Address.Equals(ip))
+                {
+                    result = true;
+                    break;
+                } 
+            }
+            return result;
         }
     }
 }

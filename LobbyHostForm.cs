@@ -191,7 +191,7 @@ namespace CrocodileTheGame
 
         private void btnKick_Click(object sender, EventArgs e)
         {
-            var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address == ltPlayers.SelectedValue);
+            var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
             user.SendKick();
             user = UserList[UserList.IndexOf(user)];
             user.Listen = false;
