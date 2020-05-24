@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CrocodileTheGame
 {
-    public enum TcpFamily
+    public static class TcpFamily
     {
-        DefaultPort = 1337,
-        TypeSendUserList = 1,
-        TypeDisconnect = 2,
-        typeNickname = 4,
-        typeFailed = 0
+        public const int DEFAULT_PORT = 1337;
+        public const int TYPE_FAILED = 0;
+        public const int TYPE_SEND_USER_LIST = 1;
+        public const int TYPE_DISCONNECT = 2;
+        public const int TYPE_NICKNAME = 4;
+        public const int TYPE_KICK = 6;
     }
 }

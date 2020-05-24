@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.picCanvas = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtChat = new System.Windows.Forms.TextBox();
@@ -223,7 +224,10 @@
             // 
             // btnColor
             // 
+            this.btnColor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnColor.BackgroundImage")));
+            this.btnColor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnColor.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnColor.Image = ((System.Drawing.Image)(resources.GetObject("btnColor.Image")));
             this.btnColor.Location = new System.Drawing.Point(20, 10);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(50, 50);

@@ -123,6 +123,7 @@
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "FindLobbyForm";
             this.Text = "Поиск лобби";
+            this.Load += new System.EventHandler(this.FindLobbyForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.ResumeLayout(false);

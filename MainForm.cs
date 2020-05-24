@@ -44,6 +44,8 @@ namespace CrocodileTheGame
         {
             findLobbyForm = new FindLobbyForm();
             findLobbyForm.Owner = this;
+            findLobbyForm.TakeLocalIP += GiveLocalIP;
+            findLobbyForm.TakeNickname += GiveNickname;
             findLobbyForm.Show();
             Hide();
         }
@@ -73,23 +75,6 @@ namespace CrocodileTheGame
             }
             return nickname;
         }
-        
-        public string GiveLocalIP()
-        {
-            string localIP;
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
-            try
-            {
-                socket.Connect("8.8.8.8", 65530);
-                IPEndPoint point = socket.LocalEndPoint as IPEndPoint;
-                localIP = point.Address.ToString();
-            }
-            catch
-            {
-                IPEndPoint point = socket.LocalEndPoint as IPEndPoint;
-                localIP = point.Address.ToString();
-            }
-            return localIP;
-        }
+       
     }
 }

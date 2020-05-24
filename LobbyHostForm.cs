@@ -23,7 +23,6 @@ namespace CrocodileTheGame
         private List<User> UserList;
         private TcpListener TcpListener;
         public event StringTransfer TakeNickname;
-        public event StringTransfer TakeLocalIP;
         public delegate string StringTransfer();
         public LobbyHostForm()
         {
@@ -43,25 +42,21 @@ namespace CrocodileTheGame
         private void LobbyHostForm_Load(object sender, EventArgs e)
         {
             NickName = TakeNickname();
-            LocalIP = TakeLocalIP();
-            UdpBroadcastAddress = CalcBroadcastAddress(LocalIP);
+            LocalIP = CalculationsForNetwork.GetLocalIP();
+            UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
             MessageBox.Show("Nickname = " + NickName + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsWaiting = true;
             UserList = new List<User>();
+            ltPlayers.DataSource = UserList;
+            ltPlayers.DisplayMember = "Username";
+            ltPlayers.ValueMember = "IPv4Address";
             Task.Factory.StartNew(ListenBroadcastUDP);
             Task.Factory.StartNew(ListeningForConnections);
         }
 
-        public string CalcBroadcastAddress(string localip)
-        {
-            var ipInBytes = IPAddress.Parse(localip).GetAddressBytes();
-            ipInBytes[3] = 255;
-            return new IPAddress(ipInBytes).ToString();
-        }
-
         private void ListenBroadcastUDP()
         {
-            UdpListener = new UdpClient((int)UdpFamily.BroadcastPort);
+            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
             UdpListener.EnableBroadcast = true;
             while (IsWaiting)
             {
@@ -69,13 +64,13 @@ namespace CrocodileTheGame
                 {
                     IPEndPoint remoteHost = null;
                     var recievedData = UdpListener.Receive(ref remoteHost);
-                    if (recievedData[0] == (int)UdpFamily.TypeClientRequest)
+                    if (recievedData[0] == UdpFamily.TYPE_CLIENT_REQUEST)
                     {
-                        var udpClient = new UdpClient(UdpBroadcastAddress, (int)UdpFamily.BroadcastPort);
+                        var udpClient = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
                         udpClient.EnableBroadcast = true;
                         var nicknameBytes = Encoding.UTF8.GetBytes(NickName);
                         var data = new byte[nicknameBytes.Length + 1];
-                        data[0] = (byte)UdpFamily.TypeServerExist;
+                        data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
                         for (int i = 0; i < NUM_OF_UDP_PACKET; i++)
                         {
@@ -93,7 +88,7 @@ namespace CrocodileTheGame
 
         private void ListeningForConnections()
         {
-            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), (int)TcpFamily.DefaultPort);
+            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpFamily.DEFAULT_PORT);
             TcpListener.Start();
             while (IsWaiting)
             {
@@ -119,19 +114,19 @@ namespace CrocodileTheGame
                 {
                     var typeAndLength = user.ReciveTypeAndLength();
                     var messageType = typeAndLength[0];
-                    var messageLength = BitConverter.ToInt32(typeAndLength, 1);
                     switch (messageType)
                     {
-                        case (int)TcpFamily.typeFailed:
-                        case (int)TcpFamily.TypeDisconnect:
+                        case TcpFamily.TYPE_FAILED:
+                        case TcpFamily.TYPE_DISCONNECT:
                             user.Listen = false;
                             UserList.Remove(user);
                             user.Dispose();
                             SendUsersList();
                             break;
-                        case (int)TcpFamily.typeNickname:
+                        case TcpFamily.TYPE_NICKNAME:
                             try
                             {
+                                var messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 var message = user.ReceiveMessage(messageLength);
                                 user.Username = Encoding.UTF8.GetString(message);
                             }
@@ -152,7 +147,7 @@ namespace CrocodileTheGame
                 }
             }
         }
-
+        
         private void Disconnect()
         {
             foreach (var user in UserList)
@@ -181,7 +176,29 @@ namespace CrocodileTheGame
             if (Failed)
             {
                 SendUsersList();
+            } else
+            {
+                UpdatePlayerList();
             }
+        }
+        
+        private void UpdatePlayerList()
+        {
+            ltPlayers.DataSource = null;
+            ltPlayers.DataSource = UserList;
+            ltPlayers.DisplayMember = "Username";
+            ltPlayers.ValueMember = "IPv4Address";
+        }
+
+        private void btnKick_Click(object sender, EventArgs e)
+        {
+            var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address == ltPlayers.SelectedValue);
+            user.SendKick();
+            user = UserList[UserList.IndexOf(user)];
+            user.Listen = false;
+            UserList.Remove(user);
+            user.Dispose();
+            SendUsersList();
         }
     }
 }

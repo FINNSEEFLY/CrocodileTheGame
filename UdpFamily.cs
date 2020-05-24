@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CrocodileTheGame
 {
-    public enum UdpFamily
+    public static class UdpFamily
     {
-       BroadcastPort = 322,
-       TypeServerExist = 1,
-       TypeClientRequest = 4
+        public const int BROADCAST_PORT = 322;
+        public const int TYPE_SERVER_EXIST = 1;
+        public const int TYPE_CLIENT_REQUEST = 4;
     }
 }

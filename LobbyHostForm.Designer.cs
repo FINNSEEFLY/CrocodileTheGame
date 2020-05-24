@@ -40,7 +40,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -54,7 +54,7 @@
             // 
             // btnStartGame
             // 
-            this.btnStartGame.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartGame.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStartGame.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnStartGame.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnStartGame.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -98,7 +98,7 @@
             // 
             // btnKick
             // 
-            this.btnKick.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnKick.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnKick.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnKick.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnKick.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -108,10 +108,11 @@
             this.btnKick.TabIndex = 4;
             this.btnKick.Text = "Выгнать игрока";
             this.btnKick.UseVisualStyleBackColor = true;
+            this.btnKick.Click += new System.EventHandler(this.btnKick_Click);
             // 
             // btnLoadPack
             // 
-            this.btnLoadPack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadPack.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnLoadPack.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnLoadPack.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLoadPack.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
