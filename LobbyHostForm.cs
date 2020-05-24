@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
@@ -73,6 +74,7 @@ namespace CrocodileTheGame
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
                         for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
                         {
+                            Thread.Sleep(10);
                             udpClient.Send(data, data.Length);
                         }
                         udpClient.Dispose();

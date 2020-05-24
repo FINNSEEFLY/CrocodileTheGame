@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace CrocodileTheGame
 {
@@ -87,7 +88,6 @@ namespace CrocodileTheGame
                 server.Dispose();
             }
             LobbyList.Clear();
-            UpdateLobbyList();
         }
 
         public void SendFindMessage()
@@ -98,6 +98,7 @@ namespace CrocodileTheGame
             data[0] = UdpFamily.TYPE_CLIENT_REQUEST;
             for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
             {
+                Thread.Sleep(10);
                 udpClient.Send(data, data.Length);
             }
             udpClient.Dispose();
@@ -109,6 +110,7 @@ namespace CrocodileTheGame
             {
                 IsUpdating = true;
                 ClearServerList();
+                UpdateLobbyList();
                 SendFindMessage();
                 IsUpdating = false;
             }
