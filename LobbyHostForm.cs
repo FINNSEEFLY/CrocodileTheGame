@@ -179,7 +179,10 @@ namespace CrocodileTheGame
                 SendUsersList();
             } else
             {
-                UpdatePlayerList();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    UpdatePlayerList();
+                }));
             }
         }
         

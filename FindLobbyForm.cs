@@ -81,11 +81,7 @@ namespace CrocodileTheGame
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
             Task.Factory.StartNew(ListenBroadcastUDP);
-            /*var list = new List<Server>();
-            list.Add(new Server() { Username = "GOvno", IPv4Address = IPAddress.Parse("192.168.100.12") });
-            ltLobby.DataSource = list;
-            ltLobby.DisplayMember = "Username";
-            ltLobby.ValueMember = "IPv4Address";*/
+            SendFindMessage();
         }
 
         public void ClearServerList()
@@ -122,6 +118,7 @@ namespace CrocodileTheGame
                 IsUpdating = false;
             }
         }
+        
         private void UpdateLobbyList()
         {
             ltLobby.DataSource = null;
@@ -142,6 +139,25 @@ namespace CrocodileTheGame
                 }
             }
             return result;
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            var lobby = LobbyList.FirstOrDefault(somelobby => somelobby.IPv4Address.Equals(ltLobby.SelectedValue));
+            if (!lobby.Connect())
+            {
+                MessageBox.Show("Подключение не удалось, данный узел не доступен");
+                lobby = LobbyList[LobbyList.IndexOf(lobby)];
+                LobbyList.Remove(lobby);
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    UpdateLobbyList();
+                }));
+            }
+            else
+            {
+                MessageBox.Show("Подключение установлено");
+            }
         }
     }
 }

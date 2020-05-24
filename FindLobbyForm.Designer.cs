@@ -95,6 +95,7 @@
             this.btnConnect.TabIndex = 6;
             this.btnConnect.Text = "Присоединиться к игре";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // btnExit
             // 
