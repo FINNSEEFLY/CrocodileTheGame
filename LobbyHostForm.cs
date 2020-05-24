@@ -74,7 +74,7 @@ namespace CrocodileTheGame
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
                         for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
                         {
-                            Thread.Sleep(10);
+                            Thread.Sleep(1);
                             udpClient.Send(data, data.Length);
                         }
                         udpClient.Dispose();

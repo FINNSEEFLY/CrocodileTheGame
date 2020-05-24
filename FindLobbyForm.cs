@@ -98,7 +98,7 @@ namespace CrocodileTheGame
             data[0] = UdpFamily.TYPE_CLIENT_REQUEST;
             for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(1);
                 udpClient.Send(data, data.Length);
             }
             udpClient.Dispose();
