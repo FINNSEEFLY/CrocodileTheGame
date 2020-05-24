@@ -38,7 +38,7 @@ namespace CrocodileTheGame
                 Buffer.BlockCopy(usernameBytes, 0, data, offset, usernameBytes.Length);
                 offset += usernameBytes.Length;
             }
-            return SendMessage(TcpFamily.TYPE_SEND_USER_LIST, data);
+            return SendMessage(TcpFamily.TYPE_USER_LIST, data);
         }
 
         public void SendDisconnect()

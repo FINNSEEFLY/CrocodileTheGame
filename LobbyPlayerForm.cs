@@ -15,9 +15,12 @@ namespace CrocodileTheGame
         private string LocalIP;
         private string Nickname;
         private Server Server;
+        private List<string> PlayerList;
         public event StringTransfer TakeIP;
         public event StringTransfer TakeNickname;
         public event ServerTransfer TakeServer;
+        public event BackToMain Back;
+        public delegate void BackToMain(); 
         public delegate Server ServerTransfer();
         public delegate string StringTransfer();
         public LobbyPlayerForm()
@@ -37,33 +40,25 @@ namespace CrocodileTheGame
                     {
                         case TcpFamily.TYPE_FAILED:
                         case TcpFamily.TYPE_DISCONNECT:
-                            
+                            MessageBox.Show("Лобби было закрыто хостом.");
+                            CloseForm();
                             break;
-                        case TcpFamily.TYPE_REQUEST_USER_LIST:
-                            if (!user.SendUserList(UserList))
-                            {
-                                user.Listen = false;
-                                UserList.Remove(user);
-                                user.Dispose();
-                                SendUsersList();
-                            }
+                        case TcpFamily.TYPE_KICK:
+                            MessageBox.Show("Вас исключили из лобби.");
+                            CloseForm();
                             break;
-                        case TcpFamily.TYPE_NICKNAME:
+                        case TcpFamily.TYPE_USER_LIST:
+                            var messageLength = BitConverter.ToInt32(typeAndLength, 1);
                             try
                             {
-                                var messageLength = BitConverter.ToInt32(typeAndLength, 1);
-                                var message = user.ReceiveMessage(messageLength);
-                                user.Username = Encoding.UTF8.GetString(message);
+                                var message = Server.ReceiveMessage(messageLength);
+                                PlayerList.Clear();
+                                PlayerList = Server.ParseStringList(message, messageLength);
                             }
                             catch
                             {
-                                user.Listen = false;
-                                UserList.Remove(user);
-                                user.Dispose();
-                            }
-                            finally
-                            {
-                                SendUsersList();
+                                MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
+                                CloseForm();
                             }
                             break;
                         default:
@@ -73,12 +68,19 @@ namespace CrocodileTheGame
             }
         }
 
+        private void CloseForm()
+        {
+            Server.Dispose();
+            Back();
+        }
+
         private void LobbyPlayerForm_Load(object sender, EventArgs e)
         {
             LocalIP = TakeIP();
             Nickname = TakeNickname();
             Server = TakeServer();
             Server.SendNickname();
+            Task.Factory.StartNew(ListenTCP);
             Server.SendRequestList();
         }
     }

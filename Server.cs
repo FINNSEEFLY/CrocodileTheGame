@@ -10,6 +10,22 @@ namespace CrocodileTheGame
 {
     public class Server : ConnectionEntity, IDisposable
     {
+        public List<string> ParseStringList(byte[] data, int length)
+        {
+            var result = new List<string>();
+            int offset = 0;
+            while (offset < length)
+            {
+                int usernameLength = BitConverter.ToInt32(data, offset);
+                offset += sizeof(int);
+                var usernameBytes = new byte[usernameLength];
+                Buffer.BlockCopy(data, offset, usernameBytes, 0, usernameLength);
+                offset += usernameLength;
+                result.Add(Encoding.UTF8.GetString(usernameBytes));
+            }
+            return result;
+        }
+
         public bool SendRequestList()
         {
             if (!SendMessage(TcpFamily.TYPE_REQUEST_USER_LIST))

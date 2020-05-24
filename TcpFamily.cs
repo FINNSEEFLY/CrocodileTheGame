@@ -10,7 +10,7 @@ namespace CrocodileTheGame
     {
         public const int DEFAULT_PORT = 1337;
         public const int TYPE_FAILED = 0;
-        public const int TYPE_SEND_USER_LIST = 1;
+        public const int TYPE_USER_LIST = 1;
         public const int TYPE_DISCONNECT = 2;
         public const int TYPE_NICKNAME = 4;
         public const int TYPE_KICK = 8;

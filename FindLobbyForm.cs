@@ -158,12 +158,15 @@ namespace CrocodileTheGame
             }
             else
             {
+                IsListening = false;
+                UdpListener.Dispose();
                 SelectedServer = server;
                 lobbyPlayerForm = new LobbyPlayerForm();
                 lobbyPlayerForm.Owner = this;
                 lobbyPlayerForm.TakeIP += GiveIP;
                 lobbyPlayerForm.TakeNickname += GiveNickname;
                 lobbyPlayerForm.TakeServer += GiveServer;
+                lobbyPlayerForm.Back += BackToMain();
                 lobbyPlayerForm.Show();
                 this.Hide();
                 MessageBox.Show("Подключение установлено");
@@ -181,5 +184,13 @@ namespace CrocodileTheGame
         {
             return SelectedServer;
         }
+        private void BackToMain()
+        {
+            ClearServerList();
+            Owner.Show();
+            lobbyPlayerForm.Dispose();
+            Dispose();
+        }
+    
     }
 }
