@@ -29,7 +29,6 @@ namespace CrocodileTheGame
         {
             lobbyHostForm = new LobbyHostForm();
             lobbyHostForm.TakeNickname += GiveNickname;
-            lobbyHostForm.TakeLocalIP += GiveLocalIP;
             lobbyHostForm.Owner = this;
             lobbyHostForm.Show();
             Hide();
@@ -44,7 +43,6 @@ namespace CrocodileTheGame
         {
             findLobbyForm = new FindLobbyForm();
             findLobbyForm.Owner = this;
-            findLobbyForm.TakeLocalIP += GiveLocalIP;
             findLobbyForm.TakeNickname += GiveNickname;
             findLobbyForm.Show();
             Hide();

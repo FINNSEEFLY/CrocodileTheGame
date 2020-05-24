@@ -14,7 +14,6 @@ namespace CrocodileTheGame
 {
     public partial class LobbyHostForm : Form
     {
-        const int NUM_OF_UDP_PACKET = 50;
         private string LocalIP;
         private string NickName;
         private bool IsWaiting;
@@ -72,7 +71,7 @@ namespace CrocodileTheGame
                         var data = new byte[nicknameBytes.Length + 1];
                         data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
-                        for (int i = 0; i < NUM_OF_UDP_PACKET; i++)
+                        for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
                         {
                             udpClient.Send(data, data.Length);
                         }

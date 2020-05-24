@@ -114,6 +114,7 @@
             // 
             this.btnLoadPack.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnLoadPack.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnLoadPack.Enabled = false;
             this.btnLoadPack.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLoadPack.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnLoadPack.Location = new System.Drawing.Point(0, 357);
