@@ -78,9 +78,9 @@ namespace CrocodileTheGame
                         udpClient.Dispose();
                     }
                 }
-                catch (Exception e)
+                catch// (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                   // MessageBox.Show(e.Message);
                 }
             }
         }

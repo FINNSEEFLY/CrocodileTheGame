@@ -46,12 +46,13 @@ namespace CrocodileTheGame
                             lobby.IPv4Address = remoteHost.Address;
                             lobby.Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1);
                             LobbyList.Add(lobby);
+                            UpdateLobbyList();
                         }
                     }
                 }
-                catch (Exception e)
+                catch //(Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                   // MessageBox.Show(e.Message);
                 }
             }
         }
