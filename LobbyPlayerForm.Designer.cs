@@ -92,6 +92,7 @@
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "LobbyPlayerForm";
             this.Text = "Лобби";
+            this.Load += new System.EventHandler(this.LobbyPlayerForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.ResumeLayout(false);

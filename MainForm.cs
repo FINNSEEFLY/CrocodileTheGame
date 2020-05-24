@@ -18,8 +18,6 @@ namespace CrocodileTheGame
         private FindLobbyForm findLobbyForm;
         private PackEditorForm packEditorForm;
         private AboutForm aboutForm;
-        private LobbyPlayerForm lobbyPlayer;
-        private GameForm gameform;
         public MainForm()
         {
             InitializeComponent();

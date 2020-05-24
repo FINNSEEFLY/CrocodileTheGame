@@ -8,8 +8,32 @@ using System.Net.Sockets;
 
 namespace CrocodileTheGame
 {
-    class Server : ConnectionEntity, IDisposable
+    public class Server : ConnectionEntity, IDisposable
     {
+        public bool SendRequestList()
+        {
+            if (!SendMessage(TcpFamily.TYPE_REQUEST_USER_LIST))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool SendNickname()
+        {
+            if (!SendMessage(TcpFamily.TYPE_NICKNAME, this.Username))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public bool Connect()
         {
             try

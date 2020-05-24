@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace CrocodileTheGame
 {
-    class ConnectionEntity
+    public class ConnectionEntity
     {
         public TcpClient tcpClient;
         public NetworkStream stream;

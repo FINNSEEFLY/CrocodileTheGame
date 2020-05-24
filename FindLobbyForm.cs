@@ -16,12 +16,14 @@ namespace CrocodileTheGame
     public partial class FindLobbyForm : Form
     {
         private string LocalIP;
-        private string NickName;
+        private string Nickname;
         private string UdpBroadcastAddress;
         private bool IsListening;
         private bool IsUpdating;
+        private Server SelectedServer;
         private UdpClient UdpListener;
-        private List<Server> LobbyList;
+        private List<Server> ServerList;
+        private LobbyPlayerForm lobbyPlayerForm;
         public event StringTransfer TakeNickname;
         public delegate string StringTransfer();
 
@@ -44,10 +46,10 @@ namespace CrocodileTheGame
                     {
                         if (!LobbyExist(remoteHost.Address))
                         {
-                            LobbyList.Add(new Server() { Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1), IPv4Address = remoteHost.Address });
+                            ServerList.Add(new Server() { Username = Encoding.UTF8.GetString(recievedData, 1, recievedData.Length - 1), IPv4Address = remoteHost.Address });
                             this.Invoke(new MethodInvoker(() =>
                             {
-                                UpdateLobbyList();
+                                UpdateServerList();
                             }));
                             
                         }
@@ -71,13 +73,13 @@ namespace CrocodileTheGame
 
         private void FindLobbyForm_Load(object sender, EventArgs e)
         {
-            NickName = TakeNickname();
+            Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            MessageBox.Show("Nickname = " + NickName + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
+            MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsListening = true;
-            LobbyList = new List<Server>();
-            ltLobby.DataSource = LobbyList;
+            ServerList = new List<Server>();
+            ltLobby.DataSource = ServerList;
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
             Task.Factory.StartNew(ListenBroadcastUDP);
@@ -86,11 +88,11 @@ namespace CrocodileTheGame
 
         public void ClearServerList()
         {
-            foreach (var server in LobbyList)
+            foreach (var server in ServerList)
             {
                 server.Dispose();
             }
-            LobbyList.Clear();
+            ServerList.Clear();
         }
 
         public void SendFindMessage()
@@ -113,16 +115,16 @@ namespace CrocodileTheGame
             {
                 IsUpdating = true;
                 ClearServerList();
-                UpdateLobbyList();
+                UpdateServerList();
                 SendFindMessage();
                 IsUpdating = false;
             }
         }
         
-        private void UpdateLobbyList()
+        private void UpdateServerList()
         {
             ltLobby.DataSource = null;
-            ltLobby.DataSource = LobbyList;
+            ltLobby.DataSource = ServerList;
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
         }
@@ -130,7 +132,7 @@ namespace CrocodileTheGame
         private bool LobbyExist(IPAddress ip)
         {
             bool result = false;
-            foreach (var lobby in LobbyList)
+            foreach (var lobby in ServerList)
             {
                 if (lobby.IPv4Address.Equals(ip))
                 {
@@ -143,21 +145,41 @@ namespace CrocodileTheGame
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            var lobby = LobbyList.FirstOrDefault(somelobby => somelobby.IPv4Address.Equals(ltLobby.SelectedValue));
-            if (!lobby.Connect())
+            var server = ServerList.FirstOrDefault(someserver => someserver.IPv4Address.Equals(ltLobby.SelectedValue));
+            if (!server.Connect())
             {
                 MessageBox.Show("Подключение не удалось, данный узел не доступен");
-                lobby = LobbyList[LobbyList.IndexOf(lobby)];
-                LobbyList.Remove(lobby);
+                server = ServerList[ServerList.IndexOf(server)];
+                ServerList.Remove(server);
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    UpdateLobbyList();
+                    UpdateServerList();
                 }));
             }
             else
             {
+                SelectedServer = server;
+                lobbyPlayerForm = new LobbyPlayerForm();
+                lobbyPlayerForm.Owner = this;
+                lobbyPlayerForm.TakeIP += GiveIP;
+                lobbyPlayerForm.TakeNickname += GiveNickname;
+                lobbyPlayerForm.TakeServer += GiveServer;
+                lobbyPlayerForm.Show();
+                this.Hide();
                 MessageBox.Show("Подключение установлено");
             }
+        }
+        private string GiveIP()
+        {
+            return LocalIP;
+        }
+        private string GiveNickname()
+        {
+            return Nickname;
+        }
+        private Server GiveServer()
+        {
+            return SelectedServer;
         }
     }
 }

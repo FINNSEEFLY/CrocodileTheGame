@@ -16,7 +16,7 @@ namespace CrocodileTheGame
     public partial class LobbyHostForm : Form
     {
         private string LocalIP;
-        private string NickName;
+        private string Nickname;
         private bool IsWaiting;
         private UdpClient UdpListener;
         private string UdpBroadcastAddress;
@@ -41,10 +41,10 @@ namespace CrocodileTheGame
 
         private void LobbyHostForm_Load(object sender, EventArgs e)
         {
-            NickName = TakeNickname();
+            Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            MessageBox.Show("Nickname = " + NickName + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
+            MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsWaiting = true;
             UserList = new List<User>();
             ltPlayers.DataSource = UserList;
@@ -68,7 +68,7 @@ namespace CrocodileTheGame
                     {
                         var udpClient = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
                         udpClient.EnableBroadcast = true;
-                        var nicknameBytes = Encoding.UTF8.GetBytes(NickName);
+                        var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
                         var data = new byte[nicknameBytes.Length + 1];
                         data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
@@ -100,8 +100,11 @@ namespace CrocodileTheGame
                     user.IPv4Address = ((IPEndPoint)user.tcpClient.Client.RemoteEndPoint).Address;
                     user.stream = user.tcpClient.GetStream();
                     UserList.Add(user);
-                    SendUsersList();
                     Task.Factory.StartNew(() => ListenTCP(UserList[UserList.IndexOf(user)]));
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        UpdatePlayerList();
+                    }));
                 }
                 catch { }
             }
@@ -123,6 +126,15 @@ namespace CrocodileTheGame
                             UserList.Remove(user);
                             user.Dispose();
                             SendUsersList();
+                            break;
+                        case TcpFamily.TYPE_REQUEST_USER_LIST:
+                            if (!user.SendUserList(UserList))
+                            {
+                                user.Listen = false;
+                                UserList.Remove(user);
+                                user.Dispose();
+                                SendUsersList();
+                            }
                             break;
                         case TcpFamily.TYPE_NICKNAME:
                             try

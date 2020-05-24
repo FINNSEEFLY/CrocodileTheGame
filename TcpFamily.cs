@@ -13,6 +13,7 @@ namespace CrocodileTheGame
         public const int TYPE_SEND_USER_LIST = 1;
         public const int TYPE_DISCONNECT = 2;
         public const int TYPE_NICKNAME = 4;
-        public const int TYPE_KICK = 6;
+        public const int TYPE_KICK = 8;
+        public const int TYPE_REQUEST_USER_LIST = 16;
     }
 }
