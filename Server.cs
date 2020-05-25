@@ -45,7 +45,7 @@ namespace CrocodileTheGame
 
         public bool SendNickname(string nickname)
         {
-            if (!SendMessage(TcpFamily.TYPE_NICKNAME, nickname));
+            if (!SendMessage(TcpFamily.TYPE_NICKNAME, nickname))
             {
                 return false;
             }
