@@ -16,6 +16,7 @@ namespace CrocodileTheGame
     public partial class LobbyHostForm : Form
     {
         private string LocalIP;
+        private IPAddress LocalIPv4Address;
         private string Nickname;
         private bool IsWaiting;
         private UdpClient UdpListener;
@@ -45,10 +46,12 @@ namespace CrocodileTheGame
         {
             Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
+            LocalIPv4Address = IPAddress.Parse(LocalIP);
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
             MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsWaiting = true;
             UserList = new List<User>();
+            UserList.Add(new User() { Username = Nickname, IPv4Address = LocalIPv4Address });
             ltPlayers.DataSource = UserList;
             ltPlayers.DisplayMember = "Username";
             ltPlayers.ValueMember = "IPv4Address";
@@ -167,9 +170,12 @@ namespace CrocodileTheGame
         {
             foreach (var user in UserList)
             {
-                user.Listen = false;
-                user.SendDisconnect();
-                user.Dispose();
+                if (!user.IPv4Address.Equals(LocalIPv4Address))
+                {
+                    user.Listen = false;
+                    user.SendDisconnect();
+                    user.Dispose();
+                }
             }
             UserList.Clear();
         }
@@ -179,13 +185,16 @@ namespace CrocodileTheGame
             bool Failed = false;
             foreach (var user in UserList)
             {
-                if (!user.SendUserList(UserList))
+                if (!user.IPv4Address.Equals(LocalIPv4Address))
                 {
-                    user.Listen = false;
-                    UserList.Remove(user);
-                    user.Dispose();
-                    Failed = true;
-                    break;
+                    if (!user.SendUserList(UserList))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        Failed = true;
+                        break;
+                    }
                 }
             }
             if (Failed)
@@ -210,13 +219,16 @@ namespace CrocodileTheGame
 
         private void btnKick_Click(object sender, EventArgs e)
         {
-            var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
-            user.SendKick();
-            user = UserList[UserList.IndexOf(user)];
-            user.Listen = false;
-            UserList.Remove(user);
-            user.Dispose();
-            SendUsersList();
+            if (!LocalIPv4Address.Equals(ltPlayers.SelectedValue))
+            {
+                var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
+                user.SendKick();
+                user = UserList[UserList.IndexOf(user)];
+                user.Listen = false;
+                UserList.Remove(user);
+                user.Dispose();
+                SendUsersList();
+            }
         }
     }
 }
