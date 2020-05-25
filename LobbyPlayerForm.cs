@@ -35,38 +35,35 @@ namespace CrocodileTheGame
             {
                 try
                 {
-                    if (Server.stream.DataAvailable)
+                    var typeAndLength = Server.ReciveTypeAndLength();
+                    var messageType = typeAndLength[0];
+                    switch (messageType)
                     {
-                        var typeAndLength = Server.ReciveTypeAndLength();
-                        var messageType = typeAndLength[0];
-                        switch (messageType)
-                        {
-                            case TcpFamily.TYPE_FAILED:
-                            case TcpFamily.TYPE_DISCONNECT:
-                                MessageBox.Show("Лобби было закрыто хостом.");
+                        case TcpFamily.TYPE_FAILED:
+                        case TcpFamily.TYPE_DISCONNECT:
+                            MessageBox.Show("Лобби было закрыто хостом.");
+                            CloseForm();
+                            break;
+                        case TcpFamily.TYPE_KICK:
+                            MessageBox.Show("Вас исключили из лобби.");
+                            CloseForm();
+                            break;
+                        case TcpFamily.TYPE_USER_LIST:
+                            var messageLength = BitConverter.ToInt32(typeAndLength, 1);
+                            try
+                            {
+                                var message = Server.ReceiveMessage(messageLength);
+                                PlayerList.Clear();
+                                PlayerList = Server.ParseStringList(message, messageLength);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
                                 CloseForm();
-                                break;
-                            case TcpFamily.TYPE_KICK:
-                                MessageBox.Show("Вас исключили из лобби.");
-                                CloseForm();
-                                break;
-                            case TcpFamily.TYPE_USER_LIST:
-                                var messageLength = BitConverter.ToInt32(typeAndLength, 1);
-                                try
-                                {
-                                    var message = Server.ReceiveMessage(messageLength);
-                                    PlayerList.Clear();
-                                    PlayerList = Server.ParseStringList(message, messageLength);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
-                                    CloseForm();
-                                }
-                                break;
-                            default:
-                                throw new Exception("Неизвестный тип пакета!");
-                        }
+                            }
+                            break;
+                        default:
+                            throw new Exception("Неизвестный тип пакета!");
                     }
                 }
                 catch
@@ -90,7 +87,7 @@ namespace CrocodileTheGame
             Nickname = TakeNickname();
             Server = TakeServer();
             PlayerList = new List<string>();
-            Server.SendNickname();
+            Server.SendNickname(Nickname);
             Task.Factory.StartNew(ListenTCP);
             Server.SendRequestList();
         }

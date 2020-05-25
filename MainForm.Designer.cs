@@ -135,6 +135,8 @@
             this.Controls.Add(this.btnPackCreator);
             this.Controls.Add(this.btnConnectToLobby);
             this.Controls.Add(this.btnCreateLobby);
+            this.MaximumSize = new System.Drawing.Size(915, 545);
+            this.MinimumSize = new System.Drawing.Size(915, 545);
             this.Name = "MainForm";
             this.Text = "Главное меню";
             this.ResumeLayout(false);

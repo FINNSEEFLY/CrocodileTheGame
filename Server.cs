@@ -43,9 +43,9 @@ namespace CrocodileTheGame
             }
         }
 
-        public bool SendNickname()
+        public bool SendNickname(string nickname)
         {
-            if (!SendMessage(TcpFamily.TYPE_NICKNAME, this.Username))
+            if (!SendMessage(TcpFamily.TYPE_NICKNAME, nickname));
             {
                 return false;
             }

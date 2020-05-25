@@ -119,7 +119,7 @@ namespace CrocodileTheGame
         {
             while (user.Listen)
             {
-                if (user.stream.DataAvailable)
+                try
                 {
                     var typeAndLength = user.ReciveTypeAndLength();
                     var messageType = typeAndLength[0];
@@ -163,6 +163,7 @@ namespace CrocodileTheGame
                             throw new Exception("Неизвестный тип пакета!");
                     }
                 }
+                catch { };
             }
         }
         
