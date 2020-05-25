@@ -121,52 +121,55 @@ namespace CrocodileTheGame
             {
                 try
                 {
-                    var typeAndLength = user.ReciveTypeAndLength();
-                    var messageType = typeAndLength[0];
-                    switch (messageType)
+                    if (user.stream.DataAvailable)
                     {
-                        case TcpFamily.TYPE_FAILED:
-                        case TcpFamily.TYPE_DISCONNECT:
-                            user.Listen = false;
-                            UserList.Remove(user);
-                            user.Dispose();
-                            SendUsersList();
-                            break;
-                        case TcpFamily.TYPE_REQUEST_USER_LIST:
-                            if (!user.SendUserList(UserList))
-                            {
+                        var typeAndLength = user.ReciveTypeAndLength();
+                        var messageType = typeAndLength[0];
+                        switch (messageType)
+                        {
+                            case TcpFamily.TYPE_FAILED:
+                            case TcpFamily.TYPE_DISCONNECT:
                                 user.Listen = false;
                                 UserList.Remove(user);
                                 user.Dispose();
                                 SendUsersList();
-                            }
-                            break;
-                        case TcpFamily.TYPE_NICKNAME:
-                            try
-                            {
-                                var messageLength = BitConverter.ToInt32(typeAndLength, 1);
-                                var message = user.ReceiveMessage(messageLength);
-                                user.Username = Encoding.UTF8.GetString(message);
-                            }
-                            catch
-                            {
-                                user.Listen = false;
-                                UserList.Remove(user);
-                                user.Dispose();
-                            }
-                            finally
-                            {
-                                SendUsersList();
-                            }
-                            break;
-                        default:
-                            throw new Exception("Неизвестный тип пакета!");
+                                break;
+                            case TcpFamily.TYPE_REQUEST_USER_LIST:
+                                if (!user.SendUserList(UserList))
+                                {
+                                    user.Listen = false;
+                                    UserList.Remove(user);
+                                    user.Dispose();
+                                    SendUsersList();
+                                }
+                                break;
+                            case TcpFamily.TYPE_NICKNAME:
+                                try
+                                {
+                                    var messageLength = BitConverter.ToInt32(typeAndLength, 1);
+                                    var message = user.ReceiveMessage(messageLength);
+                                    user.Username = Encoding.UTF8.GetString(message);
+                                }
+                                catch
+                                {
+                                    user.Listen = false;
+                                    UserList.Remove(user);
+                                    user.Dispose();
+                                }
+                                finally
+                                {
+                                    SendUsersList();
+                                }
+                                break;
+                            default:
+                                throw new Exception("Неизвестный тип пакета!");
+                        }
                     }
                 }
                 catch { };
             }
         }
-        
+
         private void Disconnect()
         {
             foreach (var user in UserList)
@@ -201,7 +204,8 @@ namespace CrocodileTheGame
             if (Failed)
             {
                 SendUsersList();
-            } else
+            }
+            else
             {
                 this.Invoke(new MethodInvoker(() =>
                 {
@@ -209,7 +213,7 @@ namespace CrocodileTheGame
                 }));
             }
         }
-        
+
         private void UpdatePlayerList()
         {
             ltPlayers.DataSource = null;
@@ -223,12 +227,15 @@ namespace CrocodileTheGame
             if (!LocalIPv4Address.Equals(ltPlayers.SelectedValue))
             {
                 var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
-                user.SendKick();
-                user = UserList[UserList.IndexOf(user)];
-                user.Listen = false;
-                UserList.Remove(user);
-                user.Dispose();
-                SendUsersList();
+                if (user != null)
+                {
+                    user.SendKick();
+                    user = UserList[UserList.IndexOf(user)];
+                    user.Listen = false;
+                    UserList.Remove(user);
+                    user.Dispose();
+                    SendUsersList();
+                }
             }
         }
     }
