@@ -19,6 +19,7 @@ namespace CrocodileTheGame
         private string Nickname;
         private bool IsWaiting;
         private UdpClient UdpListener;
+        private UdpClient UdpSender;
         private string UdpBroadcastAddress;
         private List<User> UserList;
         private TcpListener TcpListener;
@@ -35,6 +36,7 @@ namespace CrocodileTheGame
             Disconnect();
             IsWaiting = false;
             UdpListener.Dispose();
+            UdpSender.Dispose();
             TcpListener.Stop();
             Dispose();
         }
@@ -50,14 +52,16 @@ namespace CrocodileTheGame
             ltPlayers.DataSource = UserList;
             ltPlayers.DisplayMember = "Username";
             ltPlayers.ValueMember = "IPv4Address";
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
+            UdpSender.EnableBroadcast = true;
+            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
+            UdpListener.EnableBroadcast = true;
             Task.Factory.StartNew(ListenBroadcastUDP);
             Task.Factory.StartNew(ListeningForConnections);
         }
 
         private void ListenBroadcastUDP()
         {
-            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
-            UdpListener.EnableBroadcast = true;
             while (IsWaiting)
             {
                 try
@@ -66,24 +70,22 @@ namespace CrocodileTheGame
                     var recievedData = UdpListener.Receive(ref remoteHost);
                     if (recievedData[0] == UdpFamily.TYPE_CLIENT_REQUEST)
                     {
-                        var udpClient = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
-                        udpClient.EnableBroadcast = true;
                         var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
                         var data = new byte[nicknameBytes.Length + 1];
                         data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
                         Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
-                        for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                        try
                         {
-                            Thread.Sleep(1);
-                            udpClient.Send(data, data.Length);
+                            for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                            {
+                                Thread.Sleep(1);
+                                UdpSender.Send(data, data.Length);
+                            }
                         }
-                        udpClient.Dispose();
+                        catch { };
                     }
                 }
-                catch// (Exception e)
-                {
-                   // MessageBox.Show(e.Message);
-                }
+                catch { }
             }
         }
 

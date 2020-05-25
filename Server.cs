@@ -9,7 +9,7 @@ using System.Net.Sockets;
 namespace CrocodileTheGame
 {
     public class Server : ConnectionEntity, IDisposable
-    {
+    { 
         public List<string> ParseStringList(byte[] data, int length)
         {
             var result = new List<string>();
@@ -24,6 +24,11 @@ namespace CrocodileTheGame
                 result.Add(Encoding.UTF8.GetString(usernameBytes));
             }
             return result;
+        }
+
+        public bool SendDisconnect()
+        {
+            return SendMessage(TcpFamily.TYPE_DISCONNECT);
         }
 
         public bool SendRequestList()

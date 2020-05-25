@@ -22,6 +22,7 @@ namespace CrocodileTheGame
         private bool IsUpdating;
         private Server SelectedServer;
         private UdpClient UdpListener;
+        private UdpClient UdpSender;
         private List<Server> ServerList;
         private LobbyPlayerForm lobbyPlayerForm;
         public event StringTransfer TakeNickname;
@@ -34,8 +35,6 @@ namespace CrocodileTheGame
 
         private void ListenBroadcastUDP()
         {
-            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
-            UdpListener.EnableBroadcast = true;
             while (IsListening)
             {
                 try
@@ -51,7 +50,7 @@ namespace CrocodileTheGame
                             {
                                 UpdateServerList();
                             }));
-                            
+
                         }
                     }
                 }
@@ -67,6 +66,7 @@ namespace CrocodileTheGame
         {
             IsListening = false;
             UdpListener.Dispose();
+            UdpSender.Dispose();
             Owner.Show();
             Dispose();
         }
@@ -76,6 +76,10 @@ namespace CrocodileTheGame
             Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
+            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
+            UdpListener.EnableBroadcast = true;
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
+            UdpSender.EnableBroadcast = true;
             MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsListening = true;
             ServerList = new List<Server>();
@@ -97,16 +101,18 @@ namespace CrocodileTheGame
 
         public void SendFindMessage()
         {
-            var udpClient = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
-            udpClient.EnableBroadcast = true;
+
             var data = new byte[1];
             data[0] = UdpFamily.TYPE_CLIENT_REQUEST;
-            for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+            try
             {
-                Thread.Sleep(1);
-                udpClient.Send(data, data.Length);
+                for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                {
+                    Thread.Sleep(1);
+                    UdpSender.Send(data, data.Length);
+                }
             }
-            udpClient.Dispose();
+            catch { };
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -120,7 +126,7 @@ namespace CrocodileTheGame
                 IsUpdating = false;
             }
         }
-        
+
         private void UpdateServerList()
         {
             ltLobby.DataSource = null;
@@ -146,51 +152,64 @@ namespace CrocodileTheGame
         private void btnConnect_Click(object sender, EventArgs e)
         {
             var server = ServerList.FirstOrDefault(someserver => someserver.IPv4Address.Equals(ltLobby.SelectedValue));
-            if (!server.Connect())
+            if (server != null)
             {
-                MessageBox.Show("Подключение не удалось, данный узел не доступен");
-                server = ServerList[ServerList.IndexOf(server)];
-                ServerList.Remove(server);
-                this.Invoke(new MethodInvoker(() =>
+                if (!server.Connect())
                 {
-                    UpdateServerList();
-                }));
-            }
-            else
-            {
-                IsListening = false;
-                UdpListener.Dispose();
-                SelectedServer = server;
-                lobbyPlayerForm = new LobbyPlayerForm();
-                lobbyPlayerForm.Owner = this;
-                lobbyPlayerForm.TakeIP += GiveIP;
-                lobbyPlayerForm.TakeNickname += GiveNickname;
-                lobbyPlayerForm.TakeServer += GiveServer;
-                lobbyPlayerForm.Back += BackToMain;
-                lobbyPlayerForm.Show();
-                this.Hide();
-                MessageBox.Show("Подключение установлено");
+                    MessageBox.Show("Подключение не удалось, данный узел не доступен");
+                    server = ServerList[ServerList.IndexOf(server)];
+                    ServerList.Remove(server);
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        UpdateServerList();
+                    }));
+                }
+                else
+                {
+                    UdpSender.Dispose();
+                    IsListening = false;
+                    UdpListener.Dispose();
+                    SelectedServer = server;
+                    lobbyPlayerForm = new LobbyPlayerForm();
+                    lobbyPlayerForm.Owner = this;
+                    lobbyPlayerForm.TakeIP += GiveIP;
+                    lobbyPlayerForm.TakeNickname += GiveNickname;
+                    lobbyPlayerForm.TakeServer += GiveServer;
+                    lobbyPlayerForm.Back += BackToMain;
+                    lobbyPlayerForm.Show();
+                    this.Hide();
+                    MessageBox.Show("Подключение установлено");
+                }
             }
         }
+
         private string GiveIP()
         {
             return LocalIP;
         }
+
         private string GiveNickname()
         {
             return Nickname;
         }
+
         private Server GiveServer()
         {
             return SelectedServer;
         }
+
         private void BackToMain()
         {
             ClearServerList();
-            Owner.Show();
-            lobbyPlayerForm.Dispose();
-            Dispose();
+
+            BeginInvoke(new MethodInvoker(() =>
+            {
+                Owner.Show();
+                lobbyPlayerForm.Dispose();
+                Dispose();
+            }));
+
         }
-    
+
     }
 }
