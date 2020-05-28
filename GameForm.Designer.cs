@@ -46,11 +46,22 @@
             this.btnBlack = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
+            this.pnlInfo = new System.Windows.Forms.Panel();
+            this.lblLeader = new System.Windows.Forms.Label();
+            this.lblLeaderName = new System.Windows.Forms.Label();
+            this.pnlPlayersText = new System.Windows.Forms.Panel();
+            this.pnlPlayers = new System.Windows.Forms.Panel();
+            this.ltPlayers = new System.Windows.Forms.ListBox();
+            this.lbPlayers = new System.Windows.Forms.Label();
+            this.lblRound = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).BeginInit();
             this.pnlCanvas.SuspendLayout();
+            this.pnlInfo.SuspendLayout();
+            this.pnlPlayersText.SuspendLayout();
+            this.pnlPlayers.SuspendLayout();
             this.SuspendLayout();
             // 
             // picCanvas
@@ -64,6 +75,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.pnlInfo);
             this.panel1.Controls.Add(this.txtChat);
             this.panel1.Controls.Add(this.txtInput);
             this.panel1.Controls.Add(this.btnSend);
@@ -77,13 +89,13 @@
             // txtChat
             // 
             this.txtChat.BackColor = System.Drawing.SystemColors.Window;
-            this.txtChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtChat.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.txtChat.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtChat.Location = new System.Drawing.Point(0, 0);
+            this.txtChat.Location = new System.Drawing.Point(0, 264);
             this.txtChat.Multiline = true;
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
-            this.txtChat.Size = new System.Drawing.Size(238, 566);
+            this.txtChat.Size = new System.Drawing.Size(238, 302);
             this.txtChat.TabIndex = 9;
             // 
             // txtInput
@@ -243,6 +255,86 @@
             this.pnlCanvas.Size = new System.Drawing.Size(896, 591);
             this.pnlCanvas.TabIndex = 3;
             // 
+            // pnlInfo
+            // 
+            this.pnlInfo.Controls.Add(this.lblRound);
+            this.pnlInfo.Controls.Add(this.pnlPlayersText);
+            this.pnlInfo.Controls.Add(this.pnlPlayers);
+            this.pnlInfo.Controls.Add(this.lblLeaderName);
+            this.pnlInfo.Controls.Add(this.lblLeader);
+            this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlInfo.Location = new System.Drawing.Point(0, 0);
+            this.pnlInfo.Name = "pnlInfo";
+            this.pnlInfo.Size = new System.Drawing.Size(238, 264);
+            this.pnlInfo.TabIndex = 10;
+            // 
+            // lblLeader
+            // 
+            this.lblLeader.AutoSize = true;
+            this.lblLeader.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblLeader.Location = new System.Drawing.Point(74, 8);
+            this.lblLeader.Name = "lblLeader";
+            this.lblLeader.Size = new System.Drawing.Size(97, 26);
+            this.lblLeader.TabIndex = 0;
+            this.lblLeader.Text = "Ведущий";
+            // 
+            // lblLeaderName
+            // 
+            this.lblLeaderName.AutoSize = true;
+            this.lblLeaderName.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblLeaderName.Location = new System.Drawing.Point(80, 43);
+            this.lblLeaderName.Name = "lblLeaderName";
+            this.lblLeaderName.Size = new System.Drawing.Size(84, 20);
+            this.lblLeaderName.TabIndex = 1;
+            this.lblLeaderName.Text = "Ведущий";
+            // 
+            // pnlPlayersText
+            // 
+            this.pnlPlayersText.Controls.Add(this.lbPlayers);
+            this.pnlPlayersText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlPlayersText.Location = new System.Drawing.Point(0, 121);
+            this.pnlPlayersText.Name = "pnlPlayersText";
+            this.pnlPlayersText.Size = new System.Drawing.Size(238, 35);
+            this.pnlPlayersText.TabIndex = 3;
+            // 
+            // pnlPlayers
+            // 
+            this.pnlPlayers.Controls.Add(this.ltPlayers);
+            this.pnlPlayers.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlPlayers.Location = new System.Drawing.Point(0, 156);
+            this.pnlPlayers.Name = "pnlPlayers";
+            this.pnlPlayers.Size = new System.Drawing.Size(238, 108);
+            this.pnlPlayers.TabIndex = 4;
+            // 
+            // ltPlayers
+            // 
+            this.ltPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ltPlayers.FormattingEnabled = true;
+            this.ltPlayers.Location = new System.Drawing.Point(0, 0);
+            this.ltPlayers.Name = "ltPlayers";
+            this.ltPlayers.Size = new System.Drawing.Size(238, 108);
+            this.ltPlayers.TabIndex = 3;
+            // 
+            // lbPlayers
+            // 
+            this.lbPlayers.AutoSize = true;
+            this.lbPlayers.Font = new System.Drawing.Font("Open Sans", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbPlayers.Location = new System.Drawing.Point(87, 5);
+            this.lbPlayers.Name = "lbPlayers";
+            this.lbPlayers.Size = new System.Drawing.Size(70, 23);
+            this.lbPlayers.TabIndex = 1;
+            this.lbPlayers.Text = "Игроки";
+            // 
+            // lblRound
+            // 
+            this.lblRound.AutoSize = true;
+            this.lblRound.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRound.Location = new System.Drawing.Point(52, 77);
+            this.lblRound.Name = "lblRound";
+            this.lblRound.Size = new System.Drawing.Size(72, 26);
+            this.lblRound.TabIndex = 5;
+            this.lblRound.Text = "Раунд:";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,6 +356,11 @@
             this.pnlTools.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).EndInit();
             this.pnlCanvas.ResumeLayout(false);
+            this.pnlInfo.ResumeLayout(false);
+            this.pnlInfo.PerformLayout();
+            this.pnlPlayersText.ResumeLayout(false);
+            this.pnlPlayersText.PerformLayout();
+            this.pnlPlayers.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -287,5 +384,13 @@
         private System.Windows.Forms.Panel pnlCanvas;
         private System.Windows.Forms.Label lblRadius;
         private System.Windows.Forms.TrackBar tbRadius;
+        private System.Windows.Forms.Panel pnlInfo;
+        private System.Windows.Forms.Label lblRound;
+        private System.Windows.Forms.Panel pnlPlayersText;
+        private System.Windows.Forms.Label lbPlayers;
+        private System.Windows.Forms.Panel pnlPlayers;
+        private System.Windows.Forms.ListBox ltPlayers;
+        private System.Windows.Forms.Label lblLeaderName;
+        private System.Windows.Forms.Label lblLeader;
     }
 }
