@@ -163,10 +163,11 @@
             // 
             // tbPack
             // 
-            this.tbPack.Enabled = false;
+            this.tbPack.BackColor = System.Drawing.SystemColors.Window;
             this.tbPack.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbPack.Location = new System.Drawing.Point(31, 126);
             this.tbPack.Name = "tbPack";
+            this.tbPack.ReadOnly = true;
             this.tbPack.Size = new System.Drawing.Size(281, 25);
             this.tbPack.TabIndex = 10;
             this.tbPack.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
