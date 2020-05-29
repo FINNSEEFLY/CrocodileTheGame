@@ -239,14 +239,5 @@ namespace CrocodileTheGame
             }
         }
 
-        private void tbNumOfRounds_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblNumOfRounds_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
