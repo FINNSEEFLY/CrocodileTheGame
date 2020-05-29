@@ -19,15 +19,13 @@ namespace CrocodileTheGame
         private List<string> ListWord;
         private string LocalIP;
         private IPAddress LocalIPv4Address;
-        private string Nickname;
+        public string Nickname { get; set; }
         private bool IsWaiting;
         private UdpClient UdpListener;
         private UdpClient UdpSender;
         private string UdpBroadcastAddress;
         private List<User> UserList;
         private TcpListener TcpListener;
-        public event StringTransfer TakeNickname;
-        public delegate string StringTransfer();
         public LobbyHostForm()
         {
             InitializeComponent();
@@ -52,7 +50,6 @@ namespace CrocodileTheGame
         private void LobbyHostForm_Load(object sender, EventArgs e)
         {
             ListWord = new List<string>();
-            Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             LocalIPv4Address = IPAddress.Parse(LocalIP);
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);

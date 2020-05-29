@@ -16,7 +16,7 @@ namespace CrocodileTheGame
     public partial class FindLobbyForm : Form
     {
         private string LocalIP;
-        private string Nickname;
+        public string Nickname { get; set; }
         private string UdpBroadcastAddress;
         private bool IsListening;
         private bool IsUpdating;
@@ -25,8 +25,6 @@ namespace CrocodileTheGame
         private UdpClient UdpSender;
         private List<Server> ServerList;
         private LobbyPlayerForm lobbyPlayerForm;
-        public event StringTransfer TakeNickname;
-        public delegate string StringTransfer();
 
         public FindLobbyForm()
         {
@@ -73,7 +71,6 @@ namespace CrocodileTheGame
 
         private void FindLobbyForm_Load(object sender, EventArgs e)
         {
-            Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
             UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
@@ -172,9 +169,9 @@ namespace CrocodileTheGame
                     SelectedServer = server;
                     lobbyPlayerForm = new LobbyPlayerForm();
                     lobbyPlayerForm.Owner = this;
-                    lobbyPlayerForm.TakeIP += GiveIP;
-                    lobbyPlayerForm.TakeNickname += GiveNickname;
-                    lobbyPlayerForm.TakeServer += GiveServer;
+                    lobbyPlayerForm.LocalIP = LocalIP;
+                    lobbyPlayerForm.Nickname = Nickname;
+                    lobbyPlayerForm.Server = SelectedServer;
                     lobbyPlayerForm.Back += BackToMain;
                     lobbyPlayerForm.Show();
                     this.Hide();
@@ -182,22 +179,6 @@ namespace CrocodileTheGame
                 }
             }
         }
-
-        private string GiveIP()
-        {
-            return LocalIP;
-        }
-
-        private string GiveNickname()
-        {
-            return Nickname;
-        }
-
-        private Server GiveServer()
-        {
-            return SelectedServer;
-        }
-
         private void BackToMain()
         {
             ClearServerList();

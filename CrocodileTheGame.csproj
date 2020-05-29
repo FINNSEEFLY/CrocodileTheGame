@@ -90,6 +90,7 @@
     <Compile Include="PackEditorForm.Designer.cs">
       <DependentUpon>PackEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlayerTypes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

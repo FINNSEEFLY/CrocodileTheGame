@@ -12,17 +12,12 @@ namespace CrocodileTheGame
 {
     public partial class LobbyPlayerForm : Form
     {
-        private string LocalIP;
-        private string Nickname;
-        private Server Server;
+        public string LocalIP { get; set; }
+        public string Nickname { get; set; }
+        public Server Server { get; set; }
         private List<string> PlayerList;
-        public event StringTransfer TakeIP;
-        public event StringTransfer TakeNickname;
-        public event ServerTransfer TakeServer;
         public event BackToMain Back;
         public delegate void BackToMain();
-        public delegate Server ServerTransfer();
-        public delegate string StringTransfer();
 
         public LobbyPlayerForm()
         {
@@ -100,9 +95,6 @@ namespace CrocodileTheGame
 
         private void LobbyPlayerForm_Load(object sender, EventArgs e)
         {
-            LocalIP = TakeIP();
-            Nickname = TakeNickname();
-            Server = TakeServer();
             PlayerList = new List<string>();
             Server.SendNickname(Nickname);
             Task.Factory.StartNew(ListenTCP);

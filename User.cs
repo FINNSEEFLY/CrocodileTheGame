@@ -8,8 +8,10 @@ using System.Net.Sockets;
 
 namespace CrocodileTheGame
 {
-    class User : ConnectionEntity, IDisposable
+    public class User : ConnectionEntity, IDisposable
     {
+        public bool IsHost { get; set; } = false;
+        
         public User()
         {
             var rand = new Random();

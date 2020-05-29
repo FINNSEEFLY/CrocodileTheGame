@@ -13,7 +13,7 @@ namespace CrocodileTheGame
 {
     public partial class PackEditorForm : Form
     {
-        List<string> ListWord = new List<string>();
+        private List<string> ListWord = new List<string>();
 
         public PackEditorForm()
         {

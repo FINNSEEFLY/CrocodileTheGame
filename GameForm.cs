@@ -12,14 +12,21 @@ namespace CrocodileTheGame
 {
     public partial class GameForm : Form
     {
-        public GameForm()
+        int UserMode;
+
+
+        public GameForm(int usermode)
         {
             InitializeComponent();
+            UserMode = usermode;
         }
 
         private void GameForm_Load(object sender, EventArgs e)
         {
+            if (UserMode == PlayerTypes.TYPE_USER)
+            {
 
+            }
         }
 
     }

@@ -26,7 +26,7 @@ namespace CrocodileTheGame
         private void btnCreateLobby_Click(object sender, EventArgs e)
         {
             lobbyHostForm = new LobbyHostForm();
-            lobbyHostForm.TakeNickname += GiveNickname;
+            lobbyHostForm.Nickname = GiveNickname();
             lobbyHostForm.Owner = this;
             lobbyHostForm.Show();
         }
@@ -40,7 +40,7 @@ namespace CrocodileTheGame
         {
             findLobbyForm = new FindLobbyForm();
             findLobbyForm.Owner = this;
-            findLobbyForm.TakeNickname += GiveNickname;
+            findLobbyForm.Nickname = GiveNickname();
             findLobbyForm.Show();
             Hide();
         }
