@@ -116,7 +116,16 @@ namespace CrocodileTheGame
                 string packName;
                 try
                 {
-                    packName = firstLine.Substring(firstLine.IndexOf("Name=") + 5).Trim();
+                    var indexOfName = firstLine.IndexOf("Name=");
+                    if (indexOfName != -1)
+                    {
+                        packName = firstLine.Substring(indexOfName + 5).Trim();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Файл не верного формата, чтение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
                 catch
                 {
@@ -140,7 +149,8 @@ namespace CrocodileTheGame
                 catch
                 {
                     MessageBox.Show("Чтение не удалось", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    PreapreToNotWork();
+                    return;
                 }
             }
 
@@ -172,7 +182,6 @@ namespace CrocodileTheGame
                 catch
                 {
                     MessageBox.Show("Ошибка при сохранении", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    PreapreToNotWork();
                 }
             }
 

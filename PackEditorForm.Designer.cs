@@ -91,6 +91,7 @@
             // tbPackName
             // 
             this.tbPackName.Location = new System.Drawing.Point(21, 238);
+            this.tbPackName.MaxLength = 255;
             this.tbPackName.Name = "tbPackName";
             this.tbPackName.Size = new System.Drawing.Size(152, 20);
             this.tbPackName.TabIndex = 12;
@@ -136,6 +137,7 @@
             // tbWord
             // 
             this.tbWord.Location = new System.Drawing.Point(21, 52);
+            this.tbWord.MaxLength = 255;
             this.tbWord.Name = "tbWord";
             this.tbWord.Size = new System.Drawing.Size(152, 20);
             this.tbWord.TabIndex = 7;

@@ -42,6 +42,7 @@
             this.tbNumOfRounds = new System.Windows.Forms.TextBox();
             this.lblPackName = new System.Windows.Forms.Label();
             this.pnlPlayers = new System.Windows.Forms.Panel();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pnlInfo.SuspendLayout();
             this.pnlControl.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -124,7 +125,6 @@
             // 
             this.btnLoadPack.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnLoadPack.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnLoadPack.Enabled = false;
             this.btnLoadPack.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLoadPack.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnLoadPack.Location = new System.Drawing.Point(0, 136);
@@ -133,6 +133,7 @@
             this.btnLoadPack.TabIndex = 5;
             this.btnLoadPack.Text = "Загрузить комплект слов";
             this.btnLoadPack.UseVisualStyleBackColor = true;
+            this.btnLoadPack.Click += new System.EventHandler(this.btnLoadPack_Click);
             // 
             // pnlControl
             // 
@@ -184,6 +185,7 @@
             // 
             this.tbNumOfRounds.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbNumOfRounds.Location = new System.Drawing.Point(33, 37);
+            this.tbNumOfRounds.MaxLength = 3;
             this.tbNumOfRounds.Name = "tbNumOfRounds";
             this.tbNumOfRounds.Size = new System.Drawing.Size(281, 25);
             this.tbNumOfRounds.TabIndex = 7;
@@ -208,6 +210,10 @@
             this.pnlPlayers.Name = "pnlPlayers";
             this.pnlPlayers.Size = new System.Drawing.Size(339, 374);
             this.pnlPlayers.TabIndex = 7;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.DefaultExt = "wrdpack";
             // 
             // LobbyHostForm
             // 
@@ -248,5 +254,6 @@
         private System.Windows.Forms.Label lblPackName;
         private System.Windows.Forms.TextBox tbNumOfRounds;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

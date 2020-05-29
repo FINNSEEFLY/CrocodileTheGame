@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,7 @@ namespace CrocodileTheGame
 {
     public partial class LobbyHostForm : Form
     {
+        private List<string> ListWord;
         private string LocalIP;
         private IPAddress LocalIPv4Address;
         private string Nickname;
@@ -31,7 +33,7 @@ namespace CrocodileTheGame
             InitializeComponent();
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void CloseForm()
         {
             Owner.Show();
             Disconnect();
@@ -42,8 +44,14 @@ namespace CrocodileTheGame
             Dispose();
         }
 
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            CloseForm();
+        }
+
         private void LobbyHostForm_Load(object sender, EventArgs e)
         {
+            ListWord = new List<string>();
             Nickname = TakeNickname();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             LocalIPv4Address = IPAddress.Parse(LocalIP);
@@ -59,8 +67,80 @@ namespace CrocodileTheGame
             UdpSender.EnableBroadcast = true;
             UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
             UdpListener.EnableBroadcast = true;
+            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpFamily.DEFAULT_PORT);
+            tbNumOfRounds.Text = "3";
             Task.Factory.StartNew(ListenBroadcastUDP);
             Task.Factory.StartNew(ListeningForConnections);
+            if (!TryToLoadDefaultPack())
+            {
+                CloseForm();
+                return;
+            }
+            Owner.Hide();
+
+        }
+
+        private bool TryToLoadDefaultPack()
+        {
+            var path = Environment.CurrentDirectory+"\\res\\Default Pack.wrdpack";
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Стандартный комплект не найден\nПроверьте, что в папке res лежит файл 'Default Pack.wrdpack'\nПродолжение работы невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    using (var streamReader = new StreamReader(path))
+                    {
+                        var firstLine = streamReader.ReadLine();
+                        string packName;
+                        try
+                        {
+                            packName = firstLine.Substring(firstLine.IndexOf("Name=") + 5).Trim();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Комплект слов поврежден, продолжение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                        if (packName.Trim().ToUpper() == "Default Pack".Trim().ToUpper())
+                        {
+                            ListWord.Clear();
+                            tbPack.Text = packName;
+                            try
+                            {
+                                while (!streamReader.EndOfStream)
+                                {
+                                    var tmpstr = streamReader.ReadLine().Trim();
+                                    if (tmpstr != null && tmpstr != "")
+                                    {
+                                        ListWord.Add(tmpstr);
+                                    }
+                                }
+                                return true;
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Не удалось прочитать комплект слов. Продолжение работы невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Комплект слов поврежден, продолжение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Неизвестная ошибка при чтении стандартного комплекта. Продолжение работы невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+            }
         }
 
         private void ListenBroadcastUDP()
@@ -94,7 +174,6 @@ namespace CrocodileTheGame
 
         private void ListeningForConnections()
         {
-            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpFamily.DEFAULT_PORT);
             TcpListener.Start();
             while (IsWaiting)
             {
@@ -239,5 +318,56 @@ namespace CrocodileTheGame
             }
         }
 
+        private void btnLoadPack_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            using (var streamReader = new StreamReader(openFileDialog.FileName))
+            {
+                var firstLine = streamReader.ReadLine();
+                string packName;
+                try
+                {
+                    var indexOfName = firstLine.IndexOf("Name=");
+                    if (indexOfName!=-1)
+                    {
+                        packName = firstLine.Substring(indexOfName + 5).Trim();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Файл не верного формата, чтение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Файл не верного формата, чтение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                tbPack.Text = packName;
+                ListWord.Clear();
+                try
+                {
+                    while (!streamReader.EndOfStream)
+                    {
+                        var tmpstr = streamReader.ReadLine().Trim();
+                        if (tmpstr != null && tmpstr != "")
+                        {
+                            ListWord.Add(tmpstr);
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Чтение не удалось", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!TryToLoadDefaultPack())
+                    {
+                        CloseForm();
+                        return;
+                    }
+                    return;
+                }
+            }
+        }
     }
 }

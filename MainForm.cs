@@ -29,7 +29,6 @@ namespace CrocodileTheGame
             lobbyHostForm.TakeNickname += GiveNickname;
             lobbyHostForm.Owner = this;
             lobbyHostForm.Show();
-            Hide();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
