@@ -1,6 +1,6 @@
 ﻿namespace CrocodileTheGame
 {
-    partial class LobbyPlayerForm
+    partial class PlayerLobbyForm
     {
         /// <summary>
         /// Required designer variable.

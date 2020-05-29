@@ -10,16 +10,17 @@ using System.Windows.Forms;
 
 namespace CrocodileTheGame
 {
-    public partial class LobbyPlayerForm : Form
+    public partial class PlayerLobbyForm : Form
     {
         public string LocalIP { get; set; }
         public string Nickname { get; set; }
         public Server Server { get; set; }
         private List<string> PlayerList;
+        private GameForm GameForm;
         public event BackToMain Back;
         public delegate void BackToMain();
 
-        public LobbyPlayerForm()
+        public PlayerLobbyForm()
         {
             InitializeComponent();
         }
@@ -63,6 +64,15 @@ namespace CrocodileTheGame
                                     CloseForm();
                                 }
                                 break;
+                            case TcpFamily.TYPE_BEGIN_GAME:
+                                GameForm = new GameForm(UserTypes.TYPE_USER);
+                                GameForm.Nickname = Nickname;
+                                GameForm.Server = Server;
+                                GameForm.BackToMain += BackToMainForm;
+                                GameForm.Owner = this;
+                                GameForm.Show();
+                                this.Hide();
+                                break;
                             default:
                                 throw new Exception("Неизвестный тип пакета!");
                         }
@@ -105,6 +115,12 @@ namespace CrocodileTheGame
         {
             Server.SendDisconnect();
             CloseForm();
+        }
+    
+        private void BackToMainForm()
+        {
+            GameForm.Dispose();
+            Back();
         }
     }
 }

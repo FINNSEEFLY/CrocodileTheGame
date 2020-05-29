@@ -66,17 +66,17 @@
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LobbyHostForm.cs">
+    <Compile Include="HostLobbyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LobbyHostForm.Designer.cs">
-      <DependentUpon>LobbyHostForm.cs</DependentUpon>
+    <Compile Include="HostLobbyForm.Designer.cs">
+      <DependentUpon>HostLobbyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LobbyPlayerForm.cs">
+    <Compile Include="PlayerLobbyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LobbyPlayerForm.Designer.cs">
-      <DependentUpon>LobbyPlayerForm.cs</DependentUpon>
+    <Compile Include="PlayerLobbyForm.Designer.cs">
+      <DependentUpon>PlayerLobbyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -90,7 +90,7 @@
     <Compile Include="PackEditorForm.Designer.cs">
       <DependentUpon>PackEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlayerTypes.cs" />
+    <Compile Include="UserTypes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
@@ -106,11 +106,11 @@
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LobbyHostForm.resx">
-      <DependentUpon>LobbyHostForm.cs</DependentUpon>
+    <EmbeddedResource Include="HostLobbyForm.resx">
+      <DependentUpon>HostLobbyForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LobbyPlayerForm.resx">
-      <DependentUpon>LobbyPlayerForm.cs</DependentUpon>
+    <EmbeddedResource Include="PlayerLobbyForm.resx">
+      <DependentUpon>PlayerLobbyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

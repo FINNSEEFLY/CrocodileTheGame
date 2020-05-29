@@ -14,10 +14,10 @@ namespace CrocodileTheGame
 {
     public partial class MainForm : Form
     {
-        private LobbyHostForm lobbyHostForm;
-        private FindLobbyForm findLobbyForm;
-        private PackEditorForm packEditorForm;
-        private AboutForm aboutForm;
+        private HostLobbyForm HostLobbyForm;
+        private FindLobbyForm FindLobbyForm;
+        private PackEditorForm PackEditorForm;
+        private AboutForm AboutForm;
         public MainForm()
         {
             InitializeComponent();
@@ -25,10 +25,10 @@ namespace CrocodileTheGame
 
         private void btnCreateLobby_Click(object sender, EventArgs e)
         {
-            lobbyHostForm = new LobbyHostForm();
-            lobbyHostForm.Nickname = GiveNickname();
-            lobbyHostForm.Owner = this;
-            lobbyHostForm.Show();
+            HostLobbyForm = new HostLobbyForm();
+            HostLobbyForm.Nickname = GiveNickname();
+            HostLobbyForm.Owner = this;
+            HostLobbyForm.Show();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -38,26 +38,26 @@ namespace CrocodileTheGame
 
         private void btnConnectToLobby_Click(object sender, EventArgs e)
         {
-            findLobbyForm = new FindLobbyForm();
-            findLobbyForm.Owner = this;
-            findLobbyForm.Nickname = GiveNickname();
-            findLobbyForm.Show();
+            FindLobbyForm = new FindLobbyForm();
+            FindLobbyForm.Owner = this;
+            FindLobbyForm.Nickname = GiveNickname();
+            FindLobbyForm.Show();
             Hide();
         }
 
         private void btnPackCreator_Click(object sender, EventArgs e)
         {
-            packEditorForm = new PackEditorForm();
-            packEditorForm.Owner = this;
-            packEditorForm.Show();
+            PackEditorForm = new PackEditorForm();
+            PackEditorForm.Owner = this;
+            PackEditorForm.Show();
             Hide();
         }
 
         private void btnAboutProgramm_Click(object sender, EventArgs e)
         {
-            aboutForm = new AboutForm();
-            aboutForm.Owner = this;
-            aboutForm.ShowDialog();
+            AboutForm = new AboutForm();
+            AboutForm.Owner = this;
+            AboutForm.ShowDialog();
         }
 
         public string GiveNickname()

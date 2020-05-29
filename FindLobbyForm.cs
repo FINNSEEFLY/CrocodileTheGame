@@ -24,7 +24,7 @@ namespace CrocodileTheGame
         private UdpClient UdpListener;
         private UdpClient UdpSender;
         private List<Server> ServerList;
-        private LobbyPlayerForm lobbyPlayerForm;
+        private PlayerLobbyForm PlayerLobbyForm;
 
         public FindLobbyForm()
         {
@@ -167,18 +167,19 @@ namespace CrocodileTheGame
                     IsListening = false;
                     UdpListener.Dispose();
                     SelectedServer = server;
-                    lobbyPlayerForm = new LobbyPlayerForm();
-                    lobbyPlayerForm.Owner = this;
-                    lobbyPlayerForm.LocalIP = LocalIP;
-                    lobbyPlayerForm.Nickname = Nickname;
-                    lobbyPlayerForm.Server = SelectedServer;
-                    lobbyPlayerForm.Back += BackToMain;
-                    lobbyPlayerForm.Show();
+                    PlayerLobbyForm = new PlayerLobbyForm();
+                    PlayerLobbyForm.Owner = this;
+                    PlayerLobbyForm.LocalIP = LocalIP;
+                    PlayerLobbyForm.Nickname = Nickname;
+                    PlayerLobbyForm.Server = SelectedServer;
+                    PlayerLobbyForm.Back += BackToMain;
+                    PlayerLobbyForm.Show();
                     this.Hide();
                     MessageBox.Show("Подключение установлено");
                 }
             }
         }
+        
         private void BackToMain()
         {
             ClearServerList();
@@ -186,7 +187,7 @@ namespace CrocodileTheGame
             BeginInvoke(new MethodInvoker(() =>
             {
                 Owner.Show();
-                lobbyPlayerForm.Dispose();
+                PlayerLobbyForm.Dispose();
                 Dispose();
             }));
 

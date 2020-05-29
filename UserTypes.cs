@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrocodileTheGame
 {
-    public static class PlayerTypes
+    public static class UserTypes
     {
         public const int TYPE_USER = 1;
         public const int TYPE_SERVER = 0;

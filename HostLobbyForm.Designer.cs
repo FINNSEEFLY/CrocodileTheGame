@@ -1,6 +1,6 @@
 ﻿namespace CrocodileTheGame
 {
-    partial class LobbyHostForm
+    partial class HostLobbyForm
     {
         /// <summary>
         /// Required designer variable.
@@ -75,6 +75,7 @@
             this.btnStartGame.TabIndex = 1;
             this.btnStartGame.Text = "Запустить игру";
             this.btnStartGame.UseVisualStyleBackColor = true;
+            this.btnStartGame.Click += new System.EventHandler(this.btnStartGame_Click);
             // 
             // pnlInfo
             // 
@@ -215,7 +216,7 @@
             // 
             this.openFileDialog.DefaultExt = "wrdpack";
             // 
-            // LobbyHostForm
+            // HostLobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -225,7 +226,7 @@
             this.Controls.Add(this.pnlControl);
             this.MaximumSize = new System.Drawing.Size(355, 693);
             this.MinimumSize = new System.Drawing.Size(355, 693);
-            this.Name = "LobbyHostForm";
+            this.Name = "HostLobbyForm";
             this.Text = "Лобби (Создатель)";
             this.Load += new System.EventHandler(this.LobbyHostForm_Load);
             this.pnlInfo.ResumeLayout(false);

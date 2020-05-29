@@ -14,9 +14,9 @@ using System.Net;
 
 namespace CrocodileTheGame
 {
-    public partial class LobbyHostForm : Form
+    public partial class HostLobbyForm : Form
     {
-        private List<string> ListWord;
+        private List<string> WordList;
         private string LocalIP;
         private IPAddress LocalIPv4Address;
         public string Nickname { get; set; }
@@ -26,7 +26,8 @@ namespace CrocodileTheGame
         private string UdpBroadcastAddress;
         private List<User> UserList;
         private TcpListener TcpListener;
-        public LobbyHostForm()
+        private GameForm GameForm;
+        public HostLobbyForm()
         {
             InitializeComponent();
         }
@@ -49,14 +50,14 @@ namespace CrocodileTheGame
 
         private void LobbyHostForm_Load(object sender, EventArgs e)
         {
-            ListWord = new List<string>();
+            WordList = new List<string>();
             LocalIP = CalculationsForNetwork.GetLocalIP();
             LocalIPv4Address = IPAddress.Parse(LocalIP);
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
             MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
             IsWaiting = true;
             UserList = new List<User>();
-            UserList.Add(new User() { Username = Nickname, IPv4Address = LocalIPv4Address });
+            UserList.Add(new User() { Username = Nickname, IsHost = true, IPv4Address = LocalIPv4Address });
             ltPlayers.DataSource = UserList;
             ltPlayers.DisplayMember = "Username";
             ltPlayers.ValueMember = "IPv4Address";
@@ -104,7 +105,7 @@ namespace CrocodileTheGame
                         }
                         if (packName.Trim().ToUpper() == "Default Pack".Trim().ToUpper())
                         {
-                            ListWord.Clear();
+                            WordList.Clear();
                             tbPack.Text = packName;
                             try
                             {
@@ -113,7 +114,7 @@ namespace CrocodileTheGame
                                     var tmpstr = streamReader.ReadLine().Trim();
                                     if (tmpstr != null && tmpstr != "")
                                     {
-                                        ListWord.Add(tmpstr);
+                                        WordList.Add(tmpstr);
                                     }
                                 }
                                 return true;
@@ -250,7 +251,7 @@ namespace CrocodileTheGame
         {
             foreach (var user in UserList)
             {
-                if (!user.IPv4Address.Equals(LocalIPv4Address))
+                if (!user.IsHost)
                 {
                     user.Listen = false;
                     user.SendDisconnect();
@@ -265,7 +266,7 @@ namespace CrocodileTheGame
             bool Failed = false;
             foreach (var user in UserList)
             {
-                if (!user.IPv4Address.Equals(LocalIPv4Address))
+                if (!user.IsHost)
                 {
                     if (!user.SendUserList(UserList))
                     {
@@ -300,17 +301,20 @@ namespace CrocodileTheGame
 
         private void btnKick_Click(object sender, EventArgs e)
         {
-            if (!LocalIPv4Address.Equals(ltPlayers.SelectedValue))
+            if (ltPlayers.SelectedIndex != -1)
             {
-                var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
-                if (user != null)
+                if (!LocalIPv4Address.Equals(ltPlayers.SelectedValue))
                 {
-                    user.SendKick();
-                    user = UserList[UserList.IndexOf(user)];
-                    user.Listen = false;
-                    UserList.Remove(user);
-                    user.Dispose();
-                    SendUsersList();
+                    var user = UserList.FirstOrDefault((someuser) => someuser.IPv4Address.Equals(ltPlayers.SelectedValue));
+                    if (user != null)
+                    {
+                        user.SendKick();
+                        user = UserList[UserList.IndexOf(user)];
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        SendUsersList();
+                    }
                 }
             }
         }
@@ -342,7 +346,7 @@ namespace CrocodileTheGame
                     return;
                 }
                 tbPack.Text = packName;
-                ListWord.Clear();
+                WordList.Clear();
                 try
                 {
                     while (!streamReader.EndOfStream)
@@ -350,7 +354,7 @@ namespace CrocodileTheGame
                         var tmpstr = streamReader.ReadLine().Trim();
                         if (tmpstr != null && tmpstr != "")
                         {
-                            ListWord.Add(tmpstr);
+                            WordList.Add(tmpstr);
                         }
                     }
                 }
@@ -364,6 +368,62 @@ namespace CrocodileTheGame
                     }
                     return;
                 }
+            }
+        }
+    
+        private void BackToMain()
+        {
+            GameForm.Dispose();
+            Owner.Show();
+            Dispose();
+        }
+
+        private void SendAllBeginGame()
+        {
+            foreach(var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendBeginGame())
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                    }
+                }
+            }
+        }
+
+        private void btnStartGame_Click(object sender, EventArgs e)
+        {
+            int numOfRounds;
+            if (int.TryParse(tbNumOfRounds.Text.Trim(),out numOfRounds))
+            {
+                if (numOfRounds >= 1 && numOfRounds <= 30)
+                {
+                    IsWaiting = false;
+                    UdpListener.Dispose();
+                    UdpSender.Dispose();
+                    TcpListener.Stop();
+                    SendAllBeginGame();
+                    GameForm = new GameForm(UserTypes.TYPE_SERVER);
+                    GameForm.Nickname = Nickname;
+                    GameForm.UserList = UserList;
+                    GameForm.WordList = WordList;
+                    GameForm.MaxRound = numOfRounds;
+                    GameForm.BackToMain += BackToMain;
+                    GameForm.Owner = this;
+                    GameForm.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

@@ -57,6 +57,8 @@
             this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
             this.Timer = new System.Windows.Forms.Timer(this.components);
+            this.tbTime = new System.Windows.Forms.TextBox();
+            this.lblTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.pnlRightSide.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -78,6 +80,7 @@
             // 
             // pnlRightSide
             // 
+            this.pnlRightSide.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlRightSide.Controls.Add(this.pnlInfo);
             this.pnlRightSide.Controls.Add(this.tbChat);
             this.pnlRightSide.Controls.Add(this.tbInput);
@@ -91,6 +94,8 @@
             // 
             // pnlInfo
             // 
+            this.pnlInfo.Controls.Add(this.tbTime);
+            this.pnlInfo.Controls.Add(this.lblTime);
             this.pnlInfo.Controls.Add(this.tbRound);
             this.pnlInfo.Controls.Add(this.tbLeader);
             this.pnlInfo.Controls.Add(this.lblRound);
@@ -100,7 +105,7 @@
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(241, 283);
+            this.pnlInfo.Size = new System.Drawing.Size(239, 354);
             this.pnlInfo.TabIndex = 10;
             // 
             // tbRound
@@ -129,19 +134,19 @@
             // 
             this.lblRound.AutoSize = true;
             this.lblRound.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRound.Location = new System.Drawing.Point(85, 68);
+            this.lblRound.Location = new System.Drawing.Point(90, 68);
             this.lblRound.Name = "lblRound";
-            this.lblRound.Size = new System.Drawing.Size(72, 26);
+            this.lblRound.Size = new System.Drawing.Size(67, 26);
             this.lblRound.TabIndex = 5;
-            this.lblRound.Text = "Раунд:";
+            this.lblRound.Text = "Раунд";
             // 
             // pnlPlayersText
             // 
             this.pnlPlayersText.Controls.Add(this.lbPlayers);
             this.pnlPlayersText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPlayersText.Location = new System.Drawing.Point(0, 141);
+            this.pnlPlayersText.Location = new System.Drawing.Point(0, 212);
             this.pnlPlayersText.Name = "pnlPlayersText";
-            this.pnlPlayersText.Size = new System.Drawing.Size(241, 34);
+            this.pnlPlayersText.Size = new System.Drawing.Size(239, 34);
             this.pnlPlayersText.TabIndex = 3;
             // 
             // lbPlayers
@@ -158,9 +163,9 @@
             // 
             this.pnlPlayers.Controls.Add(this.ltPlayers);
             this.pnlPlayers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPlayers.Location = new System.Drawing.Point(0, 175);
+            this.pnlPlayers.Location = new System.Drawing.Point(0, 246);
             this.pnlPlayers.Name = "pnlPlayers";
-            this.pnlPlayers.Size = new System.Drawing.Size(241, 108);
+            this.pnlPlayers.Size = new System.Drawing.Size(239, 108);
             this.pnlPlayers.TabIndex = 4;
             // 
             // ltPlayers
@@ -172,7 +177,7 @@
             this.ltPlayers.Location = new System.Drawing.Point(0, 0);
             this.ltPlayers.Name = "ltPlayers";
             this.ltPlayers.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.ltPlayers.Size = new System.Drawing.Size(241, 108);
+            this.ltPlayers.Size = new System.Drawing.Size(239, 108);
             this.ltPlayers.TabIndex = 3;
             // 
             // lblLeader
@@ -190,20 +195,20 @@
             this.tbChat.BackColor = System.Drawing.SystemColors.Window;
             this.tbChat.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tbChat.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbChat.Location = new System.Drawing.Point(0, 283);
+            this.tbChat.Location = new System.Drawing.Point(0, 354);
             this.tbChat.Multiline = true;
             this.tbChat.Name = "tbChat";
             this.tbChat.ReadOnly = true;
-            this.tbChat.Size = new System.Drawing.Size(241, 283);
+            this.tbChat.Size = new System.Drawing.Size(239, 210);
             this.tbChat.TabIndex = 9;
             // 
             // tbInput
             // 
             this.tbInput.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tbInput.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbInput.Location = new System.Drawing.Point(0, 566);
+            this.tbInput.Location = new System.Drawing.Point(0, 564);
             this.tbInput.Name = "tbInput";
-            this.tbInput.Size = new System.Drawing.Size(241, 25);
+            this.tbInput.Size = new System.Drawing.Size(239, 25);
             this.tbInput.TabIndex = 8;
             // 
             // btnSend
@@ -212,9 +217,9 @@
             this.btnSend.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSend.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnSend.Location = new System.Drawing.Point(0, 591);
+            this.btnSend.Location = new System.Drawing.Point(0, 589);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(241, 35);
+            this.btnSend.Size = new System.Drawing.Size(239, 35);
             this.btnSend.TabIndex = 7;
             this.btnSend.Text = "Отправить";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -225,15 +230,17 @@
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnExit.Location = new System.Drawing.Point(0, 626);
+            this.btnExit.Location = new System.Drawing.Point(0, 624);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(241, 35);
+            this.btnExit.Size = new System.Drawing.Size(239, 35);
             this.btnExit.TabIndex = 6;
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // pnlTools
             // 
+            this.pnlTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlTools.Controls.Add(this.lblRadius);
             this.pnlTools.Controls.Add(this.trbRadius);
             this.pnlTools.Controls.Add(this.btnClear);
@@ -354,6 +361,27 @@
             this.pnlCanvas.Size = new System.Drawing.Size(893, 591);
             this.pnlCanvas.TabIndex = 3;
             // 
+            // tbTime
+            // 
+            this.tbTime.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTime.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbTime.Location = new System.Drawing.Point(25, 167);
+            this.tbTime.Name = "tbTime";
+            this.tbTime.ReadOnly = true;
+            this.tbTime.Size = new System.Drawing.Size(193, 25);
+            this.tbTime.TabIndex = 9;
+            this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTime.Location = new System.Drawing.Point(90, 138);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(72, 26);
+            this.lblTime.TabIndex = 8;
+            this.lblTime.Text = "Время";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -413,5 +441,7 @@
         private System.Windows.Forms.TextBox tbLeader;
         private System.Windows.Forms.TextBox tbRound;
         private System.Windows.Forms.Timer Timer;
+        private System.Windows.Forms.TextBox tbTime;
+        private System.Windows.Forms.Label lblTime;
     }
 }

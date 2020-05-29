@@ -17,8 +17,14 @@ namespace CrocodileTheGame
         public List<User> UserList { get; set; }
         public List<string> WordList { get; set; }
         public string Nickname { get; set; }
-        public int RoundMaxNumber { get; set; }
+        public int MaxRound { get; set; }
         private int CurrentRound;
+        private const int SECOND = 1000;
+        private const int MAXTIME = 3 * 60;
+        private int TimeCounter = MAXTIME;
+
+        public event BackToMainForm BackToMain;
+        public delegate void BackToMainForm();
 
         public GameForm(int usermode)
         {
@@ -72,9 +78,9 @@ namespace CrocodileTheGame
 
         private void HostSendAllDisconnect()
         {
-            foreach(var user in UserList)
+            foreach (var user in UserList)
             {
-                if(!user.IsHost)
+                if (!user.IsHost)
                 {
                     user.SendDisconnect();
                 }
@@ -88,7 +94,7 @@ namespace CrocodileTheGame
             {
                 if (!user.IsHost)
                 {
-                    if (!user.SendRounds(CurrentRound,RoundMaxNumber))
+                    if (!user.SendRounds(CurrentRound, MaxRound))
                     {
                         user.Listen = false;
                         UserList.Remove(user);
@@ -100,8 +106,32 @@ namespace CrocodileTheGame
             }
             if (failed)
             {
-                ServerSendAllUserList();
+                HostSendAllUserList();
                 HostSendAllRounds();
+            }
+        }
+
+        private void HostSendAllTime(string time)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendTime(time))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                        break;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+                HostSendAllTime(time);
             }
         }
 
@@ -113,14 +143,14 @@ namespace CrocodileTheGame
             ltPlayers.ValueMember = "IsHost";
         }
 
-        private void ServerSendAllUserList()
+        private void HostSendAllUserList()
         {
             bool failed = false;
             foreach (var user in UserList)
             {
                 if (!user.IsHost)
                 {
-                    if (!user.SendUserList(UserList))
+                    if (!user.SendUserListInGame(UserList))
                     {
                         user.Listen = false;
                         UserList.Remove(user);
@@ -132,7 +162,7 @@ namespace CrocodileTheGame
             }
             if (failed)
             {
-                ServerSendAllUserList();
+                HostSendAllUserList();
             }
             else
             {
@@ -143,27 +173,148 @@ namespace CrocodileTheGame
             }
         }
 
+        private void HostSendAllResults(string result)
+        {
+
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendUserResults(result))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                    }
+                }
+            }
+        }
+
+        private string MakeResults()
+        {
+            string result = "";
+            var orderedUserList = from user in UserList
+                                  orderby user.Score descending
+                                  select user;
+            int i = 1;
+            foreach (var user in orderedUserList)
+            {
+                result += i + " Место " + user.Username + " | " + user.Score + "\n";
+            }
+            return result;
+
+        }
+
+        private void HostSilentCloseConnection()
+        {
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    user.Listen = false;
+                    user.Dispose();
+                }
+            }
+            UserList.Clear();
+        }
+
         private void GameForm_Load(object sender, EventArgs e)
         {
             PrepareStart();
-            if (UserMode == PlayerTypes.TYPE_USER)
+            if (UserMode == UserTypes.TYPE_USER)
             {
 
             }
-            else if (UserMode == PlayerTypes.TYPE_SERVER)
+            else if (UserMode == UserTypes.TYPE_SERVER)
             {
-                UserList.Add(new User() { Username = Nickname, IsHost = true });
-                Timer.Tick += new System.EventHandler(this.Timer_Tick);
-
-            } else
+                HostSendAllRounds();
+                HostSendAllTime(MakeTime(MAXTIME));
+                HostSendAllUserList();
+                Timer.Interval = SECOND;
+                Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
+            }
+            else
             {
                 throw new Exception("Ошибка, которой не должно было возникать");
             }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private string MakeTime(int time)
         {
+            string result = "";
+            result += (time / 60 > 0) ? time / 60 + " : " : "";
+            result += (time % 60 >= 10) ? (time % 60).ToString() : "0" + (time % 60);
+            return result;
+        }
 
+        private void TimerHost_Tick(object sender, EventArgs e)
+        {
+            TimeCounter--;
+            var timestr = MakeTime(TimeCounter);
+            tbTime.Text = timestr;
+            HostSendAllTime(timestr);
+            if (TimeCounter == 0)
+            {
+                CurrentRound++;
+                if (CurrentRound > MaxRound)
+                {
+                    var result = MakeResults();
+                    HostSendAllResults(result);
+                    HostSilentCloseConnection();
+                    MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+                // Проверить не конец ли игры
+                // Если конец - объявить результаты
+                // Если не конец
+                // отрубить таймер себе и игрокам
+                // Выбрать некст ведущего
+                // Запустить игру
+                // Восстановить таймеры
+            }
+        }
+
+        private void UserFormClose()
+        {
+            Server.SendDisconnect();
+            Server.Listen = false;
+            Server.Dispose();
+            BackToMain();
+        }
+
+        private void HostFormClose()
+        {
+            Disconnect();
+            BackToMain();
+        }
+
+        private void Disconnect()
+        {
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    user.Listen = false;
+                    user.SendDisconnect();
+                    user.Dispose();
+                }
+            }
+            UserList.Clear();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                UserFormClose();
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostFormClose();
+            }
+            else
+            {
+                throw new Exception("Ошибка которой не должно было возникать");
+            }
         }
     }
 }
