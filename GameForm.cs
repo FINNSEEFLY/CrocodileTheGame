@@ -519,7 +519,10 @@ namespace CrocodileTheGame
                                 HostSendAllUserList();
                                 break;
                             case TcpFamily.TYPE_CLEAR_CANVAS:
-                                ClearCanvas();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    ClearCanvas();
+                                }));
                                 HostSendAllClearCanvas();
                                 break;
                             case TcpFamily.TYPE_MESSAGE:
@@ -532,28 +535,42 @@ namespace CrocodileTheGame
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
-                                    UserFormClose();
-                                    return;
+                                    user.Listen = false;
+                                    UserList.Remove(user);
+                                    user.Dispose();
+                                    HostSendAllUserList();
+                                    break;
                                 }
                                 switch (messageType)
                                 {
                                     case TcpFamily.TYPE_MESSAGE:
                                         var str = Encoding.UTF8.GetString(message);
                                         str = user.Username + ": " + str;
-                                        tbChat.Text += str + "\n";
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            tbChat.Text += str + "\n";
+                                        }));
                                         HostSendAllMessage(str);
                                         if (str.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
                                         {
-                                            FinishRound(ref user, TimeCounter);
+                                            this.Invoke(new MethodInvoker(() =>
+                                            {
+                                                FinishRound(ref user, TimeCounter);
+                                            }));                                            
                                         }
                                         break;
                                     case TcpFamily.TYPE_DOT:
-                                        PaintDotAccepted(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            PaintDotAccepted(message);
+                                        }));
                                         HostSendAllDot(message);
                                         break;
                                     case TcpFamily.TYPE_FILL_CANVAS:
-                                        FillCanvasAccepted(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            FillCanvasAccepted(message);
+                                        }));
                                         HostSendAllFillCanvas(message);
                                         break;
 
@@ -565,10 +582,7 @@ namespace CrocodileTheGame
                     }
                 }
                 catch
-                {
-                    MessageBox.Show("Потеряно соединение с сервером");
-                    UserFormClose();
-                };
+                { };
             }
         }
         private string MakeTime(int time)
@@ -770,20 +784,35 @@ namespace CrocodileTheGame
                             case TcpFamily.TYPE_FAILED:
                             case TcpFamily.TYPE_DISCONNECT:
                                 MessageBox.Show("Лобби было закрыто хостом.");
-                                UserFormClose();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    UserFormClose();
+                                }));
                                 break;
                             case TcpFamily.TYPE_KICK:
                                 MessageBox.Show("Вас исключили из лобби.");
-                                UserFormClose();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    UserFormClose();
+                                }));
                                 break;
                             case TcpFamily.TYPE_CLEAR_CANVAS:
-                                ClearCanvas();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    ClearCanvas();
+                                }));
                                 break;
                             case TcpFamily.TYPE_YOU_CHATTER:
-                                PrepareChatter();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    PrepareChatter();
+                                }));
                                 break;
                             case TcpFamily.TYPE_YOU_LEADER:
-                                PrepareLeader();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    PrepareLeader();
+                                }));
                                 break;
                             case TcpFamily.TYPE_USER_LIST:
                             case TcpFamily.TYPE_TIME:
@@ -801,7 +830,10 @@ namespace CrocodileTheGame
                                 catch
                                 {
                                     MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
-                                    UserFormClose();
+                                    this.Invoke(new MethodInvoker(() =>
+                                    {
+                                        UserFormClose();
+                                    }));
                                     return;
                                 }
                                 switch (messageType)
@@ -815,27 +847,48 @@ namespace CrocodileTheGame
                                         }));
                                         break;
                                     case TcpFamily.TYPE_TIME:
-                                        tbTime.Text = Encoding.UTF8.GetString(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            tbTime.Text = Encoding.UTF8.GetString(message);
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_ROUNDS:
-                                        tbRound.Text = Encoding.UTF8.GetString(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            tbRound.Text = Encoding.UTF8.GetString(message);
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_MESSAGE:
-                                        tbChat.Text += Encoding.UTF8.GetString(message) + "\n";
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            tbChat.Text += Encoding.UTF8.GetString(message) + "\n";
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_DOT:
-                                        PaintDotAccepted(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            PaintDotAccepted(message);
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_FILL_CANVAS:
-                                        FillCanvasAccepted(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            FillCanvasAccepted(message);
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_HEADER:
-                                        tbLeaderAndWord.Text = Encoding.UTF8.GetString(message);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            tbLeaderAndWord.Text = Encoding.UTF8.GetString(message);
+                                        }));
                                         break;
                                     case TcpFamily.TYPE_RESULT:
                                         UserSilentCloseConnection();
                                         MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + Encoding.UTF8.GetString(message), "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
-                                        BackToMain();
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            BackToMain();
+                                        }));
                                         break;
 
                                 }
