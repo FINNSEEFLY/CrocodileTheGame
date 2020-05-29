@@ -22,7 +22,7 @@ namespace CrocodileTheGame
         private List<string> PlayerList;
         private Bitmap MainCanvas;
         private Graphics Graphics;
-        private int CurrentRound;
+        private int CurrentRound = 0;
         private bool Leader = false;
         private const int SECOND = 1000;
         private const int MAXTIME = 3 * 60;
@@ -194,6 +194,8 @@ namespace CrocodileTheGame
                         Task.Factory.StartNew(() => HostListenTCP(UserList[UserList.IndexOf(user)]));
                     }
                 }
+                PrepareNextRound();
+                tbRound.Text = CurrentRound + " / " + MaxRound;
                 HostSendAllRounds();
                 HostSendAllTime(MakeTime(MAXTIME));
                 HostSendAllUserList();
@@ -719,6 +721,7 @@ namespace CrocodileTheGame
                         tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
                     }));
                 }
+                HostSendAllRounds();
                 Timer.Enabled = true;
             }
             // Проверить не конец ли игры
