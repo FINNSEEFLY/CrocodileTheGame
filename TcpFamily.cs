@@ -26,7 +26,7 @@ namespace CrocodileTheGame
         public const int TYPE_TIME = 12;
         public const int TYPE_MESSAGE = 13;
         public const int TYPE_DOT = 14;
-        public const int TYPE_FILL_CAVNAS = 15;
+        public const int TYPE_FILL_CANVAS = 15;
         public const int TYPE_HEADER = 16;
     }
 }

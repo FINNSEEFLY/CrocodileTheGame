@@ -286,6 +286,7 @@
             this.btnClear.TabIndex = 6;
             this.btnClear.Text = "Очистить холст";
             this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnFill
             // 
@@ -297,6 +298,7 @@
             this.btnFill.TabIndex = 5;
             this.btnFill.Text = "Залить цветом";
             this.btnFill.UseVisualStyleBackColor = true;
+            this.btnFill.Click += new System.EventHandler(this.btnFill_Click);
             // 
             // btnBlue
             // 

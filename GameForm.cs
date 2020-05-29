@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace CrocodileTheGame
 {
@@ -22,12 +23,12 @@ namespace CrocodileTheGame
         private Bitmap MainCanvas;
         private Graphics Graphics;
         private int CurrentRound;
-        private bool Drawer = false;
+        private bool Leader = false;
         private const int SECOND = 1000;
         private const int MAXTIME = 3 * 60;
         private int TimeCounter = MAXTIME;
-        private bool IsDown;
         private Color Color = Color.FromArgb(0, 0, 0);
+        private string SelectedWord;
 
         public event BackToMainForm BackToMain;
         public delegate void BackToMainForm();
@@ -38,6 +39,7 @@ namespace CrocodileTheGame
             UserMode = usermode;
         }
 
+        // Buttons
         private void TurnOffButtons()
         {
             btnColor.Enabled = false;
@@ -49,7 +51,6 @@ namespace CrocodileTheGame
             btnClear.Enabled = false;
             trbRadius.Enabled = false;
         }
-
         private void TurnOnButtons()
         {
             btnColor.Enabled = true;
@@ -62,6 +63,8 @@ namespace CrocodileTheGame
             trbRadius.Enabled = true;
         }
 
+
+        // Start
         private void PrepareStart()
         {
             TurnOffButtons();
@@ -72,40 +75,188 @@ namespace CrocodileTheGame
             picCanvas.Image = (Image)MainCanvas.Clone();
         }
 
+
+        // Mode Switch
         private void PrepareChatter()
         {
             TurnOffButtons();
             tbInput.Enabled = true;
             btnSend.Enabled = true;
-            if (UserMode == UserTypes.TYPE_SERVER && Drawer)
+            if (UserMode == UserTypes.TYPE_SERVER && Leader)
             {
-                this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
-                this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+                try
+                {
+                    this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
+                }
+                catch { };
+                try
+                {
+                    this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
+                }
+                catch { };
+                try
+                {
+                    this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+                }
+                catch { };
             }
-            else if (UserMode == UserTypes.TYPE_USER && Drawer)
+            else if (UserMode == UserTypes.TYPE_USER && Leader)
             {
-                this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
-                this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
+                try
+                {
+                    this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
+                }
+                catch { };
+                try
+                {
+                    this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseMove);
+                }
+                catch { };
+                try
+                {
+                    this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
+                }
+                catch { };
             }
+            Leader = false;
         }
-
-        private void PrepareArtist()
+        private void PrepareLeader()
         {
             TurnOnButtons();
             tbInput.Enabled = false;
             btnSend.Enabled = false;
-            if (UserMode == UserTypes.TYPE_SERVER && !Drawer)
+            if (UserMode == UserTypes.TYPE_SERVER && !Leader)
             {
                 this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
                 this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
             }
-            else if (UserMode == UserTypes.TYPE_USER && Drawer)
+            else if (UserMode == UserTypes.TYPE_USER && Leader)
             {
                 this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
                 this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
             }
+            Leader = true;
         }
 
+
+        // Common
+        private void UpdatePlayerList()
+        {
+            ltPlayers.Items.Clear();
+            foreach (var user in UserList)
+            {
+                ltPlayers.Items.Add(user.Username + " | " + user.Score);
+            }
+
+        }
+        private void PaintDotAccepted(byte[] message)
+        {
+            // format -> r g b Radius X X X X Y Y Y Y
+            Graphics = Graphics.FromImage(MainCanvas);
+            int x, y;
+            x = BitConverter.ToInt32(message, 4);
+            y = BitConverter.ToInt32(message, 8);
+            Graphics.FillEllipse(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])),
+                                 x - message[3], y - message[3], 2 * message[3], 2 * message[3]);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+        private void FillCanvasAccepted(byte[] message)
+        {
+            // format -> r g b
+            Graphics = Graphics.FromImage(MainCanvas);
+            Graphics.FillRectangle(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])), 0, 0, picCanvas.Width, picCanvas.Height);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+        private void ClearCanvas()
+        {
+            MainCanvas.Dispose();
+            MainCanvas = new Bitmap(picCanvas.Width, picCanvas.Height);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+        }
+        private void GameForm_Load(object sender, EventArgs e)
+        {
+            PrepareStart();
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                Task.Factory.StartNew(UserListenTCP);
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                foreach (var user in UserList)
+                {
+                    if (!user.IsHost)
+                    {
+                        Task.Factory.StartNew(() => HostListenTCP(UserList[UserList.IndexOf(user)]));
+                    }
+                }
+                HostSendAllRounds();
+                HostSendAllTime(MakeTime(MAXTIME));
+                HostSendAllUserList();
+                Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
+                Timer.Interval = SECOND;
+                Timer.Enabled = true;
+            }
+            else
+            {
+                throw new Exception("Ошибка, которой не должно было возникать");
+            }
+        }
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                UserFormClose();
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostFormClose();
+            }
+            else
+            {
+                throw new Exception("Ошибка которой не должно было возникать");
+            }
+        }
+        private void btnBlue_Click(object sender, EventArgs e)
+        {
+            Color = Color.Blue;
+        }
+        private void btnGreen_Click(object sender, EventArgs e)
+        {
+            Color = Color.Green;
+        }
+        private void btnRed_Click(object sender, EventArgs e)
+        {
+            Color = Color.Red;
+        }
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            Color = colorDialog.Color;
+        }
+        private void PaintDot(Color color, int radius, int x, int y)
+        {
+            Graphics = Graphics.FromImage(MainCanvas);
+            Graphics.FillEllipse(new SolidBrush(Color), x - radius, y - radius, 2 * radius, 2 * radius);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+        private void FillCanvas(Color color)
+        {
+            Graphics = Graphics.FromImage(MainCanvas);
+            Graphics.FillRectangle(new SolidBrush(Color), 0, 0, picCanvas.Width, picCanvas.Height);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+
+
+        // Host
         private void HostSendAllRounds()
         {
             bool failed = false;
@@ -119,17 +270,14 @@ namespace CrocodileTheGame
                         UserList.Remove(user);
                         user.Dispose();
                         failed = true;
-                        break;
                     }
                 }
             }
             if (failed)
             {
                 HostSendAllUserList();
-                HostSendAllRounds();
             }
         }
-
         private void HostSendAllTime(string time)
         {
             bool failed = false;
@@ -143,27 +291,14 @@ namespace CrocodileTheGame
                         UserList.Remove(user);
                         user.Dispose();
                         failed = true;
-                        break;
                     }
                 }
             }
             if (failed)
             {
                 HostSendAllUserList();
-                HostSendAllTime(time);
             }
         }
-
-        private void UpdatePlayerList()
-        {
-            ltPlayers.Items.Clear();
-            foreach (var user in UserList)
-            {
-                ltPlayers.Items.Add(user.Username + " | " + user.Score);
-            }
-
-        }
-
         private void HostSendAllUserList()
         {
             bool failed = false;
@@ -193,10 +328,8 @@ namespace CrocodileTheGame
                 }));
             }
         }
-
         private void HostSendAllResults(string result)
         {
-
             foreach (var user in UserList)
             {
                 if (!user.IsHost)
@@ -210,7 +343,6 @@ namespace CrocodileTheGame
                 }
             }
         }
-
         private string MakeResults()
         {
             string result = "";
@@ -225,7 +357,6 @@ namespace CrocodileTheGame
             return result;
 
         }
-
         private void HostSilentCloseConnection()
         {
             foreach (var user in UserList)
@@ -238,45 +369,387 @@ namespace CrocodileTheGame
             }
             UserList.Clear();
         }
+        private void HostSendAllClearCanvas()
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendClearCanvas())
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostSendAllMessage(string message)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendMessage(TcpFamily.TYPE_MESSAGE, message))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostSendAllDot(byte[] message)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendDot(message))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostSendAllFillCanvas(byte[] message)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendFillCanvas(message))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostSendAllFillCanvas(Color color)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendFillCanvas(color))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostSendAllHeader(string str)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendHeader(str))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void HostListenTCP(User user)
+        {
+            while (user.Listen)
+            {
+                try
+                {
+                    if (user.stream.DataAvailable)
+                    {
+                        var typeAndLength = user.ReciveTypeAndLength();
+                        var messageType = typeAndLength[0];
+                        int messageLength;
+                        byte[] message;
+                        switch (messageType)
+                        {
+                            case TcpFamily.TYPE_FAILED:
+                            case TcpFamily.TYPE_DISCONNECT:
+                                user.Listen = false;
+                                UserList.Remove(user);
+                                user.Dispose();
+                                HostSendAllUserList();
+                                break;
+                            case TcpFamily.TYPE_CLEAR_CANVAS:
+                                ClearCanvas();
+                                HostSendAllClearCanvas();
+                                break;
+                            case TcpFamily.TYPE_MESSAGE:
+                            case TcpFamily.TYPE_DOT:
+                            case TcpFamily.TYPE_FILL_CANVAS:
+                                messageLength = BitConverter.ToInt32(typeAndLength, 1);
+                                try
+                                {
+                                    message = Server.ReceiveMessage(messageLength);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
+                                    UserFormClose();
+                                    return;
+                                }
+                                switch (messageType)
+                                {
+                                    case TcpFamily.TYPE_MESSAGE:
+                                        var str = Encoding.UTF8.GetString(message);
+                                        str = user.Username + ": " + str;
+                                        tbChat.Text += str + "\n";
+                                        HostSendAllMessage(str);
+                                        if (str.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
+                                        {
+                                            FinishRound(ref user, TimeCounter);
+                                        }
+                                        break;
+                                    case TcpFamily.TYPE_DOT:
+                                        PaintDotAccepted(message);
+                                        HostSendAllDot(message);
+                                        break;
+                                    case TcpFamily.TYPE_FILL_CANVAS:
+                                        FillCanvasAccepted(message);
+                                        HostSendAllFillCanvas(message);
+                                        break;
 
+                                }
+                                break;
+                            default:
+                                throw new Exception("Неизвестный тип пакета!");
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                };
+            }
+        }
+        private string MakeTime(int time)
+        {
+            string result = "";
+            result += (time / 60 > 0) ? "0" + time / 60 + " : " : "00 : ";
+            result += (time % 60 >= 10) ? (time % 60).ToString() : "0" + (time % 60);
+            return result;
+        }
+        private void TimerHost_Tick(object sender, EventArgs e)
+        {
+            TimeCounter--;
+            var timestr = MakeTime(TimeCounter);
+            tbTime.Text = timestr;
+            HostSendAllTime(timestr);
+            if (TimeCounter == 0)
+            {
+                Timer.Enabled = false;
+                PrepareNextRound();
+            }
+        }
+        private void HostFormClose()
+        {
+            HostDisconnect();
+            BackToMain();
+        }
+        private void HostDisconnect()
+        {
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    user.Listen = false;
+                    user.SendDisconnect();
+                    user.Dispose();
+                }
+            }
+            UserList.Clear();
+        }
+        private void HostSendAllDot(int x, int y)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendDot(Color, (byte)trbRadius.Value, x, y))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                        break;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+                HostSendAllDot(x, y);
+            }
+        }
+        private void HostpicCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
+        }
+        private void HostpicCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
+        }
+        private void HostpicCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            PaintDot(Color, trbRadius.Value, e.X, e.Y);
+            HostSendAllDot(e.X, e.Y);
+        }
+        private void FinishRound(ref User winner, int time)
+        {
+            Timer.Enabled = false;
+            HostSendAllHeader(winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов");
+            winner.Score += time * 10;
+            WordList.Remove(SelectedWord);
+            SelectedWord = null;
+            Thread.Sleep(3500);
+            PrepareNextRound();
+        }
+        private void HostSendAllPrepareInfo(User lead)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.IPv4Address.Equals(lead.IPv4Address))
+                    {
+                        if (!(user.SendPrepareChatter() && user.SendHeader("Ведущий " + lead.Username + " | Количество букв: " + SelectedWord.Length)))
+                        {
+
+                            user.Listen = false;
+                            UserList.Remove(user);
+                            user.Dispose();
+                            failed = true;
+                        }
+                    }
+                    else if (!(user.SendPrepareLeader() && user.SendHeader("Вы ведущий! | Нарисуйте: " + SelectedWord)))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+            }
+        }
+        private void PrepareNextRound()
+        {
+            CurrentRound++;
+            if (CurrentRound > MaxRound)
+            {
+                var result = MakeResults();
+                HostSendAllResults(result);
+                HostSilentCloseConnection();
+                MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
+                BackToMain();
+            }
+            else
+            {
+                TimeCounter = MAXTIME;
+                RandomWord();
+                var leader = SelectUser();
+                var user = UserList[UserList.IndexOf(leader)];
+                user.NumOfLeads += 1;
+                HostSendAllPrepareInfo(leader);
+                if (leader.IsHost)
+                {
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        PrepareLeader();
+                        tbLeaderAndWord.Text = "Вы ведущий! | Нарисуйте: " + SelectedWord;
+                    }));
+                }
+                else
+                {
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        PrepareChatter();
+                        tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
+                    }));
+                }
+                Timer.Enabled = true;
+            }
+            // Проверить не конец ли игры
+            // Если конец - объявить результаты
+            // Если не конец
+            // отрубить таймер себе
+            // Выбрать некст ведущего
+            // Запустить игру
+            // Восстановить таймеры
+        }
+        private void RandomWord()
+        {
+            var numOfWords = WordList.Count;
+            var random = new Random();
+            SelectedWord = WordList[random.Next(0, numOfWords - 1)];
+        }
+        private User SelectUser()
+        {
+            var sortedUsers = from user in UserList
+                              orderby user.NumOfLeads ascending
+                              select user;
+            return sortedUsers.First();
+
+        }
+
+        // User
         private void UserSilentCloseConnection()
         {
             Server.Listen = false;
             Server.Dispose();
         }
-
-        private void PaintDotAccepted(byte[] message)
-        {
-            // format -> r g b Radius X X X X Y Y Y Y
-            Graphics = Graphics.FromImage(MainCanvas);
-            int x, y;
-            x = BitConverter.ToInt32(message, 4);
-            y = BitConverter.ToInt32(message, 8);
-            Graphics.FillEllipse(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])),
-                                 x - message[3], y - message[3], 2 * message[3], 2 * message[3]);
-            picCanvas.Image.Dispose();
-            picCanvas.Image = (Image)MainCanvas.Clone();
-            Graphics.Dispose();
-        }
-
-        private void FillCanvasAccepted(byte[] message)
-        {
-            // format -> r g b
-            Graphics = Graphics.FromImage(MainCanvas);
-            Graphics.FillRectangle(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])), 0, 0, picCanvas.Width, picCanvas.Height);
-            picCanvas.Image.Dispose();
-            picCanvas.Image = (Image)MainCanvas.Clone();
-            Graphics.Dispose();
-        }
-
-        private void ClearCanvasAccepted()
-        {
-            MainCanvas.Dispose();
-            MainCanvas = new Bitmap(picCanvas.Width, picCanvas.Height);
-            picCanvas.Image.Dispose();
-            picCanvas.Image = (Image)MainCanvas.Clone();
-        }
-
         private void UserListenTCP()
         {
             while (Server.Listen)
@@ -301,13 +774,13 @@ namespace CrocodileTheGame
                                 UserFormClose();
                                 break;
                             case TcpFamily.TYPE_CLEAR_CANVAS:
-                                ClearCanvasAccepted();
+                                ClearCanvas();
                                 break;
                             case TcpFamily.TYPE_YOU_CHATTER:
-                                // Перевод в режим угадывающего
+                                PrepareChatter();
                                 break;
                             case TcpFamily.TYPE_YOU_LEADER:
-                                // Перевод в режим рисующего
+                                PrepareLeader();
                                 break;
                             case TcpFamily.TYPE_USER_LIST:
                             case TcpFamily.TYPE_TIME:
@@ -315,7 +788,7 @@ namespace CrocodileTheGame
                             case TcpFamily.TYPE_RESULT:
                             case TcpFamily.TYPE_MESSAGE:
                             case TcpFamily.TYPE_DOT:
-                            case TcpFamily.TYPE_FILL_CAVNAS:
+                            case TcpFamily.TYPE_FILL_CANVAS:
                             case TcpFamily.TYPE_HEADER:
                                 messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 try
@@ -350,7 +823,7 @@ namespace CrocodileTheGame
                                     case TcpFamily.TYPE_DOT:
                                         PaintDotAccepted(message);
                                         break;
-                                    case TcpFamily.TYPE_FILL_CAVNAS:
+                                    case TcpFamily.TYPE_FILL_CANVAS:
                                         FillCanvasAccepted(message);
                                         break;
                                     case TcpFamily.TYPE_HEADER:
@@ -376,77 +849,6 @@ namespace CrocodileTheGame
                 };
             }
         }
-
-        private void HostListenTCP(User user)
-        {
-
-        }
-
-        private void GameForm_Load(object sender, EventArgs e)
-        {
-            PrepareStart();
-            if (UserMode == UserTypes.TYPE_USER)
-            {
-                Task.Factory.StartNew(UserListenTCP);
-            }
-            else if (UserMode == UserTypes.TYPE_SERVER)
-            {
-                foreach (var user in UserList)
-                {
-                    if (!user.IsHost)
-                    {
-                        Task.Factory.StartNew(() => HostListenTCP(UserList[UserList.IndexOf(user)]));
-                    }
-                }
-                HostSendAllRounds();
-                HostSendAllTime(MakeTime(MAXTIME));
-                HostSendAllUserList();
-                Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
-                Timer.Interval = SECOND;
-                Timer.Enabled = true;
-            }
-            else
-            {
-                throw new Exception("Ошибка, которой не должно было возникать");
-            }
-        }
-
-        private string MakeTime(int time)
-        {
-            string result = "";
-            result += (time / 60 > 0) ? "0" + time / 60 + " : " : "00 : ";
-            result += (time % 60 >= 10) ? (time % 60).ToString() : "0" + (time % 60);
-            return result;
-        }
-
-        private void TimerHost_Tick(object sender, EventArgs e)
-        {
-            TimeCounter--;
-            var timestr = MakeTime(TimeCounter);
-            tbTime.Text = timestr;
-            HostSendAllTime(timestr);
-            if (TimeCounter == 0)
-            {
-                Timer.Enabled = false;
-                CurrentRound++;
-                if (CurrentRound > MaxRound)
-                {
-                    var result = MakeResults();
-                    HostSendAllResults(result);
-                    HostSilentCloseConnection();
-                    MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
-                    BackToMain();
-                }
-                // Проверить не конец ли игры
-                // Если конец - объявить результаты
-                // Если не конец
-                // отрубить таймер себе и игрокам
-                // Выбрать некст ведущего
-                // Запустить игру
-                // Восстановить таймеры
-            }
-        }
-
         private void UserFormClose()
         {
             Server.SendDisconnect();
@@ -454,116 +856,56 @@ namespace CrocodileTheGame
             Server.Dispose();
             BackToMain();
         }
-
-        private void HostFormClose()
-        {
-            Disconnect();
-            BackToMain();
-        }
-
-        private void Disconnect()
-        {
-            foreach (var user in UserList)
-            {
-                if (!user.IsHost)
-                {
-                    user.Listen = false;
-                    user.SendDisconnect();
-                    user.Dispose();
-                }
-            }
-            UserList.Clear();
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            if (UserMode == UserTypes.TYPE_USER)
-            {
-                UserFormClose();
-            }
-            else if (UserMode == UserTypes.TYPE_SERVER)
-            {
-                HostFormClose();
-            }
-            else
-            {
-                throw new Exception("Ошибка которой не должно было возникать");
-            }
-        }
-
-        private void HostSendAllDot(int x, int y)
-        {
-            bool failed = false;
-            foreach (var user in UserList)
-            {
-                if (!user.IsHost)
-                {
-                    if (!user.SendDot(Color,(byte)trbRadius.Value,x,y))
-                    {
-                        user.Listen = false;
-                        UserList.Remove(user);
-                        user.Dispose();
-                        failed = true;
-                        break;
-                    }
-                }
-            }
-            if (failed)
-            {
-                HostSendAllUserList();
-                HostSendAllDot(x,y);
-            }
-        }
-
-        private void HostpicCanvas_MouseDown(object sender, MouseEventArgs e)
-        {
-            this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
-        }
-
-        private void HostpicCanvas_MouseUp(object sender, MouseEventArgs e)
-        {
-            this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
-        }
-
-        private void HostpicCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            
-        }
-
         private void UserpicCanvas_MouseDown(object sender, MouseEventArgs e)
         {
             this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseMove);
         }
-
         private void UserpicCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseMove);
         }
-
         private void UserpicCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-
+            PaintDot(Color, trbRadius.Value, e.X, e.Y);
+            if (!Server.SendDot(Color, (byte)trbRadius.Value, e.X, e.Y))
+            {
+                MessageBox.Show("Потеряно соединение с сервером");
+                UserFormClose();
+            }
         }
 
-        private void btnBlue_Click(object sender, EventArgs e)
+        private void btnFill_Click(object sender, EventArgs e)
         {
-            Color = Color.Blue;
+            FillCanvas(Color);
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                if (!Server.SendFillCanvas(Color))
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                }
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostSendAllFillCanvas(Color);
+            }
         }
 
-        private void btnGreen_Click(object sender, EventArgs e)
+        private void btnClear_Click(object sender, EventArgs e)
         {
-            Color = Color.Green;
-        }
-
-        private void btnRed_Click(object sender, EventArgs e)
-        {
-            Color = Color.Red;
-        }
-
-        private void btnColor_Click(object sender, EventArgs e)
-        {
-            colorDialog.ShowDialog();
-            Color = colorDialog.Color;
+            ClearCanvas();
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                if (!Server.SendClearCanvas())
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                }
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostSendAllClearCanvas();
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 
@@ -41,7 +42,7 @@ namespace CrocodileTheGame
             return returnData;
         }
 
-        protected bool SendMessage(byte type, string message)
+        public bool SendMessage(byte type, string message)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace CrocodileTheGame
             }
         }
 
-        protected bool SendMessage(byte type, byte[] messageBytes)
+        public bool SendMessage(byte type, byte[] messageBytes)
         {
             try
             {
@@ -78,7 +79,7 @@ namespace CrocodileTheGame
             }
         }
 
-        protected bool SendMessage(byte type)
+        public bool SendMessage(byte type)
         {
             try
             {
@@ -92,6 +93,40 @@ namespace CrocodileTheGame
                 return false;
             };
         }
+
+        public bool SendDot(Color color, byte Radius, int x, int y)
+        {
+            var data = new byte[3 + 1 + 4 + 4];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            data[3] = Radius;
+            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
+            return SendMessage(TcpFamily.TYPE_DOT, data);
+        }
+        public bool SendDot(byte[] data)
+        {
+            return SendMessage(TcpFamily.TYPE_DOT, data);
+        }
     
+        public bool SendFillCanvas(Color color)
+        {
+            var data = new byte[3];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            return SendMessage(TcpFamily.TYPE_FILL_CANVAS, data);
+        }
+
+        public bool SendFillCanvas(byte[] data)
+        {
+            return SendMessage(TcpFamily.TYPE_FILL_CANVAS, data);
+        }
+
+        public bool SendClearCanvas()
+        {
+            return SendMessage(TcpFamily.TYPE_CLEAR_CANVAS);
+        }
     }
 }

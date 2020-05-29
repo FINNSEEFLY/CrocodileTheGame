@@ -104,16 +104,18 @@ namespace CrocodileTheGame
             return SendMessage(TcpFamily.TYPE_TIME, time);
         }
 
-        public bool SendDot(Color color, byte Radius, int x, int y)
+        public bool SendHeader(string message)
         {
-            var data = new byte[3 + 1 + 4 + 4];
-            data[0] = color.R;
-            data[1] = color.G;
-            data[2] = color.B;
-            data[3] = Radius;
-            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
-            return SendMessage(TcpFamily.TYPE_DOT, data);
+            return SendMessage(TcpFamily.TYPE_HEADER, message);
+        }
+        
+        public bool SendPrepareChatter()
+        {
+            return SendMessage(TcpFamily.TYPE_YOU_CHATTER);
+        }
+        public bool SendPrepareLeader()
+        {
+            return SendMessage(TcpFamily.TYPE_YOU_LEADER);
         }
 
         public void Dispose()
