@@ -18,10 +18,16 @@ namespace CrocodileTheGame
         public List<string> WordList { get; set; }
         public string Nickname { get; set; }
         public int MaxRound { get; set; }
+        private List<string> PlayerList;
+        private Bitmap MainCanvas;
+        private Graphics Graphics;
         private int CurrentRound;
+        private bool Drawer = false;
         private const int SECOND = 1000;
         private const int MAXTIME = 3 * 60;
         private int TimeCounter = MAXTIME;
+        private bool IsDown;
+        private Color Color = Color.FromArgb(0, 0, 0);
 
         public event BackToMainForm BackToMain;
         public delegate void BackToMainForm();
@@ -60,30 +66,43 @@ namespace CrocodileTheGame
         {
             TurnOffButtons();
             tbInput.Enabled = false;
+            btnSend.Enabled = false;
+
+            MainCanvas = new Bitmap(picCanvas.Width, picCanvas.Height);
+            picCanvas.Image = (Image)MainCanvas.Clone();
         }
 
         private void PrepareChatter()
         {
             TurnOffButtons();
             tbInput.Enabled = true;
-            // Отключение обработчиков нажатия на канвас
+            btnSend.Enabled = true;
+            if (UserMode == UserTypes.TYPE_SERVER && Drawer)
+            {
+                this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
+                this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+            }
+            else if (UserMode == UserTypes.TYPE_USER && Drawer)
+            {
+                this.picCanvas.MouseDown -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
+                this.picCanvas.MouseUp -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
+            }
         }
 
         private void PrepareArtist()
         {
             TurnOnButtons();
             tbInput.Enabled = false;
-            // Подключение обработчика нажатия
-        }
-
-        private void HostSendAllDisconnect()
-        {
-            foreach (var user in UserList)
+            btnSend.Enabled = false;
+            if (UserMode == UserTypes.TYPE_SERVER && !Drawer)
             {
-                if (!user.IsHost)
-                {
-                    user.SendDisconnect();
-                }
+                this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
+                this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+            }
+            else if (UserMode == UserTypes.TYPE_USER && Drawer)
+            {
+                this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
+                this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
             }
         }
 
@@ -137,10 +156,12 @@ namespace CrocodileTheGame
 
         private void UpdatePlayerList()
         {
-            ltPlayers.DataSource = null;
-            ltPlayers.DataSource = UserList;
-            ltPlayers.DisplayMember = "Username";
-            ltPlayers.ValueMember = "IsHost";
+            ltPlayers.Items.Clear();
+            foreach (var user in UserList)
+            {
+                ltPlayers.Items.Add(user.Username + " | " + user.Score);
+            }
+
         }
 
         private void HostSendAllUserList()
@@ -218,21 +239,171 @@ namespace CrocodileTheGame
             UserList.Clear();
         }
 
+        private void UserSilentCloseConnection()
+        {
+            Server.Listen = false;
+            Server.Dispose();
+        }
+
+        private void PaintDotAccepted(byte[] message)
+        {
+            // format -> r g b Radius X X X X Y Y Y Y
+            Graphics = Graphics.FromImage(MainCanvas);
+            int x, y;
+            x = BitConverter.ToInt32(message, 4);
+            y = BitConverter.ToInt32(message, 8);
+            Graphics.FillEllipse(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])),
+                                 x - message[3], y - message[3], 2 * message[3], 2 * message[3]);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+
+        private void FillCanvasAccepted(byte[] message)
+        {
+            // format -> r g b
+            Graphics = Graphics.FromImage(MainCanvas);
+            Graphics.FillRectangle(new SolidBrush(Color.FromArgb(message[0], message[1], message[2])), 0, 0, picCanvas.Width, picCanvas.Height);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+            Graphics.Dispose();
+        }
+
+        private void ClearCanvasAccepted()
+        {
+            MainCanvas.Dispose();
+            MainCanvas = new Bitmap(picCanvas.Width, picCanvas.Height);
+            picCanvas.Image.Dispose();
+            picCanvas.Image = (Image)MainCanvas.Clone();
+        }
+
+        private void UserListenTCP()
+        {
+            while (Server.Listen)
+            {
+                try
+                {
+                    if (Server.stream.DataAvailable)
+                    {
+                        var typeAndLength = Server.ReciveTypeAndLength();
+                        var messageType = typeAndLength[0];
+                        int messageLength;
+                        byte[] message;
+                        switch (messageType)
+                        {
+                            case TcpFamily.TYPE_FAILED:
+                            case TcpFamily.TYPE_DISCONNECT:
+                                MessageBox.Show("Лобби было закрыто хостом.");
+                                UserFormClose();
+                                break;
+                            case TcpFamily.TYPE_KICK:
+                                MessageBox.Show("Вас исключили из лобби.");
+                                UserFormClose();
+                                break;
+                            case TcpFamily.TYPE_CLEAR_CANVAS:
+                                ClearCanvasAccepted();
+                                break;
+                            case TcpFamily.TYPE_YOU_CHATTER:
+                                // Перевод в режим угадывающего
+                                break;
+                            case TcpFamily.TYPE_YOU_LEADER:
+                                // Перевод в режим рисующего
+                                break;
+                            case TcpFamily.TYPE_USER_LIST:
+                            case TcpFamily.TYPE_TIME:
+                            case TcpFamily.TYPE_ROUNDS:
+                            case TcpFamily.TYPE_RESULT:
+                            case TcpFamily.TYPE_MESSAGE:
+                            case TcpFamily.TYPE_DOT:
+                            case TcpFamily.TYPE_FILL_CAVNAS:
+                            case TcpFamily.TYPE_HEADER:
+                                messageLength = BitConverter.ToInt32(typeAndLength, 1);
+                                try
+                                {
+                                    message = Server.ReceiveMessage(messageLength);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
+                                    UserFormClose();
+                                    return;
+                                }
+                                switch (messageType)
+                                {
+                                    case TcpFamily.TYPE_USER_LIST:
+                                        PlayerList.Clear();
+                                        PlayerList = Server.ParseStringList(message, messageLength);
+                                        this.Invoke(new MethodInvoker(() =>
+                                        {
+                                            UpdatePlayerList();
+                                        }));
+                                        break;
+                                    case TcpFamily.TYPE_TIME:
+                                        tbTime.Text = Encoding.UTF8.GetString(message);
+                                        break;
+                                    case TcpFamily.TYPE_ROUNDS:
+                                        tbRound.Text = Encoding.UTF8.GetString(message);
+                                        break;
+                                    case TcpFamily.TYPE_MESSAGE:
+                                        tbChat.Text += Encoding.UTF8.GetString(message) + "\n";
+                                        break;
+                                    case TcpFamily.TYPE_DOT:
+                                        PaintDotAccepted(message);
+                                        break;
+                                    case TcpFamily.TYPE_FILL_CAVNAS:
+                                        FillCanvasAccepted(message);
+                                        break;
+                                    case TcpFamily.TYPE_HEADER:
+                                        tbLeaderAndWord.Text = Encoding.UTF8.GetString(message);
+                                        break;
+                                    case TcpFamily.TYPE_RESULT:
+                                        UserSilentCloseConnection();
+                                        MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + Encoding.UTF8.GetString(message), "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
+                                        BackToMain();
+                                        break;
+
+                                }
+                                break;
+                            default:
+                                throw new Exception("Неизвестный тип пакета!");
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                };
+            }
+        }
+
+        private void HostListenTCP(User user)
+        {
+
+        }
+
         private void GameForm_Load(object sender, EventArgs e)
         {
             PrepareStart();
             if (UserMode == UserTypes.TYPE_USER)
             {
-                MessageBox.Show("Зашел как чаттер");
+                Task.Factory.StartNew(UserListenTCP);
             }
             else if (UserMode == UserTypes.TYPE_SERVER)
             {
-                MessageBox.Show("Зашел как хост лобби");
+                foreach (var user in UserList)
+                {
+                    if (!user.IsHost)
+                    {
+                        Task.Factory.StartNew(() => HostListenTCP(UserList[UserList.IndexOf(user)]));
+                    }
+                }
                 HostSendAllRounds();
                 HostSendAllTime(MakeTime(MAXTIME));
                 HostSendAllUserList();
-                Timer.Interval = SECOND;
                 Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
+                Timer.Interval = SECOND;
+                Timer.Enabled = true;
             }
             else
             {
@@ -243,7 +414,7 @@ namespace CrocodileTheGame
         private string MakeTime(int time)
         {
             string result = "";
-            result += (time / 60 > 0) ? time / 60 + " : " : "";
+            result += (time / 60 > 0) ? "0" + time / 60 + " : " : "00 : ";
             result += (time % 60 >= 10) ? (time % 60).ToString() : "0" + (time % 60);
             return result;
         }
@@ -256,6 +427,7 @@ namespace CrocodileTheGame
             HostSendAllTime(timestr);
             if (TimeCounter == 0)
             {
+                Timer.Enabled = false;
                 CurrentRound++;
                 if (CurrentRound > MaxRound)
                 {
@@ -263,6 +435,7 @@ namespace CrocodileTheGame
                     HostSendAllResults(result);
                     HostSilentCloseConnection();
                     MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    BackToMain();
                 }
                 // Проверить не конец ли игры
                 // Если конец - объявить результаты
@@ -316,6 +489,81 @@ namespace CrocodileTheGame
             {
                 throw new Exception("Ошибка которой не должно было возникать");
             }
+        }
+
+        private void HostSendAllDot(int x, int y)
+        {
+            bool failed = false;
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendDot(Color,(byte)trbRadius.Value,x,y))
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                        failed = true;
+                        break;
+                    }
+                }
+            }
+            if (failed)
+            {
+                HostSendAllUserList();
+                HostSendAllDot(x,y);
+            }
+        }
+
+        private void HostpicCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
+        }
+
+        private void HostpicCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseMove);
+        }
+
+        private void HostpicCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void UserpicCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseMove);
+        }
+
+        private void UserpicCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            this.picCanvas.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseMove);
+        }
+
+        private void UserpicCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnBlue_Click(object sender, EventArgs e)
+        {
+            Color = Color.Blue;
+        }
+
+        private void btnGreen_Click(object sender, EventArgs e)
+        {
+            Color = Color.Green;
+        }
+
+        private void btnRed_Click(object sender, EventArgs e)
+        {
+            Color = Color.Red;
+        }
+
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            Color = colorDialog.Color;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Drawing;
 
 namespace CrocodileTheGame
 {
@@ -101,6 +102,18 @@ namespace CrocodileTheGame
         public bool SendTime(string time)
         {
             return SendMessage(TcpFamily.TYPE_TIME, time);
+        }
+
+        public bool SendDot(Color color, byte Radius, int x, int y)
+        {
+            var data = new byte[3 + 1 + 4 + 4];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            data[3] = Radius;
+            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
+            return SendMessage(TcpFamily.TYPE_DOT, data);
         }
 
         public void Dispose()

@@ -33,6 +33,8 @@
             this.picCanvas = new System.Windows.Forms.PictureBox();
             this.pnlRightSide = new System.Windows.Forms.Panel();
             this.pnlInfo = new System.Windows.Forms.Panel();
+            this.tbTime = new System.Windows.Forms.TextBox();
+            this.lblTime = new System.Windows.Forms.Label();
             this.tbRound = new System.Windows.Forms.TextBox();
             this.lblRound = new System.Windows.Forms.Label();
             this.pnlPlayersText = new System.Windows.Forms.Panel();
@@ -54,10 +56,9 @@
             this.btnBlack = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
-            this.Timer = new System.Windows.Forms.Timer(this.components);
-            this.tbTime = new System.Windows.Forms.TextBox();
-            this.lblTime = new System.Windows.Forms.Label();
             this.tbLeaderAndWord = new System.Windows.Forms.TextBox();
+            this.Timer = new System.Windows.Forms.Timer(this.components);
+            this.colorDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.pnlRightSide.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -105,14 +106,35 @@
             this.pnlInfo.Size = new System.Drawing.Size(239, 299);
             this.pnlInfo.TabIndex = 10;
             // 
+            // tbTime
+            // 
+            this.tbTime.BackColor = System.Drawing.SystemColors.Window;
+            this.tbTime.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbTime.Location = new System.Drawing.Point(64, 108);
+            this.tbTime.Name = "tbTime";
+            this.tbTime.ReadOnly = true;
+            this.tbTime.Size = new System.Drawing.Size(110, 36);
+            this.tbTime.TabIndex = 9;
+            this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTime.Location = new System.Drawing.Point(84, 79);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(72, 26);
+            this.lblTime.TabIndex = 8;
+            this.lblTime.Text = "Время";
+            // 
             // tbRound
             // 
             this.tbRound.BackColor = System.Drawing.SystemColors.Window;
-            this.tbRound.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbRound.Location = new System.Drawing.Point(24, 38);
+            this.tbRound.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbRound.Location = new System.Drawing.Point(64, 38);
             this.tbRound.Name = "tbRound";
             this.tbRound.ReadOnly = true;
-            this.tbRound.Size = new System.Drawing.Size(193, 25);
+            this.tbRound.Size = new System.Drawing.Size(110, 36);
             this.tbRound.TabIndex = 7;
             this.tbRound.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -120,7 +142,7 @@
             // 
             this.lblRound.AutoSize = true;
             this.lblRound.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRound.Location = new System.Drawing.Point(89, 9);
+            this.lblRound.Location = new System.Drawing.Point(84, 8);
             this.lblRound.Name = "lblRound";
             this.lblRound.Size = new System.Drawing.Size(67, 26);
             this.lblRound.TabIndex = 5;
@@ -285,6 +307,7 @@
             this.btnBlue.Size = new System.Drawing.Size(50, 50);
             this.btnBlue.TabIndex = 4;
             this.btnBlue.UseVisualStyleBackColor = false;
+            this.btnBlue.Click += new System.EventHandler(this.btnBlue_Click);
             // 
             // btnGreen
             // 
@@ -295,6 +318,7 @@
             this.btnGreen.Size = new System.Drawing.Size(50, 50);
             this.btnGreen.TabIndex = 3;
             this.btnGreen.UseVisualStyleBackColor = false;
+            this.btnGreen.Click += new System.EventHandler(this.btnGreen_Click);
             // 
             // btnRed
             // 
@@ -305,6 +329,7 @@
             this.btnRed.Size = new System.Drawing.Size(50, 50);
             this.btnRed.TabIndex = 2;
             this.btnRed.UseVisualStyleBackColor = false;
+            this.btnRed.Click += new System.EventHandler(this.btnRed_Click);
             // 
             // btnBlack
             // 
@@ -327,6 +352,7 @@
             this.btnColor.Size = new System.Drawing.Size(50, 50);
             this.btnColor.TabIndex = 0;
             this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
             // pnlCanvas
             // 
@@ -337,27 +363,6 @@
             this.pnlCanvas.Name = "pnlCanvas";
             this.pnlCanvas.Size = new System.Drawing.Size(893, 591);
             this.pnlCanvas.TabIndex = 3;
-            // 
-            // tbTime
-            // 
-            this.tbTime.BackColor = System.Drawing.SystemColors.Window;
-            this.tbTime.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbTime.Location = new System.Drawing.Point(24, 108);
-            this.tbTime.Name = "tbTime";
-            this.tbTime.ReadOnly = true;
-            this.tbTime.Size = new System.Drawing.Size(193, 25);
-            this.tbTime.TabIndex = 9;
-            this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTime.Location = new System.Drawing.Point(89, 79);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(72, 26);
-            this.lblTime.TabIndex = 8;
-            this.lblTime.Text = "Время";
             // 
             // tbLeaderAndWord
             // 
@@ -371,6 +376,10 @@
             this.tbLeaderAndWord.TabIndex = 8;
             this.tbLeaderAndWord.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // Timer
+            // 
+            this.Timer.Interval = 1000;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,6 +392,7 @@
             this.MaximumSize = new System.Drawing.Size(1150, 700);
             this.MinimumSize = new System.Drawing.Size(1150, 700);
             this.Name = "GameForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Игра";
             this.Load += new System.EventHandler(this.GameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
@@ -432,5 +442,6 @@
         private System.Windows.Forms.TextBox tbTime;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.TextBox tbLeaderAndWord;
+        private System.Windows.Forms.ColorDialog colorDialog;
     }
 }

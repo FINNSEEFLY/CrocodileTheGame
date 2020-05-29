@@ -227,6 +227,7 @@
             this.MaximumSize = new System.Drawing.Size(355, 693);
             this.MinimumSize = new System.Drawing.Size(355, 693);
             this.Name = "HostLobbyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лобби (Создатель)";
             this.Load += new System.EventHandler(this.LobbyHostForm_Load);
             this.pnlInfo.ResumeLayout(false);

@@ -124,6 +124,7 @@
             this.MaximumSize = new System.Drawing.Size(360, 510);
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "FindLobbyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поиск лобби";
             this.Load += new System.EventHandler(this.FindLobbyForm_Load);
             this.pnlInfo.ResumeLayout(false);

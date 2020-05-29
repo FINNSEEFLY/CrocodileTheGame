@@ -80,7 +80,7 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // LobbyPlayerForm
+            // PlayerLobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,7 +91,8 @@
             this.Controls.Add(this.pnlInfo);
             this.MaximumSize = new System.Drawing.Size(360, 510);
             this.MinimumSize = new System.Drawing.Size(360, 510);
-            this.Name = "LobbyPlayerForm";
+            this.Name = "PlayerLobbyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лобби";
             this.Load += new System.EventHandler(this.LobbyPlayerForm_Load);
             this.pnlInfo.ResumeLayout(false);

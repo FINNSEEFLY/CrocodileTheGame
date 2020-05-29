@@ -102,6 +102,7 @@
             this.MaximumSize = new System.Drawing.Size(320, 520);
             this.MinimumSize = new System.Drawing.Size(320, 520);
             this.Name = "AboutForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "О программе";
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

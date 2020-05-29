@@ -225,6 +225,7 @@
             this.MaximumSize = new System.Drawing.Size(680, 490);
             this.MinimumSize = new System.Drawing.Size(680, 490);
             this.Name = "PackEditorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Редактор паков";
             this.Load += new System.EventHandler(this.PackEditorForm_Load);
             this.panel1.ResumeLayout(false);
