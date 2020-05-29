@@ -53,6 +53,12 @@ namespace CrocodileTheGame
             SendMessage(TcpFamily.TYPE_KICK);
         }
 
+        public bool SendRounds(int currentround, int maxround)
+        {
+            var str = currentround + " / " + maxround;
+            return SendMessage(TcpFamily.TYPE_ROUNDS);
+        }
+
         public void Dispose()
         {
             try
@@ -62,5 +68,6 @@ namespace CrocodileTheGame
             }
             catch { }
         }
+    
     }
 }

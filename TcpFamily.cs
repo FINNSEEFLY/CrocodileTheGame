@@ -15,5 +15,6 @@ namespace CrocodileTheGame
         public const int TYPE_NICKNAME = 4;
         public const int TYPE_KICK = 8;
         public const int TYPE_REQUEST_USER_LIST = 16;
+        public const int TYPE_ROUNDS = 32;
     }
 }

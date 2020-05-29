@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.picCanvas = new System.Windows.Forms.PictureBox();
             this.pnlRightSide = new System.Windows.Forms.Panel();
             this.pnlInfo = new System.Windows.Forms.Panel();
+            this.tbRound = new System.Windows.Forms.TextBox();
+            this.tbLeader = new System.Windows.Forms.TextBox();
             this.lblRound = new System.Windows.Forms.Label();
             this.pnlPlayersText = new System.Windows.Forms.Panel();
             this.lbPlayers = new System.Windows.Forms.Label();
@@ -39,12 +42,12 @@
             this.ltPlayers = new System.Windows.Forms.ListBox();
             this.lblLeader = new System.Windows.Forms.Label();
             this.tbChat = new System.Windows.Forms.TextBox();
-            this.txtInput = new System.Windows.Forms.TextBox();
+            this.tbInput = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlTools = new System.Windows.Forms.Panel();
             this.lblRadius = new System.Windows.Forms.Label();
-            this.tbRadius = new System.Windows.Forms.TrackBar();
+            this.trbRadius = new System.Windows.Forms.TrackBar();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnFill = new System.Windows.Forms.Button();
             this.btnBlue = new System.Windows.Forms.Button();
@@ -53,15 +56,14 @@
             this.btnBlack = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
             this.pnlCanvas = new System.Windows.Forms.Panel();
-            this.tbLeader = new System.Windows.Forms.TextBox();
-            this.tbRound = new System.Windows.Forms.TextBox();
+            this.Timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.pnlRightSide.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             this.pnlPlayersText.SuspendLayout();
             this.pnlPlayers.SuspendLayout();
             this.pnlTools.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).BeginInit();
             this.pnlCanvas.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +80,7 @@
             // 
             this.pnlRightSide.Controls.Add(this.pnlInfo);
             this.pnlRightSide.Controls.Add(this.tbChat);
-            this.pnlRightSide.Controls.Add(this.txtInput);
+            this.pnlRightSide.Controls.Add(this.tbInput);
             this.pnlRightSide.Controls.Add(this.btnSend);
             this.pnlRightSide.Controls.Add(this.btnExit);
             this.pnlRightSide.Dock = System.Windows.Forms.DockStyle.Right;
@@ -100,6 +102,28 @@
             this.pnlInfo.Name = "pnlInfo";
             this.pnlInfo.Size = new System.Drawing.Size(241, 283);
             this.pnlInfo.TabIndex = 10;
+            // 
+            // tbRound
+            // 
+            this.tbRound.BackColor = System.Drawing.SystemColors.Window;
+            this.tbRound.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbRound.Location = new System.Drawing.Point(25, 97);
+            this.tbRound.Name = "tbRound";
+            this.tbRound.ReadOnly = true;
+            this.tbRound.Size = new System.Drawing.Size(193, 25);
+            this.tbRound.TabIndex = 7;
+            this.tbRound.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tbLeader
+            // 
+            this.tbLeader.BackColor = System.Drawing.SystemColors.Window;
+            this.tbLeader.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbLeader.Location = new System.Drawing.Point(25, 36);
+            this.tbLeader.Name = "tbLeader";
+            this.tbLeader.ReadOnly = true;
+            this.tbLeader.Size = new System.Drawing.Size(193, 25);
+            this.tbLeader.TabIndex = 6;
+            this.tbLeader.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lblRound
             // 
@@ -147,6 +171,7 @@
             this.ltPlayers.ItemHeight = 18;
             this.ltPlayers.Location = new System.Drawing.Point(0, 0);
             this.ltPlayers.Name = "ltPlayers";
+            this.ltPlayers.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.ltPlayers.Size = new System.Drawing.Size(241, 108);
             this.ltPlayers.TabIndex = 3;
             // 
@@ -172,14 +197,14 @@
             this.tbChat.Size = new System.Drawing.Size(241, 283);
             this.tbChat.TabIndex = 9;
             // 
-            // txtInput
+            // tbInput
             // 
-            this.txtInput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.txtInput.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtInput.Location = new System.Drawing.Point(0, 566);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(241, 25);
-            this.txtInput.TabIndex = 8;
+            this.tbInput.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tbInput.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbInput.Location = new System.Drawing.Point(0, 566);
+            this.tbInput.Name = "tbInput";
+            this.tbInput.Size = new System.Drawing.Size(241, 25);
+            this.tbInput.TabIndex = 8;
             // 
             // btnSend
             // 
@@ -210,7 +235,7 @@
             // pnlTools
             // 
             this.pnlTools.Controls.Add(this.lblRadius);
-            this.pnlTools.Controls.Add(this.tbRadius);
+            this.pnlTools.Controls.Add(this.trbRadius);
             this.pnlTools.Controls.Add(this.btnClear);
             this.pnlTools.Controls.Add(this.btnFill);
             this.pnlTools.Controls.Add(this.btnBlue);
@@ -235,16 +260,16 @@
             this.lblRadius.TabIndex = 8;
             this.lblRadius.Text = "Размер кисти";
             // 
-            // tbRadius
+            // trbRadius
             // 
-            this.tbRadius.Cursor = System.Windows.Forms.Cursors.Default;
-            this.tbRadius.LargeChange = 1;
-            this.tbRadius.Location = new System.Drawing.Point(760, 10);
-            this.tbRadius.Minimum = 1;
-            this.tbRadius.Name = "tbRadius";
-            this.tbRadius.Size = new System.Drawing.Size(114, 45);
-            this.tbRadius.TabIndex = 7;
-            this.tbRadius.Value = 5;
+            this.trbRadius.Cursor = System.Windows.Forms.Cursors.Default;
+            this.trbRadius.LargeChange = 1;
+            this.trbRadius.Location = new System.Drawing.Point(760, 10);
+            this.trbRadius.Minimum = 1;
+            this.trbRadius.Name = "trbRadius";
+            this.trbRadius.Size = new System.Drawing.Size(114, 45);
+            this.trbRadius.TabIndex = 7;
+            this.trbRadius.Value = 5;
             // 
             // btnClear
             // 
@@ -329,28 +354,6 @@
             this.pnlCanvas.Size = new System.Drawing.Size(893, 591);
             this.pnlCanvas.TabIndex = 3;
             // 
-            // tbLeader
-            // 
-            this.tbLeader.BackColor = System.Drawing.SystemColors.Window;
-            this.tbLeader.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbLeader.Location = new System.Drawing.Point(25, 36);
-            this.tbLeader.Name = "tbLeader";
-            this.tbLeader.ReadOnly = true;
-            this.tbLeader.Size = new System.Drawing.Size(193, 25);
-            this.tbLeader.TabIndex = 6;
-            this.tbLeader.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbRound
-            // 
-            this.tbRound.BackColor = System.Drawing.SystemColors.Window;
-            this.tbRound.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbRound.Location = new System.Drawing.Point(25, 97);
-            this.tbRound.Name = "tbRound";
-            this.tbRound.ReadOnly = true;
-            this.tbRound.Size = new System.Drawing.Size(193, 25);
-            this.tbRound.TabIndex = 7;
-            this.tbRound.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,7 +378,7 @@
             this.pnlPlayers.ResumeLayout(false);
             this.pnlTools.ResumeLayout(false);
             this.pnlTools.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbRadius)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
             this.pnlCanvas.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -387,7 +390,7 @@
         private System.Windows.Forms.Panel pnlRightSide;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.TextBox tbChat;
-        private System.Windows.Forms.TextBox txtInput;
+        private System.Windows.Forms.TextBox tbInput;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Panel pnlTools;
         private System.Windows.Forms.Button btnColor;
@@ -399,7 +402,7 @@
         private System.Windows.Forms.Button btnBlack;
         private System.Windows.Forms.Panel pnlCanvas;
         private System.Windows.Forms.Label lblRadius;
-        private System.Windows.Forms.TrackBar tbRadius;
+        private System.Windows.Forms.TrackBar trbRadius;
         private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.Label lblRound;
         private System.Windows.Forms.Panel pnlPlayersText;
@@ -409,5 +412,6 @@
         private System.Windows.Forms.Label lblLeader;
         private System.Windows.Forms.TextBox tbLeader;
         private System.Windows.Forms.TextBox tbRound;
+        private System.Windows.Forms.Timer Timer;
     }
 }

@@ -40,8 +40,8 @@ namespace CrocodileTheGame
             Buffer.BlockCopy(receiveData, 0, returnData, 0, numOfReceivedBytes);
             return returnData;
         }
-        
-        public bool SendMessage(byte type, string message)
+
+        protected bool SendMessage(byte type, string message)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace CrocodileTheGame
             }
         }
 
-        public bool SendMessage(byte type, byte[] messageBytes)
+        protected bool SendMessage(byte type, byte[] messageBytes)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace CrocodileTheGame
             }
         }
 
-        public bool SendMessage(byte type)
+        protected bool SendMessage(byte type)
         {
             try
             {
