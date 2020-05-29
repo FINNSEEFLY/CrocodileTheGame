@@ -65,13 +65,16 @@ namespace CrocodileTheGame
                                 }
                                 break;
                             case TcpFamily.TYPE_BEGIN_GAME:
-                                GameForm = new GameForm(UserTypes.TYPE_USER);
-                                GameForm.Nickname = Nickname;
-                                GameForm.Server = Server;
-                                GameForm.BackToMain += BackToMainForm;
-                                GameForm.Owner = this;
-                                GameForm.Show();
-                                this.Hide();
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    GameForm = new GameForm(UserTypes.TYPE_USER);
+                                    GameForm.Nickname = Nickname;
+                                    GameForm.Server = Server;
+                                    GameForm.BackToMain += BackToMainForm;
+                                    GameForm.Owner = this;
+                                    GameForm.Show();
+                                    this.Hide();
+                                }));
                                 break;
                             default:
                                 throw new Exception("Неизвестный тип пакета!");
