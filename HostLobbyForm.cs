@@ -75,7 +75,25 @@ namespace CrocodileTheGame
                 return;
             }
             Owner.Hide();
+            SendBroadcastLobby();
 
+        }
+
+        private void SendBroadcastLobby()
+        {
+            var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
+            var data = new byte[nicknameBytes.Length + 1];
+            data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
+            Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
+            try
+            {
+                for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                {
+                    Thread.Sleep(1);
+                    UdpSender.Send(data, data.Length);
+                }
+            }
+            catch { };
         }
 
         private bool TryToLoadDefaultPack()
@@ -151,19 +169,7 @@ namespace CrocodileTheGame
                     var recievedData = UdpListener.Receive(ref remoteHost);
                     if (recievedData[0] == UdpFamily.TYPE_CLIENT_REQUEST)
                     {
-                        var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
-                        var data = new byte[nicknameBytes.Length + 1];
-                        data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
-                        Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
-                        try
-                        {
-                            for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
-                            {
-                                Thread.Sleep(1);
-                                UdpSender.Send(data, data.Length);
-                            }
-                        }
-                        catch { };
+                        SendBroadcastLobby();
                     }
                 }
                 catch { }
