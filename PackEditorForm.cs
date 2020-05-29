@@ -22,6 +22,7 @@ namespace CrocodileTheGame
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            ListWord.Clear();
             Owner.Show();
             Dispose();
         }
@@ -32,6 +33,7 @@ namespace CrocodileTheGame
             btnDelete.Enabled = false;
             btnAdd.Enabled = false;
             tbPackName.Enabled = false;
+            btnSave.Enabled = false;
         }
 
         private void PrepareToWork()
@@ -40,6 +42,19 @@ namespace CrocodileTheGame
             tbWord.Enabled = true;
             btnDelete.Enabled = true;
             btnAdd.Enabled = true;
+            btnSave.Enabled = true;
+            tbPackName.Clear();
+            ListWord.Clear();
+            ltWords.Items.Clear();
+        }
+
+        private void PreapreToNotWork()
+        {
+            tbPackName.Enabled = false;
+            tbWord.Enabled = false;
+            btnDelete.Enabled = false;
+            btnAdd.Enabled = false;
+            btnSave.Enabled = false;
             tbPackName.Clear();
             ListWord.Clear();
             ltWords.Items.Clear();
@@ -54,7 +69,7 @@ namespace CrocodileTheGame
         {
             if (tbWord.Text.Trim() != "")
             {
-                if (ListWord.FirstOrDefault(str => str == tbWord.Text.Trim()) != null)
+                if (ListWord.FirstOrDefault(str => str.Trim().ToUpper() == tbWord.Text.Trim().ToUpper()) != null)
                 {
                     MessageBox.Show("Данное слово уже есть", "Уже есть", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
@@ -95,23 +110,58 @@ namespace CrocodileTheGame
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
-            
+            using (var streamReader = new StreamReader(openFileDialog.FileName))
+            {
+                var firstLine = streamReader.ReadLine();
+                string packName;
+                try
+                {
+                    packName = firstLine.Substring(firstLine.IndexOf("Name=") + 5).Trim();
+                }
+                catch
+                {
+                    MessageBox.Show("Файл не верного формата, чтение невозможно", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                PrepareToWork();
+                tbPackName.Text = packName;
+                try
+                {
+                    while (!streamReader.EndOfStream)
+                    {
+                        var tmpstr = streamReader.ReadLine().Trim();
+                        if (tmpstr != null && tmpstr != "")
+                        {
+                            ListWord.Add(tmpstr);
+                            ltWords.Items.Add(tmpstr);
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Чтение не удалось", "Чтение файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (tbPackName.Text.Trim()=="")
+            if (tbPackName.Text.Trim() == "")
             {
                 MessageBox.Show("Заполните название пака", "Название", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else
+            }
+            else
             {
+                saveFileDialog.FileName = tbPackName.Text.Trim();
                 if (saveFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
                 try
                 {
                     using (var streamWriter = new StreamWriter(saveFileDialog.FileName))
                     {
-                        streamWriter.WriteLine("NAME=" + tbPackName.Text.Trim());
+                        streamWriter.WriteLine("Name=" + tbPackName.Text.Trim());
                         foreach (var word in ListWord)
                         {
                             streamWriter.WriteLine(word);
@@ -122,9 +172,10 @@ namespace CrocodileTheGame
                 catch
                 {
                     MessageBox.Show("Ошибка при сохранении", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PreapreToNotWork();
                 }
             }
-           
+
         }
     }
 }
