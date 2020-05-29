@@ -34,13 +34,11 @@
             this.pnlRightSide = new System.Windows.Forms.Panel();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.tbRound = new System.Windows.Forms.TextBox();
-            this.tbLeader = new System.Windows.Forms.TextBox();
             this.lblRound = new System.Windows.Forms.Label();
             this.pnlPlayersText = new System.Windows.Forms.Panel();
             this.lbPlayers = new System.Windows.Forms.Label();
             this.pnlPlayers = new System.Windows.Forms.Panel();
             this.ltPlayers = new System.Windows.Forms.ListBox();
-            this.lblLeader = new System.Windows.Forms.Label();
             this.tbChat = new System.Windows.Forms.TextBox();
             this.tbInput = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
@@ -59,6 +57,7 @@
             this.Timer = new System.Windows.Forms.Timer(this.components);
             this.tbTime = new System.Windows.Forms.TextBox();
             this.lblTime = new System.Windows.Forms.Label();
+            this.tbLeaderAndWord = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.pnlRightSide.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -72,9 +71,9 @@
             // picCanvas
             // 
             this.picCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picCanvas.Location = new System.Drawing.Point(0, 0);
+            this.picCanvas.Location = new System.Drawing.Point(0, 36);
             this.picCanvas.Name = "picCanvas";
-            this.picCanvas.Size = new System.Drawing.Size(893, 591);
+            this.picCanvas.Size = new System.Drawing.Size(893, 555);
             this.picCanvas.TabIndex = 0;
             this.picCanvas.TabStop = false;
             // 
@@ -97,11 +96,9 @@
             this.pnlInfo.Controls.Add(this.tbTime);
             this.pnlInfo.Controls.Add(this.lblTime);
             this.pnlInfo.Controls.Add(this.tbRound);
-            this.pnlInfo.Controls.Add(this.tbLeader);
             this.pnlInfo.Controls.Add(this.lblRound);
             this.pnlInfo.Controls.Add(this.pnlPlayersText);
             this.pnlInfo.Controls.Add(this.pnlPlayers);
-            this.pnlInfo.Controls.Add(this.lblLeader);
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlInfo.Name = "pnlInfo";
@@ -118,17 +115,6 @@
             this.tbRound.Size = new System.Drawing.Size(193, 25);
             this.tbRound.TabIndex = 7;
             this.tbRound.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tbLeader
-            // 
-            this.tbLeader.BackColor = System.Drawing.SystemColors.Window;
-            this.tbLeader.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbLeader.Location = new System.Drawing.Point(25, 36);
-            this.tbLeader.Name = "tbLeader";
-            this.tbLeader.ReadOnly = true;
-            this.tbLeader.Size = new System.Drawing.Size(193, 25);
-            this.tbLeader.TabIndex = 6;
-            this.tbLeader.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lblRound
             // 
@@ -179,16 +165,6 @@
             this.ltPlayers.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.ltPlayers.Size = new System.Drawing.Size(239, 108);
             this.ltPlayers.TabIndex = 3;
-            // 
-            // lblLeader
-            // 
-            this.lblLeader.AutoSize = true;
-            this.lblLeader.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblLeader.Location = new System.Drawing.Point(73, 7);
-            this.lblLeader.Name = "lblLeader";
-            this.lblLeader.Size = new System.Drawing.Size(97, 26);
-            this.lblLeader.TabIndex = 0;
-            this.lblLeader.Text = "Ведущий";
             // 
             // tbChat
             // 
@@ -355,6 +331,7 @@
             // pnlCanvas
             // 
             this.pnlCanvas.Controls.Add(this.picCanvas);
+            this.pnlCanvas.Controls.Add(this.tbLeaderAndWord);
             this.pnlCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlCanvas.Location = new System.Drawing.Point(0, 0);
             this.pnlCanvas.Name = "pnlCanvas";
@@ -382,6 +359,18 @@
             this.lblTime.TabIndex = 8;
             this.lblTime.Text = "Время";
             // 
+            // tbLeaderAndWord
+            // 
+            this.tbLeaderAndWord.BackColor = System.Drawing.SystemColors.Window;
+            this.tbLeaderAndWord.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbLeaderAndWord.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbLeaderAndWord.Location = new System.Drawing.Point(0, 0);
+            this.tbLeaderAndWord.Name = "tbLeaderAndWord";
+            this.tbLeaderAndWord.ReadOnly = true;
+            this.tbLeaderAndWord.Size = new System.Drawing.Size(893, 36);
+            this.tbLeaderAndWord.TabIndex = 8;
+            this.tbLeaderAndWord.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -408,6 +397,7 @@
             this.pnlTools.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbRadius)).EndInit();
             this.pnlCanvas.ResumeLayout(false);
+            this.pnlCanvas.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -437,11 +427,10 @@
         private System.Windows.Forms.Label lbPlayers;
         private System.Windows.Forms.Panel pnlPlayers;
         private System.Windows.Forms.ListBox ltPlayers;
-        private System.Windows.Forms.Label lblLeader;
-        private System.Windows.Forms.TextBox tbLeader;
         private System.Windows.Forms.TextBox tbRound;
         private System.Windows.Forms.Timer Timer;
         private System.Windows.Forms.TextBox tbTime;
         private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.TextBox tbLeaderAndWord;
     }
 }

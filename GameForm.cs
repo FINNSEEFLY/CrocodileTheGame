@@ -223,10 +223,11 @@ namespace CrocodileTheGame
             PrepareStart();
             if (UserMode == UserTypes.TYPE_USER)
             {
-
+                MessageBox.Show("Зашел как чаттер");
             }
             else if (UserMode == UserTypes.TYPE_SERVER)
             {
+                MessageBox.Show("Зашел как хост лобби");
                 HostSendAllRounds();
                 HostSendAllTime(MakeTime(MAXTIME));
                 HostSendAllUserList();
