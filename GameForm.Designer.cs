@@ -102,14 +102,14 @@
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(239, 354);
+            this.pnlInfo.Size = new System.Drawing.Size(239, 299);
             this.pnlInfo.TabIndex = 10;
             // 
             // tbRound
             // 
             this.tbRound.BackColor = System.Drawing.SystemColors.Window;
             this.tbRound.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbRound.Location = new System.Drawing.Point(25, 97);
+            this.tbRound.Location = new System.Drawing.Point(24, 38);
             this.tbRound.Name = "tbRound";
             this.tbRound.ReadOnly = true;
             this.tbRound.Size = new System.Drawing.Size(193, 25);
@@ -120,7 +120,7 @@
             // 
             this.lblRound.AutoSize = true;
             this.lblRound.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRound.Location = new System.Drawing.Point(90, 68);
+            this.lblRound.Location = new System.Drawing.Point(89, 9);
             this.lblRound.Name = "lblRound";
             this.lblRound.Size = new System.Drawing.Size(67, 26);
             this.lblRound.TabIndex = 5;
@@ -130,7 +130,7 @@
             // 
             this.pnlPlayersText.Controls.Add(this.lbPlayers);
             this.pnlPlayersText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPlayersText.Location = new System.Drawing.Point(0, 212);
+            this.pnlPlayersText.Location = new System.Drawing.Point(0, 157);
             this.pnlPlayersText.Name = "pnlPlayersText";
             this.pnlPlayersText.Size = new System.Drawing.Size(239, 34);
             this.pnlPlayersText.TabIndex = 3;
@@ -149,7 +149,7 @@
             // 
             this.pnlPlayers.Controls.Add(this.ltPlayers);
             this.pnlPlayers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPlayers.Location = new System.Drawing.Point(0, 246);
+            this.pnlPlayers.Location = new System.Drawing.Point(0, 191);
             this.pnlPlayers.Name = "pnlPlayers";
             this.pnlPlayers.Size = new System.Drawing.Size(239, 108);
             this.pnlPlayers.TabIndex = 4;
@@ -171,11 +171,11 @@
             this.tbChat.BackColor = System.Drawing.SystemColors.Window;
             this.tbChat.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tbChat.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbChat.Location = new System.Drawing.Point(0, 354);
+            this.tbChat.Location = new System.Drawing.Point(0, 299);
             this.tbChat.Multiline = true;
             this.tbChat.Name = "tbChat";
             this.tbChat.ReadOnly = true;
-            this.tbChat.Size = new System.Drawing.Size(239, 210);
+            this.tbChat.Size = new System.Drawing.Size(239, 265);
             this.tbChat.TabIndex = 9;
             // 
             // tbInput
@@ -342,7 +342,7 @@
             // 
             this.tbTime.BackColor = System.Drawing.SystemColors.Window;
             this.tbTime.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbTime.Location = new System.Drawing.Point(25, 167);
+            this.tbTime.Location = new System.Drawing.Point(24, 108);
             this.tbTime.Name = "tbTime";
             this.tbTime.ReadOnly = true;
             this.tbTime.Size = new System.Drawing.Size(193, 25);
@@ -353,7 +353,7 @@
             // 
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTime.Location = new System.Drawing.Point(90, 138);
+            this.lblTime.Location = new System.Drawing.Point(89, 79);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(72, 26);
             this.lblTime.TabIndex = 8;

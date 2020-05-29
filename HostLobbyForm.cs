@@ -21,6 +21,7 @@ namespace CrocodileTheGame
         private IPAddress LocalIPv4Address;
         public string Nickname { get; set; }
         private bool IsWaiting;
+        private bool ListenUsers { get; set; } = true;
         private UdpClient UdpListener;
         private UdpClient UdpSender;
         private string UdpBroadcastAddress;
@@ -200,7 +201,7 @@ namespace CrocodileTheGame
 
         private void ListenTCP(User user)
         {
-            while (user.Listen)
+            while (user.Listen && ListenUsers)
             {
                 try
                 {
@@ -407,6 +408,7 @@ namespace CrocodileTheGame
             {
                 if (numOfRounds >= 1 && numOfRounds <= 30)
                 {
+                    ListenUsers = false;
                     IsWaiting = false;
                     UdpListener.Dispose();
                     UdpSender.Dispose();

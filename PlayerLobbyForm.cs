@@ -15,6 +15,7 @@ namespace CrocodileTheGame
         public string LocalIP { get; set; }
         public string Nickname { get; set; }
         public Server Server { get; set; }
+        public bool OnlyThisListen { get; set; } = true;
         private List<string> PlayerList;
         private GameForm GameForm;
         public event BackToMain Back;
@@ -27,7 +28,7 @@ namespace CrocodileTheGame
 
         private void ListenTCP()
         {
-            while (Server.Listen)
+            while (Server.Listen && OnlyThisListen)
             {
                 try
                 {
@@ -67,6 +68,7 @@ namespace CrocodileTheGame
                             case TcpFamily.TYPE_BEGIN_GAME:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
+                                    OnlyThisListen = false;
                                     GameForm = new GameForm(UserTypes.TYPE_USER);
                                     GameForm.Nickname = Nickname;
                                     GameForm.Server = Server;
