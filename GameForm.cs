@@ -196,8 +196,6 @@ namespace CrocodileTheGame
                 }
                 PrepareNextRound();
                 tbRound.Text = CurrentRound + " / " + MaxRound;
-                HostSendAllRounds();
-                HostSendAllTime(MakeTime(MAXTIME));
                 HostSendAllUserList();
                 Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
                 Timer.Interval = SECOND;
@@ -795,6 +793,8 @@ namespace CrocodileTheGame
                 var user = UserList[UserList.IndexOf(leader)];
                 user.NumOfLeads += 1;
                 HostSendAllPrepareInfo(leader);
+                HostSendAllRounds();
+                HostSendAllTime(MakeTime(MAXTIME));
                 if (leader.IsHost)
                 {
                     this.Invoke(new MethodInvoker(() =>
@@ -811,7 +811,6 @@ namespace CrocodileTheGame
                         tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
                     }));
                 }
-                HostSendAllRounds();
                 Timer.Enabled = true;
             }
             // Проверить не конец ли игры
