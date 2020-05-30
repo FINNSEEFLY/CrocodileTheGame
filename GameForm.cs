@@ -300,34 +300,25 @@ namespace CrocodileTheGame
                 {
                     if (!Server.SendMessage(TcpFamily.TYPE_MESSAGE, tbInput.Text.Trim()))
                     {
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            UserFormClose();
-                        }));
+                        UserFormClose();
                     }
                     else
                     {
-                        this.Invoke(new MethodInvoker(() =>
-                        {
-                            tbInput.Clear();
-                        }));
+                        tbInput.Clear();
                     }
                 }
                 else if (UserMode == UserTypes.TYPE_SERVER)
                 {
                     HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
-                    this.Invoke(new MethodInvoker(() =>
+                    tbChat.Text += Nickname + ": " + tbInput.Text.Trim();
+                    if (SelectedWord != null)
                     {
-                        tbChat.Text += Nickname + ": " + tbInput.Text.Trim();
-                    }));
-                    if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
-                    {
-                        FinishRound(UserList[0], TimeCounter);
+                        if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
+                        {
+                            Task.Factory.StartNew(() => FinishRound(UserList[0], TimeCounter));
+                        }
                     }
-                    this.Invoke(new MethodInvoker(() =>
-                    {
-                        tbInput.Clear();
-                    }));
+                    tbInput.Clear();
                 }
             }
         }
@@ -757,15 +748,16 @@ namespace CrocodileTheGame
         }
         private void FinishRound(User winner, int time)
         {
+            WordList.Remove(SelectedWord);
+            var tmpWord = SelectedWord;
+            SelectedWord = null;
             Timer.Enabled = false;
-            HostSendAllHeader(winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов");
+            HostSendAllHeader(winner.Username + " отгадывает [ " + tmpWord + " ] | +" + time * 10 + " баллов");
             this.Invoke(new MethodInvoker(() =>
             {
-                tbLeaderAndWord.Text = winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов";
+                tbLeaderAndWord.Text = winner.Username + " отгадывает [ " + tmpWord + " ] | +" + time * 10 + " баллов";
             }));
             UserList[UserList.IndexOf(winner)].Score += time * 10;
-            WordList.Remove(SelectedWord);
-            SelectedWord = null;
             Thread.Sleep(3500);
             PrepareNextRound();
         }

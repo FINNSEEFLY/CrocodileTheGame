@@ -115,6 +115,7 @@
             this.tbTime.ReadOnly = true;
             this.tbTime.Size = new System.Drawing.Size(110, 36);
             this.tbTime.TabIndex = 9;
+            this.tbTime.TabStop = false;
             this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lblTime
@@ -200,6 +201,7 @@
             this.tbChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbChat.Size = new System.Drawing.Size(239, 265);
             this.tbChat.TabIndex = 9;
+            this.tbChat.TabStop = false;
             // 
             // tbInput
             // 
@@ -379,6 +381,7 @@
             this.tbLeaderAndWord.ReadOnly = true;
             this.tbLeaderAndWord.Size = new System.Drawing.Size(893, 36);
             this.tbLeaderAndWord.TabIndex = 8;
+            this.tbLeaderAndWord.TabStop = false;
             this.tbLeaderAndWord.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Timer
