@@ -140,15 +140,6 @@ namespace CrocodileTheGame
 
 
         // Common
-        private void UpdatePlayerList()
-        {
-            ltPlayers.Items.Clear();
-            foreach (var user in UserList)
-            {
-                ltPlayers.Items.Add(user.Username + " | " + user.Score);
-            }
-
-        }
         private void PaintDotAccepted(byte[] message)
         {
             // format -> r g b Radius X X X X Y Y Y Y
@@ -181,6 +172,7 @@ namespace CrocodileTheGame
         private void GameForm_Load(object sender, EventArgs e)
         {
             PrepareStart();
+            PlayerList = new List<string>();
             if (UserMode == UserTypes.TYPE_USER)
             {
                 Task.Factory.StartNew(UserListenTCP);
@@ -394,7 +386,7 @@ namespace CrocodileTheGame
             {
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    UpdatePlayerList();
+                    UpdateUserList();
                 }));
             }
         }
@@ -752,6 +744,10 @@ namespace CrocodileTheGame
         {
             Timer.Enabled = false;
             HostSendAllHeader(winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов");
+            this.Invoke(new MethodInvoker(() =>
+            {
+                tbLeaderAndWord.Text = winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов";
+            }));
             UserList[UserList.IndexOf(winner)].Score += time * 10;
             WordList.Remove(SelectedWord);
             SelectedWord = null;
@@ -804,6 +800,11 @@ namespace CrocodileTheGame
             }
             else
             {
+                HostSendAllUserList();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    UpdateUserList();
+                }));
                 TimeCounter = MAXTIME;
                 RandomWord();
                 var leader = SelectUser();
@@ -811,9 +812,17 @@ namespace CrocodileTheGame
                 user.NumOfLeads += 1;
                 HostSendAllPrepareInfo(leader);
                 HostSendAllRounds();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    tbRound.Text = CurrentRound + " / " + MaxRound;
+                }));
                 HostSendAllTime(MakeTime(MAXTIME));
                 HostSendAllClearCanvas();
-                ClearCanvas();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    tbRound.Text = CurrentRound + " / " + MaxRound;
+                    ClearCanvas();
+                }));
                 if (leader.IsHost)
                 {
                     this.Invoke(new MethodInvoker(() =>
@@ -854,13 +863,29 @@ namespace CrocodileTheGame
             return sortedUsers.First();
 
         }
-
+        private void UpdateUserList()
+        {
+            ltPlayers.Items.Clear();
+            foreach (var user in UserList)
+            {
+                ltPlayers.Items.Add(user.Username + " | " + user.Score);
+            }
+        }
 
         // User
         private void UserSilentCloseConnection()
         {
             Server.Listen = false;
             Server.Dispose();
+        }
+        private void UpdatePlayerList()
+        {
+            ltPlayers.Items.Clear();
+            var tmpPlayerList = new List<string>(PlayerList);
+            foreach (var user in tmpPlayerList)
+            {
+                ltPlayers.Items.Add(user);
+            }
         }
         private void UserListenTCP()
         {
