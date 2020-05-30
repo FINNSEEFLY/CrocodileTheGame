@@ -23,7 +23,6 @@ namespace CrocodileTheGame
         private Bitmap MainCanvas;
         private Graphics Graphics;
         private int CurrentRound = 0;
-        private bool Leader = false;
         private const int SECOND = 1000;
         private const int MAXTIME = 3 * 60;
         private int TimeCounter = MAXTIME;
@@ -82,7 +81,7 @@ namespace CrocodileTheGame
             TurnOffButtons();
             tbInput.Enabled = true;
             btnSend.Enabled = true;
-            if (UserMode == UserTypes.TYPE_SERVER && Leader)
+            if (UserMode == UserTypes.TYPE_SERVER)
             {
                 try
                 {
@@ -100,7 +99,7 @@ namespace CrocodileTheGame
                 }
                 catch { };
             }
-            else if (UserMode == UserTypes.TYPE_USER && Leader)
+            else if (UserMode == UserTypes.TYPE_USER)
             {
                 try
                 {
@@ -118,24 +117,39 @@ namespace CrocodileTheGame
                 }
                 catch { };
             }
-            Leader = false;
         }
         private void PrepareLeader()
         {
             TurnOnButtons();
             tbInput.Enabled = false;
             btnSend.Enabled = false;
-            if (UserMode == UserTypes.TYPE_SERVER && !Leader)
+            if (UserMode == UserTypes.TYPE_SERVER)
             {
-                this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
-                this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+                try
+                {
+                    this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseDown);
+                }
+                catch { }
+                try
+                {
+                    this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HostpicCanvas_MouseUp);
+                }
+                catch { }
             }
-            else if (UserMode == UserTypes.TYPE_USER && Leader)
+            else if (UserMode == UserTypes.TYPE_USER)
             {
-                this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
-                this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
+                try
+                {
+                    this.picCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseDown);
+                }
+                catch { }
+                try
+                {
+                    this.picCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UserpicCanvas_MouseUp);
+                }
+                catch { }
             }
-            Leader = true;
+
         }
 
 
