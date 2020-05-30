@@ -208,6 +208,7 @@
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(239, 25);
             this.tbInput.TabIndex = 8;
+            this.tbInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbInput_KeyDown);
             // 
             // btnSend
             // 
@@ -221,6 +222,7 @@
             this.btnSend.TabIndex = 7;
             this.btnSend.Text = "Отправить";
             this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // btnExit
             // 

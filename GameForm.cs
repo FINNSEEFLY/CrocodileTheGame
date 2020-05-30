@@ -256,7 +256,61 @@ namespace CrocodileTheGame
             picCanvas.Image = (Image)MainCanvas.Clone();
             Graphics.Dispose();
         }
-
+        private void btnFill_Click(object sender, EventArgs e)
+        {
+            FillCanvas(Color);
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                if (!Server.SendFillCanvas(Color))
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                }
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostSendAllFillCanvas(Color);
+            }
+        }
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearCanvas();
+            if (UserMode == UserTypes.TYPE_USER)
+            {
+                if (!Server.SendClearCanvas())
+                {
+                    MessageBox.Show("Потеряно соединение с сервером");
+                    UserFormClose();
+                }
+            }
+            else if (UserMode == UserTypes.TYPE_SERVER)
+            {
+                HostSendAllClearCanvas();
+            }
+        }
+        private void SendMessage()
+        {
+            if (tbInput.Text.Trim()!="")
+            {
+                if (UserMode == UserTypes.TYPE_USER)
+                {
+                    if (!Server.SendMessage(TcpFamily.TYPE_MESSAGE, tbInput.Text.Trim()))
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            UserFormClose();
+                        }));
+                    }
+                } else
+                {
+                    HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
+                    if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
+                    {
+                        FinishRound(UserList[0], TimeCounter);
+                    }
+                }
+            }
+        }
 
         // Host
         private void HostSendAllRounds()
@@ -555,7 +609,7 @@ namespace CrocodileTheGame
                                         {
                                             this.Invoke(new MethodInvoker(() =>
                                             {
-                                                FinishRound(ref user, TimeCounter);
+                                                FinishRound(user, TimeCounter);
                                             }));                                            
                                         }
                                         break;
@@ -658,11 +712,11 @@ namespace CrocodileTheGame
             PaintDot(Color, trbRadius.Value, e.X, e.Y);
             HostSendAllDot(e.X, e.Y);
         }
-        private void FinishRound(ref User winner, int time)
+        private void FinishRound(User winner, int time)
         {
             Timer.Enabled = false;
             HostSendAllHeader(winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов");
-            winner.Score += time * 10;
+            UserList[UserList.IndexOf(winner)].Score+= time * 10;
             WordList.Remove(SelectedWord);
             SelectedWord = null;
             Thread.Sleep(3500);
@@ -901,7 +955,10 @@ namespace CrocodileTheGame
                 catch
                 {
                     MessageBox.Show("Потеряно соединение с сервером");
-                    UserFormClose();
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        UserFormClose();
+                    }));
                 };
             }
         }
@@ -930,38 +987,18 @@ namespace CrocodileTheGame
             }
         }
 
-        private void btnFill_Click(object sender, EventArgs e)
+        private void tbInput_KeyDown(object sender, KeyEventArgs e)
         {
-            FillCanvas(Color);
-            if (UserMode == UserTypes.TYPE_USER)
+            if (e.KeyCode == Keys.Enter)
             {
-                if (!Server.SendFillCanvas(Color))
-                {
-                    MessageBox.Show("Потеряно соединение с сервером");
-                    UserFormClose();
-                }
-            }
-            else if (UserMode == UserTypes.TYPE_SERVER)
-            {
-                HostSendAllFillCanvas(Color);
+                e.SuppressKeyPress = true;
+                SendMessage();
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
+        private void btnSend_Click(object sender, EventArgs e)
         {
-            ClearCanvas();
-            if (UserMode == UserTypes.TYPE_USER)
-            {
-                if (!Server.SendClearCanvas())
-                {
-                    MessageBox.Show("Потеряно соединение с сервером");
-                    UserFormClose();
-                }
-            }
-            else if (UserMode == UserTypes.TYPE_SERVER)
-            {
-                HostSendAllClearCanvas();
-            }
+            SendMessage();
         }
     }
 }
