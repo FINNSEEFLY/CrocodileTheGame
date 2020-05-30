@@ -798,6 +798,8 @@ namespace CrocodileTheGame
                 HostSendAllPrepareInfo(leader);
                 HostSendAllRounds();
                 HostSendAllTime(MakeTime(MAXTIME));
+                HostSendAllClearCanvas();
+                ClearCanvas();
                 if (leader.IsHost)
                 {
                     this.Invoke(new MethodInvoker(() =>

@@ -83,7 +83,7 @@ namespace CrocodileTheGame
         {
             try
             {
-                var data = new byte[1];
+                var data = new byte[5];
                 data[0] = type;
                 stream.Write(data, 0, data.Length);
                 return true;
@@ -105,6 +105,7 @@ namespace CrocodileTheGame
             Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
             return SendMessage(TcpFamily.TYPE_DOT, data);
         }
+        
         public bool SendDot(byte[] data)
         {
             return SendMessage(TcpFamily.TYPE_DOT, data);
