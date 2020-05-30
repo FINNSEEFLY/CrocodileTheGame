@@ -227,6 +227,7 @@
             this.Name = "PackEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Редактор паков";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PackEditorForm_FormClosed);
             this.Load += new System.EventHandler(this.PackEditorForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

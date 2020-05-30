@@ -14,6 +14,8 @@ namespace CrocodileTheGame
     public partial class PackEditorForm : Form
     {
         private List<string> ListWord = new List<string>();
+        public event Free FinalFree;
+        public delegate void Free();
 
         public PackEditorForm()
         {
@@ -185,6 +187,11 @@ namespace CrocodileTheGame
                 }
             }
 
+        }
+
+        private void PackEditorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FinalFree();
         }
     }
 }

@@ -28,19 +28,25 @@ namespace CrocodileTheGame
         private List<User> UserList;
         private TcpListener TcpListener;
         private GameForm GameForm;
+        public event Free FinalFree;
+        public delegate void Free();
         public HostLobbyForm()
         {
             InitializeComponent();
         }
 
-        private void CloseForm()
+        private void FreeResources()
         {
-            Owner.Show();
             Disconnect();
             IsWaiting = false;
             UdpListener.Dispose();
             UdpSender.Dispose();
             TcpListener.Stop();
+        }
+        private void CloseForm()
+        {
+            FreeResources();
+            Owner.Show();
             Dispose();
         }
 
@@ -415,6 +421,7 @@ namespace CrocodileTheGame
                     TcpListener.Stop();
                     SendAllBeginGame();
                     GameForm = new GameForm(UserTypes.TYPE_SERVER);
+                    GameForm.FinalFree += ClosingWithGameForm;
                     GameForm.Nickname = Nickname;
                     GameForm.UserList = UserList;
                     GameForm.WordList = WordList;
@@ -433,6 +440,18 @@ namespace CrocodileTheGame
             {
                 MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void HostLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeResources();
+            FinalFree();
+        }
+
+        private void ClosingWithGameForm()
+        {
+            GameForm.Dispose();
+            FinalFree();
         }
     }
 }

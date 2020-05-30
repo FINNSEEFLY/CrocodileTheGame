@@ -26,6 +26,7 @@ namespace CrocodileTheGame
         private void btnCreateLobby_Click(object sender, EventArgs e)
         {
             HostLobbyForm = new HostLobbyForm();
+            HostLobbyForm.FinalFree += ClosingWithHostLobbyForm;
             HostLobbyForm.Nickname = GiveNickname();
             HostLobbyForm.Owner = this;
             HostLobbyForm.Show();
@@ -40,6 +41,7 @@ namespace CrocodileTheGame
         {
             FindLobbyForm = new FindLobbyForm();
             FindLobbyForm.Owner = this;
+            FindLobbyForm.FinalFree += ClosingWithFindLobbyForm;
             FindLobbyForm.Nickname = GiveNickname();
             FindLobbyForm.Show();
             Hide();
@@ -49,6 +51,7 @@ namespace CrocodileTheGame
         {
             PackEditorForm = new PackEditorForm();
             PackEditorForm.Owner = this;
+            PackEditorForm.FinalFree += ClosingWithPackEditorForm;
             PackEditorForm.Show();
             Hide();
         }
@@ -71,5 +74,21 @@ namespace CrocodileTheGame
             return nickname;
         }
        
+        public void ClosingWithFindLobbyForm()
+        {
+            FindLobbyForm.Dispose();
+            Dispose();
+        }
+    
+        public void ClosingWithHostLobbyForm()
+        {
+            HostLobbyForm.Dispose();
+            Dispose();
+        }
+        public void ClosingWithPackEditorForm()
+        {
+            PackEditorForm.Dispose();
+            Dispose();
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace CrocodileTheGame
         private GameForm GameForm;
         public event BackToMain Back;
         public delegate void BackToMain();
+        public event Free FinalFree;
+        public delegate void Free();
 
         public PlayerLobbyForm()
         {
@@ -70,6 +72,7 @@ namespace CrocodileTheGame
                                 {
                                     OnlyThisListen = false;
                                     GameForm = new GameForm(UserTypes.TYPE_USER);
+                                    GameForm.FinalFree += ClosingWithGameForm;
                                     GameForm.Nickname = Nickname;
                                     GameForm.Server = Server;
                                     GameForm.BackToMain += BackToMainForm;
@@ -101,10 +104,15 @@ namespace CrocodileTheGame
             }
         }
 
-        private void CloseForm()
+        private void FreeResources()
         {
             Server.Listen = false;
             Server.Dispose();
+        }
+
+        private void CloseForm()
+        {
+            FreeResources();
             Back();
         }
 
@@ -121,11 +129,24 @@ namespace CrocodileTheGame
             Server.SendDisconnect();
             CloseForm();
         }
-    
+
         private void BackToMainForm()
         {
             GameForm.Dispose();
             Back();
+        }
+
+        private void PlayerLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Server.SendDisconnect();
+            FreeResources();
+            FinalFree();
+        }
+
+        private void ClosingWithGameForm()
+        {
+            GameForm.Dispose();
+            FinalFree();
         }
     }
 }

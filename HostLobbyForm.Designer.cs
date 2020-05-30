@@ -229,6 +229,7 @@
             this.Name = "HostLobbyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лобби (Создатель)";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HostLobbyForm_FormClosed);
             this.Load += new System.EventHandler(this.LobbyHostForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

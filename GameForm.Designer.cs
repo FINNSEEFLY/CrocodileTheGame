@@ -405,6 +405,7 @@
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Игра";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
             this.Load += new System.EventHandler(this.GameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
             this.pnlRightSide.ResumeLayout(false);

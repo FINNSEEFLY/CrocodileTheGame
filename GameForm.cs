@@ -31,6 +31,8 @@ namespace CrocodileTheGame
 
         public event BackToMainForm BackToMain;
         public delegate void BackToMainForm();
+        public event Free FinalFree;
+        public delegate void Free();
 
         public GameForm(int usermode)
         {
@@ -212,20 +214,32 @@ namespace CrocodileTheGame
                 throw new Exception("Ошибка, которой не должно было возникать");
             }
         }
-        private void btnExit_Click(object sender, EventArgs e)
+        public void FreeResources()
         {
             if (UserMode == UserTypes.TYPE_USER)
             {
-                UserFormClose();
+                Server.SendDisconnect();
+                Server.Listen = false;
+                Server.Dispose();
             }
             else if (UserMode == UserTypes.TYPE_SERVER)
             {
-                HostFormClose();
+                HostSendAllDisconnect();
             }
             else
             {
                 throw new Exception("Ошибка которой не должно было возникать");
             }
+            MainCanvas.Dispose();
+        }
+        private void CloseForm()
+        {
+            BackToMain();
+        }
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            FreeResources();
+            CloseForm();
         }
         private void btnBlue_Click(object sender, EventArgs e)
         {
@@ -343,7 +357,11 @@ namespace CrocodileTheGame
             tbChat.SelectionStart = tbChat.Text.Length;
             tbChat.ScrollToCaret();
         }
-
+        private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeResources();
+            FinalFree();
+        }
 
         // Host
         private void HostSendAllRounds()
@@ -713,12 +731,7 @@ namespace CrocodileTheGame
                 PrepareNextRound();
             }
         }
-        private void HostFormClose()
-        {
-            HostDisconnect();
-            BackToMain();
-        }
-        private void HostDisconnect()
+        private void HostSendAllDisconnect()
         {
             var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
@@ -1066,9 +1079,7 @@ namespace CrocodileTheGame
         }
         private void UserFormClose()
         {
-            Server.SendDisconnect();
-            Server.Listen = false;
-            Server.Dispose();
+            FreeResources();
             BackToMain();
         }
         private void UserpicCanvas_MouseDown(object sender, MouseEventArgs e)

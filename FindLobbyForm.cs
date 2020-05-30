@@ -25,6 +25,8 @@ namespace CrocodileTheGame
         private UdpClient UdpSender;
         private List<Server> ServerList;
         private PlayerLobbyForm PlayerLobbyForm;
+        public event Free FinalFree;
+        public delegate void Free();
 
         public FindLobbyForm()
         {
@@ -59,14 +61,23 @@ namespace CrocodileTheGame
             }
         }
 
-
-        private void btnExit_Click(object sender, EventArgs e)
+        private void FreeResources()
         {
             IsListening = false;
             UdpListener.Dispose();
             UdpSender.Dispose();
+        }
+
+        private void CloseForm()
+        {
+            FreeResources();
             Owner.Show();
             Dispose();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            CloseForm();
         }
 
         private void FindLobbyForm_Load(object sender, EventArgs e)
@@ -168,6 +179,7 @@ namespace CrocodileTheGame
                     UdpListener.Dispose();
                     SelectedServer = server;
                     PlayerLobbyForm = new PlayerLobbyForm();
+                    PlayerLobbyForm.FinalFree += ClosingWithPlayerLobbyForm;
                     PlayerLobbyForm.Owner = this;
                     PlayerLobbyForm.LocalIP = LocalIP;
                     PlayerLobbyForm.Nickname = Nickname;
@@ -192,5 +204,18 @@ namespace CrocodileTheGame
 
         }
 
+        private void FindLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeResources();
+            FinalFree();
+        }
+        
+        private void ClosingWithPlayerLobbyForm()
+        {
+            PlayerLobbyForm.Dispose();
+            FinalFree();
+        }
+    
+    
     }
 }

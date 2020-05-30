@@ -126,6 +126,7 @@
             this.Name = "FindLobbyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поиск лобби";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FindLobbyForm_FormClosed);
             this.Load += new System.EventHandler(this.FindLobbyForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

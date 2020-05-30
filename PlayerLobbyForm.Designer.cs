@@ -94,6 +94,7 @@
             this.Name = "PlayerLobbyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лобби";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PlayerLobbyForm_FormClosed);
             this.Load += new System.EventHandler(this.LobbyPlayerForm_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

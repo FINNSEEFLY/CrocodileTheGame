@@ -28,25 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtAbout = new System.Windows.Forms.TextBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.lblAbout = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tbAbout = new System.Windows.Forms.TextBox();
             this.pnlInfo.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // txtAbout
-            // 
-            this.txtAbout.BackColor = System.Drawing.SystemColors.Window;
-            this.txtAbout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtAbout.Location = new System.Drawing.Point(0, 0);
-            this.txtAbout.Multiline = true;
-            this.txtAbout.Name = "txtAbout";
-            this.txtAbout.ReadOnly = true;
-            this.txtAbout.Size = new System.Drawing.Size(304, 401);
-            this.txtAbout.TabIndex = 0;
             // 
             // btnExit
             // 
@@ -83,12 +72,27 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.txtAbout);
+            this.panel1.Controls.Add(this.tbAbout);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 401);
             this.panel1.TabIndex = 7;
+            // 
+            // tbAbout
+            // 
+            this.tbAbout.BackColor = System.Drawing.SystemColors.Window;
+            this.tbAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbAbout.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbAbout.Location = new System.Drawing.Point(0, 0);
+            this.tbAbout.Multiline = true;
+            this.tbAbout.Name = "tbAbout";
+            this.tbAbout.ReadOnly = true;
+            this.tbAbout.Size = new System.Drawing.Size(304, 401);
+            this.tbAbout.TabIndex = 0;
+            this.tbAbout.Text = "Данная игра была разработана в рамках курсового проекта по предмету\r\n \"Компьютерн" +
+    "ые системы и сети\"\r\n\r\n\r\nСвязь с автором:\r\nTelegram: finnseefly\r\n\r\n";
+            this.tbAbout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AboutForm
             // 
@@ -104,6 +108,7 @@
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "О программе";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AboutForm_FormClosed);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -113,11 +118,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtAbout;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.Label lblAbout;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox tbAbout;
     }
 }
