@@ -600,8 +600,12 @@ namespace CrocodileTheGame
                                 {
                                     message = Server.ReceiveMessage(messageLength);
                                 }
-                                catch
+                                catch (Exception e)
                                 {
+                                    this.Invoke(new MethodInvoker(() =>
+                                    {
+                                        MessageBox.Show(e.Message + "\n" + e.StackTrace);
+                                    }));
                                     user.Listen = false;
                                     UserList.Remove(user);
                                     user.Dispose();
@@ -648,8 +652,13 @@ namespace CrocodileTheGame
                         }
                     }
                 }
-                catch
-                { };
+                catch (Exception e)
+                {
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        MessageBox.Show(e.Message + "\n" + e.StackTrace);
+                    }));
+                };
             }
         }
         private string MakeTime(int time)
@@ -851,16 +860,16 @@ namespace CrocodileTheGame
                         {
                             case TcpFamily.TYPE_FAILED:
                             case TcpFamily.TYPE_DISCONNECT:
-                                MessageBox.Show("Лобби было закрыто хостом.");
                                 this.Invoke(new MethodInvoker(() =>
                                 {
+                                    MessageBox.Show("Лобби было закрыто хостом.");
                                     UserFormClose();
                                 }));
                                 break;
                             case TcpFamily.TYPE_KICK:
-                                MessageBox.Show("Вас исключили из лобби.");
                                 this.Invoke(new MethodInvoker(() =>
                                 {
+                                    MessageBox.Show("Вас исключили из лобби.");
                                     UserFormClose();
                                 }));
                                 break;
@@ -897,9 +906,9 @@ namespace CrocodileTheGame
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
                                     this.Invoke(new MethodInvoker(() =>
                                     {
+                                        MessageBox.Show("Ошибка, получен поврежденный пакет, соединение будет разорвано");
                                         UserFormClose();
                                     }));
                                     return;
@@ -952,9 +961,9 @@ namespace CrocodileTheGame
                                         break;
                                     case TcpFamily.TYPE_RESULT:
                                         UserSilentCloseConnection();
-                                        MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + Encoding.UTF8.GetString(message), "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
                                         this.Invoke(new MethodInvoker(() =>
                                         {
+                                            MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + Encoding.UTF8.GetString(message), "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
                                             BackToMain();
                                         }));
                                         break;
@@ -968,9 +977,9 @@ namespace CrocodileTheGame
                 }
                 catch
                 {
-                    MessageBox.Show("Потеряно соединение с сервером");
                     this.Invoke(new MethodInvoker(() =>
                     {
+                        MessageBox.Show("Потеряно соединение с сервером");
                         UserFormClose();
                     }));
                 };

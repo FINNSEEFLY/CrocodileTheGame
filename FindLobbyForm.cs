@@ -175,7 +175,6 @@ namespace CrocodileTheGame
                     PlayerLobbyForm.Back += BackToMain;
                     PlayerLobbyForm.Show();
                     this.Hide();
-                    MessageBox.Show("Подключение установлено");
                 }
             }
         }
