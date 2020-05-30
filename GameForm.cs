@@ -425,6 +425,7 @@ namespace CrocodileTheGame
             foreach (var user in orderedUserList)
             {
                 result += i + " Место " + user.Username + " | " + user.Score + "\n";
+                i++;
             }
             return result;
 
