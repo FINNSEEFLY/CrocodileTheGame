@@ -61,7 +61,7 @@ namespace CrocodileTheGame
             LocalIP = CalculationsForNetwork.GetLocalIP();
             LocalIPv4Address = IPAddress.Parse(LocalIP);
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
+            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
             IsWaiting = true;
             UserList = new List<User>();
             UserList.Add(new User() { Username = Nickname, IsHost = true, IPv4Address = LocalIPv4Address });

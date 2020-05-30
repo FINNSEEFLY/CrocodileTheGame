@@ -88,7 +88,7 @@ namespace CrocodileTheGame
             UdpListener.EnableBroadcast = true;
             UdpSender = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
             UdpSender.EnableBroadcast = true;
-            MessageBox.Show("Nickname = " + Nickname + ";\nLocalIP = " + LocalIP + ";\nBroadcastIP = " + UdpBroadcastAddress);
+            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
             IsListening = true;
             ServerList = new List<Server>();
             ltLobby.DataSource = ServerList;
