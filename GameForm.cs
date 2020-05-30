@@ -327,7 +327,7 @@ namespace CrocodileTheGame
         private void HostSendAllRounds()
         { 
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -349,7 +349,7 @@ namespace CrocodileTheGame
         private void HostSendAllTime(string time)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -371,7 +371,7 @@ namespace CrocodileTheGame
         private void HostSendAllUserList()
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -400,7 +400,7 @@ namespace CrocodileTheGame
         }
         private void HostSendAllResults(string result)
         {
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -430,7 +430,7 @@ namespace CrocodileTheGame
         }
         private void HostSilentCloseConnection()
         {
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -444,7 +444,7 @@ namespace CrocodileTheGame
         private void HostSendAllClearCanvas()
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -466,7 +466,7 @@ namespace CrocodileTheGame
         private void HostSendAllMessage(string message)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -488,7 +488,7 @@ namespace CrocodileTheGame
         private void HostSendAllDot(byte[] message)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -510,7 +510,7 @@ namespace CrocodileTheGame
         private void HostSendAllFillCanvas(byte[] message)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -532,7 +532,7 @@ namespace CrocodileTheGame
         private void HostSendAllFillCanvas(Color color)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -554,7 +554,7 @@ namespace CrocodileTheGame
         private void HostSendAllHeader(string str)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -699,7 +699,7 @@ namespace CrocodileTheGame
         }
         private void HostDisconnect()
         {
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -714,7 +714,7 @@ namespace CrocodileTheGame
         private void HostSendAllDot(int x, int y)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
@@ -761,7 +761,7 @@ namespace CrocodileTheGame
         private void HostSendAllPrepareInfo(User lead)
         {
             bool failed = false;
-            var tmpUserList = UserList;
+            var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
             {
                 if (!user.IsHost)
