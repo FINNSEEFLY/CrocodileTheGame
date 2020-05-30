@@ -15,7 +15,7 @@ namespace CrocodileTheGame
 
         public int Score { get; set; } = 0;
 
-        public int NumOfLeads{ get; set; } = 0;
+        public int NumOfLeads { get; set; } = 0;
 
         public User()
         {
@@ -29,7 +29,7 @@ namespace CrocodileTheGame
             int lengthNicknames = 0;
             foreach (User user in list)
             {
-                lengthNicknames += Encoding.UTF8.GetBytes(user.Username+" | "+user.Score).Length;
+                lengthNicknames += Encoding.UTF8.GetBytes(user.Username + " | " + user.Score).Length;
             }
 
             int sizeOfData = lengthNicknames + countOfUsers * sizeof(int);
@@ -86,7 +86,7 @@ namespace CrocodileTheGame
         public bool SendRounds(int currentround, int maxround)
         {
             var str = currentround + " / " + maxround;
-            return SendMessage(TcpFamily.TYPE_ROUNDS);
+            return SendMessage(TcpFamily.TYPE_ROUNDS, str);
         }
 
         public bool SendUserResults(string result)
@@ -108,7 +108,7 @@ namespace CrocodileTheGame
         {
             return SendMessage(TcpFamily.TYPE_HEADER, message);
         }
-        
+
         public bool SendPrepareChatter()
         {
             return SendMessage(TcpFamily.TYPE_YOU_CHATTER);
@@ -127,6 +127,6 @@ namespace CrocodileTheGame
             }
             catch { }
         }
-    
+
     }
 }
