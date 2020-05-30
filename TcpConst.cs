@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrocodileTheGame
+﻿namespace CrocodileTheGame
 {
-    public static class TcpFamily
+    public static class TcpConst
     {
         public const int DEFAULT_PORT = 1337;
         // Не содержат тела

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -83,7 +82,7 @@ namespace CrocodileTheGame
             TurnOffButtons();
             tbInput.Enabled = true;
             btnSend.Enabled = true;
-            if (UserMode == UserTypes.TYPE_SERVER)
+            if (UserMode == UserTypes.SERVER)
             {
                 try
                 {
@@ -101,7 +100,7 @@ namespace CrocodileTheGame
                 }
                 catch { };
             }
-            else if (UserMode == UserTypes.TYPE_USER)
+            else if (UserMode == UserTypes.USER)
             {
                 try
                 {
@@ -125,7 +124,7 @@ namespace CrocodileTheGame
             TurnOnButtons();
             tbInput.Enabled = false;
             btnSend.Enabled = false;
-            if (UserMode == UserTypes.TYPE_SERVER)
+            if (UserMode == UserTypes.SERVER)
             {
                 try
                 {
@@ -138,7 +137,7 @@ namespace CrocodileTheGame
                 }
                 catch { }
             }
-            else if (UserMode == UserTypes.TYPE_USER)
+            else if (UserMode == UserTypes.USER)
             {
                 try
                 {
@@ -189,11 +188,11 @@ namespace CrocodileTheGame
         {
             PrepareStart();
             PlayerList = new List<string>();
-            if (UserMode == UserTypes.TYPE_USER)
+            if (UserMode == UserTypes.USER)
             {
                 Task.Factory.StartNew(UserListenTCP);
             }
-            else if (UserMode == UserTypes.TYPE_SERVER)
+            else if (UserMode == UserTypes.SERVER)
             {
                 foreach (var user in UserList)
                 {
@@ -216,13 +215,13 @@ namespace CrocodileTheGame
         }
         public void FreeResources()
         {
-            if (UserMode == UserTypes.TYPE_USER)
+            if (UserMode == UserTypes.USER)
             {
                 Server.SendDisconnect();
                 Server.Listen = false;
                 Server.Dispose();
             }
-            else if (UserMode == UserTypes.TYPE_SERVER)
+            else if (UserMode == UserTypes.SERVER)
             {
                 HostSendAllDisconnect();
             }
@@ -281,7 +280,7 @@ namespace CrocodileTheGame
         private void btnFill_Click(object sender, EventArgs e)
         {
             FillCanvas(Color);
-            if (UserMode == UserTypes.TYPE_USER)
+            if (UserMode == UserTypes.USER)
             {
                 if (!Server.SendFillCanvas(Color))
                 {
@@ -289,7 +288,7 @@ namespace CrocodileTheGame
                     UserFormClose();
                 }
             }
-            else if (UserMode == UserTypes.TYPE_SERVER)
+            else if (UserMode == UserTypes.SERVER)
             {
                 HostSendAllFillCanvas(Color);
             }
@@ -297,7 +296,7 @@ namespace CrocodileTheGame
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearCanvas();
-            if (UserMode == UserTypes.TYPE_USER)
+            if (UserMode == UserTypes.USER)
             {
                 if (!Server.SendClearCanvas())
                 {
@@ -305,7 +304,7 @@ namespace CrocodileTheGame
                     UserFormClose();
                 }
             }
-            else if (UserMode == UserTypes.TYPE_SERVER)
+            else if (UserMode == UserTypes.SERVER)
             {
                 HostSendAllClearCanvas();
             }
@@ -314,9 +313,9 @@ namespace CrocodileTheGame
         {
             if (tbInput.Text.Trim() != "")
             {
-                if (UserMode == UserTypes.TYPE_USER)
+                if (UserMode == UserTypes.USER)
                 {
-                    if (!Server.SendMessage(TcpFamily.TYPE_MESSAGE, tbInput.Text.Trim()))
+                    if (!Server.SendMessage(TcpConst.TYPE_MESSAGE, tbInput.Text.Trim()))
                     {
                         UserFormClose();
                     }
@@ -325,7 +324,7 @@ namespace CrocodileTheGame
                         tbInput.Clear();
                     }
                 }
-                else if (UserMode == UserTypes.TYPE_SERVER)
+                else if (UserMode == UserTypes.SERVER)
                 {
                     HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
                     tbChat.Text += Nickname + ": " + tbInput.Text.Trim() + Environment.NewLine;
@@ -513,7 +512,7 @@ namespace CrocodileTheGame
             {
                 if (!user.IsHost)
                 {
-                    if (!user.SendMessage(TcpFamily.TYPE_MESSAGE, message))
+                    if (!user.SendMessage(TcpConst.TYPE_MESSAGE, message))
                     {
                         user.Listen = false;
                         UserList.Remove(user);
@@ -629,23 +628,23 @@ namespace CrocodileTheGame
                         byte[] message;
                         switch (messageType)
                         {
-                            case TcpFamily.TYPE_FAILED:
-                            case TcpFamily.TYPE_DISCONNECT:
+                            case TcpConst.TYPE_FAILED:
+                            case TcpConst.TYPE_DISCONNECT:
                                 user.Listen = false;
                                 UserList.Remove(user);
                                 user.Dispose();
                                 HostSendAllUserList();
                                 break;
-                            case TcpFamily.TYPE_CLEAR_CANVAS:
+                            case TcpConst.TYPE_CLEAR_CANVAS:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     ClearCanvas();
                                 }));
                                 HostSendAllClearCanvas();
                                 break;
-                            case TcpFamily.TYPE_MESSAGE:
-                            case TcpFamily.TYPE_DOT:
-                            case TcpFamily.TYPE_FILL_CANVAS:
+                            case TcpConst.TYPE_MESSAGE:
+                            case TcpConst.TYPE_DOT:
+                            case TcpConst.TYPE_FILL_CANVAS:
                                 messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 try
                                 {
@@ -665,7 +664,7 @@ namespace CrocodileTheGame
                                 }
                                 switch (messageType)
                                 {
-                                    case TcpFamily.TYPE_MESSAGE:
+                                    case TcpConst.TYPE_MESSAGE:
                                         var word = Encoding.UTF8.GetString(message);
                                         var result = user.Username + ": " + word;
                                         this.Invoke(new MethodInvoker(() =>
@@ -681,14 +680,14 @@ namespace CrocodileTheGame
                                             }
                                         }
                                         break;
-                                    case TcpFamily.TYPE_DOT:
+                                    case TcpConst.TYPE_DOT:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             PaintDotAccepted(message);
                                         }));
                                         HostSendAllDot(message);
                                         break;
-                                    case TcpFamily.TYPE_FILL_CANVAS:
+                                    case TcpConst.TYPE_FILL_CANVAS:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             FillCanvasAccepted(message);
@@ -950,47 +949,47 @@ namespace CrocodileTheGame
                         byte[] message;
                         switch (messageType)
                         {
-                            case TcpFamily.TYPE_FAILED:
-                            case TcpFamily.TYPE_DISCONNECT:
+                            case TcpConst.TYPE_FAILED:
+                            case TcpConst.TYPE_DISCONNECT:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     MessageBox.Show("Лобби было закрыто хостом.");
                                     UserFormClose();
                                 }));
                                 break;
-                            case TcpFamily.TYPE_KICK:
+                            case TcpConst.TYPE_KICK:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     MessageBox.Show("Вас исключили из лобби.");
                                     UserFormClose();
                                 }));
                                 break;
-                            case TcpFamily.TYPE_CLEAR_CANVAS:
+                            case TcpConst.TYPE_CLEAR_CANVAS:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     ClearCanvas();
                                 }));
                                 break;
-                            case TcpFamily.TYPE_YOU_CHATTER:
+                            case TcpConst.TYPE_YOU_CHATTER:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     PrepareChatter();
                                 }));
                                 break;
-                            case TcpFamily.TYPE_YOU_LEADER:
+                            case TcpConst.TYPE_YOU_LEADER:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     PrepareLeader();
                                 }));
                                 break;
-                            case TcpFamily.TYPE_USER_LIST:
-                            case TcpFamily.TYPE_TIME:
-                            case TcpFamily.TYPE_ROUNDS:
-                            case TcpFamily.TYPE_RESULT:
-                            case TcpFamily.TYPE_MESSAGE:
-                            case TcpFamily.TYPE_DOT:
-                            case TcpFamily.TYPE_FILL_CANVAS:
-                            case TcpFamily.TYPE_HEADER:
+                            case TcpConst.TYPE_USER_LIST:
+                            case TcpConst.TYPE_TIME:
+                            case TcpConst.TYPE_ROUNDS:
+                            case TcpConst.TYPE_RESULT:
+                            case TcpConst.TYPE_MESSAGE:
+                            case TcpConst.TYPE_DOT:
+                            case TcpConst.TYPE_FILL_CANVAS:
+                            case TcpConst.TYPE_HEADER:
                                 messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 try
                                 {
@@ -1007,7 +1006,7 @@ namespace CrocodileTheGame
                                 }
                                 switch (messageType)
                                 {
-                                    case TcpFamily.TYPE_USER_LIST:
+                                    case TcpConst.TYPE_USER_LIST:
                                         PlayerList.Clear();
                                         PlayerList = Server.ParseStringList(message, messageLength);
                                         this.Invoke(new MethodInvoker(() =>
@@ -1015,43 +1014,43 @@ namespace CrocodileTheGame
                                             UpdatePlayerList();
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_TIME:
+                                    case TcpConst.TYPE_TIME:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             tbTime.Text = Encoding.UTF8.GetString(message);
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_ROUNDS:
+                                    case TcpConst.TYPE_ROUNDS:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             tbRound.Text = Encoding.UTF8.GetString(message);
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_MESSAGE:
+                                    case TcpConst.TYPE_MESSAGE:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             tbChat.Text += Encoding.UTF8.GetString(message) + Environment.NewLine;
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_DOT:
+                                    case TcpConst.TYPE_DOT:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             PaintDotAccepted(message);
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_FILL_CANVAS:
+                                    case TcpConst.TYPE_FILL_CANVAS:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             FillCanvasAccepted(message);
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_HEADER:
+                                    case TcpConst.TYPE_HEADER:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
                                             tbLeaderAndWord.Text = Encoding.UTF8.GetString(message);
                                         }));
                                         break;
-                                    case TcpFamily.TYPE_RESULT:
+                                    case TcpConst.TYPE_RESULT:
                                         UserSilentCloseConnection();
                                         this.Invoke(new MethodInvoker(() =>
                                         {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrocodileTheGame
+﻿namespace CrocodileTheGame
 {
-    public static class UdpFamily
+    public static class UdpConst
     {
         public const int NUM_OF_UDP_PACKET = 50;
         public const int BROADCAST_PORT = 322;

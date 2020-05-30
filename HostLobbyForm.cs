@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -68,11 +65,11 @@ namespace CrocodileTheGame
             ltPlayers.DataSource = UserList;
             ltPlayers.DisplayMember = "Username";
             ltPlayers.ValueMember = "IPv4Address";
-            UdpSender = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
             UdpSender.EnableBroadcast = true;
-            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
+            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
             UdpListener.EnableBroadcast = true;
-            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpFamily.DEFAULT_PORT);
+            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpConst.DEFAULT_PORT);
             tbNumOfRounds.Text = "3";
             Task.Factory.StartNew(ListenBroadcastUDP);
             Task.Factory.StartNew(ListeningForConnections);
@@ -90,11 +87,11 @@ namespace CrocodileTheGame
         {
             var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
             var data = new byte[nicknameBytes.Length + 1];
-            data[0] = (byte)UdpFamily.TYPE_SERVER_EXIST;
+            data[0] = (byte)UdpConst.TYPE_SERVER_EXIST;
             Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
             try
             {
-                for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                for (int i = 0; i < UdpConst.NUM_OF_UDP_PACKET; i++)
                 {
                     Thread.Sleep(1);
                     UdpSender.Send(data, data.Length);
@@ -174,7 +171,7 @@ namespace CrocodileTheGame
                 {
                     IPEndPoint remoteHost = null;
                     var recievedData = UdpListener.Receive(ref remoteHost);
-                    if (recievedData[0] == UdpFamily.TYPE_CLIENT_REQUEST)
+                    if (recievedData[0] == UdpConst.TYPE_CLIENT_REQUEST)
                     {
                         SendBroadcastLobby();
                     }
@@ -217,14 +214,14 @@ namespace CrocodileTheGame
                         var messageType = typeAndLength[0];
                         switch (messageType)
                         {
-                            case TcpFamily.TYPE_FAILED:
-                            case TcpFamily.TYPE_DISCONNECT:
+                            case TcpConst.TYPE_FAILED:
+                            case TcpConst.TYPE_DISCONNECT:
                                 user.Listen = false;
                                 UserList.Remove(user);
                                 user.Dispose();
                                 SendUsersList();
                                 break;
-                            case TcpFamily.TYPE_REQUEST_USER_LIST:
+                            case TcpConst.TYPE_REQUEST_USER_LIST:
                                 if (!user.SendUserList(UserList))
                                 {
                                     user.Listen = false;
@@ -233,7 +230,7 @@ namespace CrocodileTheGame
                                     SendUsersList();
                                 }
                                 break;
-                            case TcpFamily.TYPE_NICKNAME:
+                            case TcpConst.TYPE_NICKNAME:
                                 try
                                 {
                                     var messageLength = BitConverter.ToInt32(typeAndLength, 1);
@@ -420,7 +417,7 @@ namespace CrocodileTheGame
                     UdpSender.Dispose();
                     TcpListener.Stop();
                     SendAllBeginGame();
-                    GameForm = new GameForm(UserTypes.TYPE_SERVER);
+                    GameForm = new GameForm(UserTypes.SERVER);
                     GameForm.FinalFree += ClosingWithGameForm;
                     GameForm.Nickname = Nickname;
                     GameForm.UserList = UserList;

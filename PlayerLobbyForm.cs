@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -40,16 +35,16 @@ namespace CrocodileTheGame
                         var messageType = typeAndLength[0];
                         switch (messageType)
                         {
-                            case TcpFamily.TYPE_FAILED:
-                            case TcpFamily.TYPE_DISCONNECT:
+                            case TcpConst.TYPE_FAILED:
+                            case TcpConst.TYPE_DISCONNECT:
                                 MessageBox.Show("Лобби было закрыто хостом.");
                                 CloseForm();
                                 break;
-                            case TcpFamily.TYPE_KICK:
+                            case TcpConst.TYPE_KICK:
                                 MessageBox.Show("Вас исключили из лобби.");
                                 CloseForm();
                                 break;
-                            case TcpFamily.TYPE_USER_LIST:
+                            case TcpConst.TYPE_USER_LIST:
                                 var messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 try
                                 {
@@ -67,11 +62,11 @@ namespace CrocodileTheGame
                                     CloseForm();
                                 }
                                 break;
-                            case TcpFamily.TYPE_BEGIN_GAME:
+                            case TcpConst.TYPE_BEGIN_GAME:
                                 this.Invoke(new MethodInvoker(() =>
                                 {
                                     OnlyThisListen = false;
-                                    GameForm = new GameForm(UserTypes.TYPE_USER);
+                                    GameForm = new GameForm(UserTypes.USER);
                                     GameForm.FinalFree += ClosingWithGameForm;
                                     GameForm.Nickname = Nickname;
                                     GameForm.Server = Server;

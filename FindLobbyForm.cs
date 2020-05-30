@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +38,7 @@ namespace CrocodileTheGame
                 {
                     IPEndPoint remoteHost = null;
                     var recievedData = UdpListener.Receive(ref remoteHost);
-                    if (recievedData[0] == UdpFamily.TYPE_SERVER_EXIST)
+                    if (recievedData[0] == UdpConst.TYPE_SERVER_EXIST)
                     {
                         if (!LobbyExist(remoteHost.Address))
                         {
@@ -84,9 +81,9 @@ namespace CrocodileTheGame
         {
             LocalIP = CalculationsForNetwork.GetLocalIP();
             UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            UdpListener = new UdpClient(UdpFamily.BROADCAST_PORT);
+            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
             UdpListener.EnableBroadcast = true;
-            UdpSender = new UdpClient(UdpBroadcastAddress, UdpFamily.BROADCAST_PORT);
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
             UdpSender.EnableBroadcast = true;
             MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
             IsListening = true;
@@ -111,10 +108,10 @@ namespace CrocodileTheGame
         {
 
             var data = new byte[1];
-            data[0] = UdpFamily.TYPE_CLIENT_REQUEST;
+            data[0] = UdpConst.TYPE_CLIENT_REQUEST;
             try
             {
-                for (int i = 0; i < UdpFamily.NUM_OF_UDP_PACKET; i++)
+                for (int i = 0; i < UdpConst.NUM_OF_UDP_PACKET; i++)
                 {
                     Thread.Sleep(1);
                     UdpSender.Send(data, data.Length);

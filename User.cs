@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
 using System.Drawing;
 
 namespace CrocodileTheGame
@@ -45,7 +41,7 @@ namespace CrocodileTheGame
                 Buffer.BlockCopy(usernameBytes, 0, data, offset, usernameBytes.Length);
                 offset += usernameBytes.Length;
             }
-            return SendMessage(TcpFamily.TYPE_USER_LIST, data);
+            return SendMessage(TcpConst.TYPE_USER_LIST, data);
         }
 
         public bool SendUserList(List<User> list)
@@ -70,53 +66,89 @@ namespace CrocodileTheGame
                 Buffer.BlockCopy(usernameBytes, 0, data, offset, usernameBytes.Length);
                 offset += usernameBytes.Length;
             }
-            return SendMessage(TcpFamily.TYPE_USER_LIST, data);
+            return SendMessage(TcpConst.TYPE_USER_LIST, data);
         }
 
         public void SendDisconnect()
         {
-            SendMessage(TcpFamily.TYPE_DISCONNECT);
+            SendMessage(TcpConst.TYPE_DISCONNECT);
         }
 
         public void SendKick()
         {
-            SendMessage(TcpFamily.TYPE_KICK);
+            SendMessage(TcpConst.TYPE_KICK);
         }
 
         public bool SendRounds(int currentround, int maxround)
         {
             string str = currentround + " / " + maxround;
-            return SendMessage(TcpFamily.TYPE_ROUNDS, str);
+            return SendMessage(TcpConst.TYPE_ROUNDS, str);
         }
 
         public bool SendUserResults(string result)
         {
-            return SendMessage(TcpFamily.TYPE_RESULT, result);
+            return SendMessage(TcpConst.TYPE_RESULT, result);
         }
 
         public bool SendBeginGame()
         {
-            return SendMessage(TcpFamily.TYPE_BEGIN_GAME);
+            return SendMessage(TcpConst.TYPE_BEGIN_GAME);
         }
 
         public bool SendTime(string time)
         {
-            return SendMessage(TcpFamily.TYPE_TIME, time);
+            return SendMessage(TcpConst.TYPE_TIME, time);
         }
 
         public bool SendHeader(string message)
         {
-            return SendMessage(TcpFamily.TYPE_HEADER, message);
+            return SendMessage(TcpConst.TYPE_HEADER, message);
         }
 
         public bool SendPrepareChatter()
         {
-            return SendMessage(TcpFamily.TYPE_YOU_CHATTER);
+            return SendMessage(TcpConst.TYPE_YOU_CHATTER);
         }
        
         public bool SendPrepareLeader()
         {
-            return SendMessage(TcpFamily.TYPE_YOU_LEADER);
+            return SendMessage(TcpConst.TYPE_YOU_LEADER);
+        }
+
+        public bool SendClearCanvas()
+        {
+            return SendMessage(TcpConst.TYPE_CLEAR_CANVAS);
+        }
+
+        public bool SendFillCanvas(Color color)
+        {
+            var data = new byte[3];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
+        }
+
+        public bool SendFillCanvas(byte[] data)
+        {
+            return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
+        }
+
+        public bool SendDot(byte[] data)
+        {
+            return SendMessage(TcpConst.TYPE_DOT, data);
+        }
+
+        public bool SendDot(Color color, byte Radius, int x, int y)
+        {
+            var data = new byte[3 + 1 + 4 + 4];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            data[3] = Radius;
+            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
+            return SendMessage(TcpConst.TYPE_DOT, data);
         }
 
         public void Dispose()
