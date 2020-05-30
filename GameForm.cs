@@ -598,7 +598,7 @@ namespace CrocodileTheGame
                                 messageLength = BitConverter.ToInt32(typeAndLength, 1);
                                 try
                                 {
-                                    message = Server.ReceiveMessage(messageLength);
+                                    message = user.ReceiveMessage(messageLength);
                                 }
                                 catch (Exception e)
                                 {
