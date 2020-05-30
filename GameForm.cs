@@ -313,17 +313,21 @@ namespace CrocodileTheGame
                         }));
                     }
                 }
-                else
+                else if (UserMode == UserTypes.TYPE_SERVER)
                 {
                     HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
                     this.Invoke(new MethodInvoker(() =>
                     {
-                        tbInput.Clear();
+                        tbChat.Text += Nickname + ": " + tbInput.Text.Trim();
                     }));
                     if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
                     {
                         FinishRound(UserList[0], TimeCounter);
                     }
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        tbInput.Clear();
+                    }));
                 }
             }
         }
@@ -331,7 +335,7 @@ namespace CrocodileTheGame
 
         // Host
         private void HostSendAllRounds()
-        { 
+        {
             bool failed = false;
             var tmpUserList = new List<User>(UserList);
             foreach (var user in tmpUserList)
@@ -641,10 +645,7 @@ namespace CrocodileTheGame
                                         {
                                             if (word.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
                                             {
-                                                this.Invoke(new MethodInvoker(() =>
-                                                {
-                                                    FinishRound(user, TimeCounter);
-                                                }));
+                                                FinishRound(user, TimeCounter);
                                             }
                                         }
                                         break;
@@ -809,8 +810,11 @@ namespace CrocodileTheGame
                 var result = MakeResults();
                 HostSendAllResults(result);
                 HostSilentCloseConnection();
-                MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
-                BackToMain();
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    MessageBox.Show("Игра завершена!\nИтоговый рейтинг:\n" + result, "Конец игры", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    BackToMain();
+                }));
             }
             else
             {
@@ -853,7 +857,10 @@ namespace CrocodileTheGame
                         tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
                     }));
                 }
-                Timer.Enabled = true;
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    Timer.Enabled = true;
+                }));
             }
             // Проверить не конец ли игры
             // Если конец - объявить результаты
