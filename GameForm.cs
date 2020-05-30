@@ -310,7 +310,7 @@ namespace CrocodileTheGame
                 else if (UserMode == UserTypes.TYPE_SERVER)
                 {
                     HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
-                    tbChat.Text += Nickname + ": " + tbInput.Text.Trim();
+                    tbChat.Text += Nickname + ": " + tbInput.Text.Trim() + Environment.NewLine;
                     if (SelectedWord != null)
                     {
                         if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
@@ -321,6 +321,23 @@ namespace CrocodileTheGame
                     tbInput.Clear();
                 }
             }
+        }
+        private void tbInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                SendMessage();
+            }
+        }
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            SendMessage();
+        }
+        private void tbChat_TextChanged(object sender, EventArgs e)
+        {
+            tbChat.SelectionStart = tbChat.Text.Length;
+            tbChat.ScrollToCaret();
         }
 
 
@@ -630,7 +647,7 @@ namespace CrocodileTheGame
                                         var result = user.Username + ": " + word;
                                         this.Invoke(new MethodInvoker(() =>
                                         {
-                                            tbChat.Text += result + "\n";
+                                            tbChat.Text += result + Environment.NewLine;
                                         }));
                                         HostSendAllMessage(result);
                                         if (SelectedWord != null)
@@ -995,7 +1012,7 @@ namespace CrocodileTheGame
                                     case TcpFamily.TYPE_MESSAGE:
                                         this.Invoke(new MethodInvoker(() =>
                                         {
-                                            tbChat.Text += Encoding.UTF8.GetString(message) + "\n";
+                                            tbChat.Text += Encoding.UTF8.GetString(message) + Environment.NewLine;
                                         }));
                                         break;
                                     case TcpFamily.TYPE_DOT:
@@ -1065,20 +1082,6 @@ namespace CrocodileTheGame
                 MessageBox.Show("Потеряно соединение с сервером");
                 UserFormClose();
             }
-        }
-
-        private void tbInput_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                SendMessage();
-            }
-        }
-
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            SendMessage();
         }
     }
 }

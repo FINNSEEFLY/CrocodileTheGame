@@ -117,6 +117,7 @@
             this.tbTime.TabIndex = 9;
             this.tbTime.TabStop = false;
             this.tbTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbTime.TextChanged += new System.EventHandler(this.tbChat_TextChanged);
             // 
             // lblTime
             // 
@@ -202,6 +203,7 @@
             this.tbChat.Size = new System.Drawing.Size(239, 265);
             this.tbChat.TabIndex = 9;
             this.tbChat.TabStop = false;
+            this.tbChat.TextChanged += new System.EventHandler(this.tbChat_TextChanged);
             // 
             // tbInput
             // 
