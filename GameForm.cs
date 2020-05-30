@@ -613,19 +613,22 @@ namespace CrocodileTheGame
                                 switch (messageType)
                                 {
                                     case TcpFamily.TYPE_MESSAGE:
-                                        var str = Encoding.UTF8.GetString(message);
-                                        str = user.Username + ": " + str;
+                                        var word = Encoding.UTF8.GetString(message);
+                                        var result = user.Username + ": " + word;
                                         this.Invoke(new MethodInvoker(() =>
                                         {
-                                            tbChat.Text += str + "\n";
+                                            tbChat.Text += result + "\n";
                                         }));
-                                        HostSendAllMessage(str);
-                                        if (str.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
+                                        HostSendAllMessage(result);
+                                        if (SelectedWord != null)
                                         {
-                                            this.Invoke(new MethodInvoker(() =>
+                                            if (word.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
                                             {
-                                                FinishRound(user, TimeCounter);
-                                            }));
+                                                this.Invoke(new MethodInvoker(() =>
+                                                {
+                                                    FinishRound(user, TimeCounter);
+                                                }));
+                                            }
                                         }
                                         break;
                                     case TcpFamily.TYPE_DOT:

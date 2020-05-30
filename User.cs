@@ -85,7 +85,7 @@ namespace CrocodileTheGame
 
         public bool SendRounds(int currentround, int maxround)
         {
-            var str = currentround + " / " + maxround;
+            string str = currentround + " / " + maxround;
             return SendMessage(TcpFamily.TYPE_ROUNDS, str);
         }
 
@@ -113,6 +113,7 @@ namespace CrocodileTheGame
         {
             return SendMessage(TcpFamily.TYPE_YOU_CHATTER);
         }
+       
         public bool SendPrepareLeader()
         {
             return SendMessage(TcpFamily.TYPE_YOU_LEADER);
