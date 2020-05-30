@@ -290,7 +290,7 @@ namespace CrocodileTheGame
         }
         private void SendMessage()
         {
-            if (tbInput.Text.Trim()!="")
+            if (tbInput.Text.Trim() != "")
             {
                 if (UserMode == UserTypes.TYPE_USER)
                 {
@@ -301,9 +301,21 @@ namespace CrocodileTheGame
                             UserFormClose();
                         }));
                     }
-                } else
+                    else
+                    {
+                        this.Invoke(new MethodInvoker(() =>
+                        {
+                            tbInput.Clear();
+                        }));
+                    }
+                }
+                else
                 {
                     HostSendAllMessage(Nickname + ": " + tbInput.Text.Trim());
+                    this.Invoke(new MethodInvoker(() =>
+                    {
+                        tbInput.Clear();
+                    }));
                     if (tbInput.Text.Trim().ToUpper().Equals(SelectedWord.Trim().ToUpper()))
                     {
                         FinishRound(UserList[0], TimeCounter);
@@ -311,6 +323,7 @@ namespace CrocodileTheGame
                 }
             }
         }
+
 
         // Host
         private void HostSendAllRounds()
@@ -610,7 +623,7 @@ namespace CrocodileTheGame
                                             this.Invoke(new MethodInvoker(() =>
                                             {
                                                 FinishRound(user, TimeCounter);
-                                            }));                                            
+                                            }));
                                         }
                                         break;
                                     case TcpFamily.TYPE_DOT:
@@ -716,7 +729,7 @@ namespace CrocodileTheGame
         {
             Timer.Enabled = false;
             HostSendAllHeader(winner.Username + " отгадывает [ " + SelectedWord + " ] | +" + time * 10 + " баллов");
-            UserList[UserList.IndexOf(winner)].Score+= time * 10;
+            UserList[UserList.IndexOf(winner)].Score += time * 10;
             WordList.Remove(SelectedWord);
             SelectedWord = null;
             Thread.Sleep(3500);
@@ -814,6 +827,7 @@ namespace CrocodileTheGame
             return sortedUsers.First();
 
         }
+
 
         // User
         private void UserSilentCloseConnection()
