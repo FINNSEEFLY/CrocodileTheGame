@@ -239,6 +239,10 @@ namespace CrocodileTheGame
         {
             Color = Color.Red;
         }
+        private void btnBlack_Click(object sender, EventArgs e)
+        {
+            Color = Color.Black;
+        }
         private void btnColor_Click(object sender, EventArgs e)
         {
             colorDialog.ShowDialog();
@@ -416,6 +420,7 @@ namespace CrocodileTheGame
                 }));
             }
         }
+
         private void HostSendAllResults(string result)
         {
             var tmpUserList = new List<User>(UserList);

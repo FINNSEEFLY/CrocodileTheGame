@@ -349,6 +349,7 @@
             this.btnBlack.Size = new System.Drawing.Size(50, 50);
             this.btnBlack.TabIndex = 1;
             this.btnBlack.UseVisualStyleBackColor = false;
+            this.btnBlack.Click += new System.EventHandler(this.btnBlack_Click);
             // 
             // btnColor
             // 
