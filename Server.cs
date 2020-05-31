@@ -32,26 +32,12 @@ namespace CrocodileTheGame
 
         public bool SendRequestList()
         {
-            if (!SendMessage(TcpConst.TYPE_REQUEST_USER_LIST))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return SendMessage(TcpConst.TYPE_REQUEST_USER_LIST);
         }
 
         public bool SendNickname(string nickname)
         {
-            if (!SendMessage(TcpConst.TYPE_NICKNAME, nickname))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return SendMessage(TcpConst.TYPE_NICKNAME, nickname);
         }
 
         public bool Connect()
