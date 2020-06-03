@@ -57,44 +57,6 @@ namespace CrocodileTheGame
                 }
             }
         }
-
-        private void FreeResources()
-        {
-            IsListening = false;
-            UdpListener.Dispose();
-            UdpSender.Dispose();
-        }
-
-        private void CloseForm()
-        {
-            FreeResources();
-            Owner.Show();
-            Dispose();
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            CloseForm();
-        }
-
-        private void FindLobbyForm_Load(object sender, EventArgs e)
-        {
-            LocalIP = CalculationsForNetwork.GetLocalIP();
-            UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
-            UdpListener.EnableBroadcast = true;
-            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
-            UdpSender.EnableBroadcast = true;
-            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
-            IsListening = true;
-            ServerList = new List<Server>();
-            ltLobby.DataSource = ServerList;
-            ltLobby.DisplayMember = "Username";
-            ltLobby.ValueMember = "IPv4Address";
-            Task.Factory.StartNew(ListenBroadcastUDP);
-            SendFindMessage();
-        }
-
         public void ClearServerList()
         {
             foreach (var server in ServerList)
@@ -103,7 +65,6 @@ namespace CrocodileTheGame
             }
             ServerList.Clear();
         }
-
         public void SendFindMessage()
         {
 
@@ -119,19 +80,6 @@ namespace CrocodileTheGame
             }
             catch { };
         }
-
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            if (!IsUpdating)
-            {
-                IsUpdating = true;
-                ClearServerList();
-                UpdateServerList();
-                SendFindMessage();
-                IsUpdating = false;
-            }
-        }
-
         private void UpdateServerList()
         {
             ltLobby.DataSource = null;
@@ -139,7 +87,6 @@ namespace CrocodileTheGame
             ltLobby.DisplayMember = "Username";
             ltLobby.ValueMember = "IPv4Address";
         }
-
         private bool LobbyExist(IPAddress ip)
         {
             bool result = false;
@@ -153,6 +100,7 @@ namespace CrocodileTheGame
             }
             return result;
         }
+
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -187,7 +135,61 @@ namespace CrocodileTheGame
                 }
             }
         }
-        
+        private void FindLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeResources();
+            FinalFree();
+        }
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            CloseForm();
+        }
+        private void FindLobbyForm_Load(object sender, EventArgs e)
+        {
+            LocalIP = CalculationsForNetwork.GetLocalIP();
+            UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
+            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
+            UdpListener.EnableBroadcast = true;
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
+            UdpSender.EnableBroadcast = true;
+            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
+            IsListening = true;
+            ServerList = new List<Server>();
+            ltLobby.DataSource = ServerList;
+            ltLobby.DisplayMember = "Username";
+            ltLobby.ValueMember = "IPv4Address";
+            Task.Factory.StartNew(ListenBroadcastUDP);
+            SendFindMessage();
+        }
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (!IsUpdating)
+            {
+                IsUpdating = true;
+                ClearServerList();
+                UpdateServerList();
+                SendFindMessage();
+                IsUpdating = false;
+            }
+        }
+
+        private void CloseForm()
+        {
+            FreeResources();
+            Owner.Show();
+            Dispose();
+        }
+        private void FreeResources()
+        {
+            IsListening = false;
+            UdpListener.Dispose();
+            UdpSender.Dispose();
+        }
+        private void ClosingWithPlayerLobbyForm()
+        {
+            PlayerLobbyForm.Dispose();
+            FinalFree();
+        }
         private void BackToMain()
         {
             ClearServerList();
@@ -201,18 +203,5 @@ namespace CrocodileTheGame
 
         }
 
-        private void FindLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            FreeResources();
-            FinalFree();
-        }
-        
-        private void ClosingWithPlayerLobbyForm()
-        {
-            PlayerLobbyForm.Dispose();
-            FinalFree();
-        }
-    
-    
     }
 }

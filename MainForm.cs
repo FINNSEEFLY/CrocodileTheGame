@@ -12,6 +12,7 @@ namespace CrocodileTheGame
         public MainForm()
         {
             InitializeComponent();
+            lblNickname.Parent = pictureBox1;
         }
 
         private void btnCreateLobby_Click(object sender, EventArgs e)
@@ -22,12 +23,10 @@ namespace CrocodileTheGame
             HostLobbyForm.Owner = this;
             HostLobbyForm.Show();
         }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         private void btnConnectToLobby_Click(object sender, EventArgs e)
         {
             FindLobbyForm = new FindLobbyForm();
@@ -37,7 +36,6 @@ namespace CrocodileTheGame
             FindLobbyForm.Show();
             Hide();
         }
-
         private void btnPackCreator_Click(object sender, EventArgs e)
         {
             PackEditorForm = new PackEditorForm();
@@ -46,13 +44,13 @@ namespace CrocodileTheGame
             PackEditorForm.Show();
             Hide();
         }
-
         private void btnAboutProgramm_Click(object sender, EventArgs e)
         {
             AboutForm = new AboutForm();
             AboutForm.Owner = this;
             AboutForm.ShowDialog();
         }
+
 
         public string GiveNickname()
         {
@@ -64,13 +62,11 @@ namespace CrocodileTheGame
             }
             return nickname;
         }
-       
         public void ClosingWithFindLobbyForm()
         {
             FindLobbyForm.Dispose();
             Dispose();
         }
-    
         public void ClosingWithHostLobbyForm()
         {
             HostLobbyForm.Dispose();

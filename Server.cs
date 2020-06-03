@@ -25,20 +25,43 @@ namespace CrocodileTheGame
             return result;
         }
 
+
         public bool SendDisconnect()
         {
             return SendMessage(TcpConst.TYPE_DISCONNECT);
         }
-
         public bool SendRequestList()
         {
             return SendMessage(TcpConst.TYPE_REQUEST_USER_LIST);
         }
-
         public bool SendNickname(string nickname)
         {
             return SendMessage(TcpConst.TYPE_NICKNAME, nickname);
         }
+        public bool SendClearCanvas()
+        {
+            return SendMessage(TcpConst.TYPE_CLEAR_CANVAS);
+        }
+        public bool SendFillCanvas(Color color)
+        {
+            var data = new byte[3];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
+        }
+        public bool SendDot(Color color, byte Radius, int x, int y)
+        {
+            var data = new byte[3 + 1 + 4 + 4];
+            data[0] = color.R;
+            data[1] = color.G;
+            data[2] = color.B;
+            data[3] = Radius;
+            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
+            return SendMessage(TcpConst.TYPE_DOT, data);
+        }
+
 
         public bool Connect()
         {
@@ -55,31 +78,6 @@ namespace CrocodileTheGame
             }
         }
 
-        public bool SendClearCanvas()
-        {
-            return SendMessage(TcpConst.TYPE_CLEAR_CANVAS);
-        }
-
-        public bool SendFillCanvas(Color color)
-        {
-            var data = new byte[3];
-            data[0] = color.R;
-            data[1] = color.G;
-            data[2] = color.B;
-            return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
-        }
-
-        public bool SendDot(Color color, byte Radius, int x, int y)
-        {
-            var data = new byte[3 + 1 + 4 + 4];
-            data[0] = color.R;
-            data[1] = color.G;
-            data[2] = color.B;
-            data[3] = Radius;
-            Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
-            Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
-            return SendMessage(TcpConst.TYPE_DOT, data);
-        }
 
         public void Dispose()
         {

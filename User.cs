@@ -19,6 +19,7 @@ namespace CrocodileTheGame
             Username = "Player#" + rand.Next(0, 9999);
         }
 
+
         public bool SendUserListInGame(List<User> list)
         {
             int countOfUsers = list.Count;
@@ -43,7 +44,6 @@ namespace CrocodileTheGame
             }
             return SendMessage(TcpConst.TYPE_USER_LIST, data);
         }
-
         public bool SendUserList(List<User> list)
         {
             int countOfUsers = list.Count;
@@ -68,58 +68,47 @@ namespace CrocodileTheGame
             }
             return SendMessage(TcpConst.TYPE_USER_LIST, data);
         }
-
         public void SendDisconnect()
         {
             SendMessage(TcpConst.TYPE_DISCONNECT);
         }
-
         public void SendKick()
         {
             SendMessage(TcpConst.TYPE_KICK);
         }
-
         public bool SendRounds(int currentround, int maxround)
         {
             string str = currentround + " / " + maxround;
             return SendMessage(TcpConst.TYPE_ROUNDS, str);
         }
-
         public bool SendUserResults(string result)
         {
             return SendMessage(TcpConst.TYPE_RESULT, result);
         }
-
         public bool SendBeginGame()
         {
             return SendMessage(TcpConst.TYPE_BEGIN_GAME);
         }
-
         public bool SendTime(string time)
         {
             return SendMessage(TcpConst.TYPE_TIME, time);
         }
-
         public bool SendHeader(string message)
         {
             return SendMessage(TcpConst.TYPE_HEADER, message);
         }
-
         public bool SendPrepareChatter()
         {
             return SendMessage(TcpConst.TYPE_YOU_CHATTER);
         }
-       
         public bool SendPrepareLeader()
         {
             return SendMessage(TcpConst.TYPE_YOU_LEADER);
         }
-
         public bool SendClearCanvas()
         {
             return SendMessage(TcpConst.TYPE_CLEAR_CANVAS);
         }
-
         public bool SendFillCanvas(Color color)
         {
             var data = new byte[3];
@@ -128,17 +117,14 @@ namespace CrocodileTheGame
             data[2] = color.B;
             return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
         }
-
         public bool SendFillCanvas(byte[] data)
         {
             return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
         }
-
         public bool SendDot(byte[] data)
         {
             return SendMessage(TcpConst.TYPE_DOT, data);
         }
-
         public bool SendDot(Color color, byte Radius, int x, int y)
         {
             var data = new byte[3 + 1 + 4 + 4];
@@ -150,6 +136,7 @@ namespace CrocodileTheGame
             Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
             return SendMessage(TcpConst.TYPE_DOT, data);
         }
+
 
         public void Dispose()
         {

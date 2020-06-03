@@ -23,6 +23,7 @@ namespace CrocodileTheGame
             InitializeComponent();
         }
 
+
         private void ListenTCP()
         {
             while (Server.Listen && OnlyThisListen)
@@ -89,6 +90,8 @@ namespace CrocodileTheGame
             }
         }
 
+        
+        
         private void UpdatePlayerList()
         {
             ltPlayers.Items.Clear();
@@ -99,17 +102,7 @@ namespace CrocodileTheGame
             }
         }
 
-        private void FreeResources()
-        {
-            Server.Listen = false;
-            Server.Dispose();
-        }
 
-        private void CloseForm()
-        {
-            FreeResources();
-            Back();
-        }
 
         private void LobbyPlayerForm_Load(object sender, EventArgs e)
         {
@@ -125,12 +118,6 @@ namespace CrocodileTheGame
             CloseForm();
         }
 
-        private void BackToMainForm()
-        {
-            GameForm.Dispose();
-            Back();
-        }
-
         private void PlayerLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Server.SendDisconnect();
@@ -138,6 +125,23 @@ namespace CrocodileTheGame
             FinalFree();
         }
 
+
+
+        private void FreeResources()
+        {
+            Server.Listen = false;
+            Server.Dispose();
+        }
+        private void CloseForm()
+        {
+            FreeResources();
+            Back();
+        }
+        private void BackToMainForm()
+        {
+            GameForm.Dispose();
+            Back();
+        }
         private void ClosingWithGameForm()
         {
             GameForm.Dispose();

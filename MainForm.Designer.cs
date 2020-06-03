@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnCreateLobby = new System.Windows.Forms.Button();
             this.btnConnectToLobby = new System.Windows.Forms.Button();
             this.btnPackCreator = new System.Windows.Forms.Button();
@@ -35,15 +36,17 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.lblNickname = new System.Windows.Forms.Label();
             this.tbNickName = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCreateLobby
             // 
-            this.btnCreateLobby.BackColor = System.Drawing.SystemColors.Window;
+            this.btnCreateLobby.BackColor = System.Drawing.SystemColors.Control;
             this.btnCreateLobby.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnCreateLobby.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnCreateLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCreateLobby.Location = new System.Drawing.Point(245, 105);
+            this.btnCreateLobby.Location = new System.Drawing.Point(235, 105);
             this.btnCreateLobby.Name = "btnCreateLobby";
             this.btnCreateLobby.Size = new System.Drawing.Size(430, 50);
             this.btnCreateLobby.TabIndex = 0;
@@ -56,7 +59,7 @@
             this.btnConnectToLobby.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnConnectToLobby.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnConnectToLobby.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnConnectToLobby.Location = new System.Drawing.Point(245, 185);
+            this.btnConnectToLobby.Location = new System.Drawing.Point(235, 185);
             this.btnConnectToLobby.Name = "btnConnectToLobby";
             this.btnConnectToLobby.Size = new System.Drawing.Size(430, 50);
             this.btnConnectToLobby.TabIndex = 1;
@@ -69,7 +72,7 @@
             this.btnPackCreator.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnPackCreator.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnPackCreator.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnPackCreator.Location = new System.Drawing.Point(245, 265);
+            this.btnPackCreator.Location = new System.Drawing.Point(235, 265);
             this.btnPackCreator.Name = "btnPackCreator";
             this.btnPackCreator.Size = new System.Drawing.Size(430, 50);
             this.btnPackCreator.TabIndex = 2;
@@ -82,7 +85,7 @@
             this.btnAboutProgramm.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAboutProgramm.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnAboutProgramm.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnAboutProgramm.Location = new System.Drawing.Point(245, 345);
+            this.btnAboutProgramm.Location = new System.Drawing.Point(235, 345);
             this.btnAboutProgramm.Name = "btnAboutProgramm";
             this.btnAboutProgramm.Size = new System.Drawing.Size(430, 50);
             this.btnAboutProgramm.TabIndex = 3;
@@ -95,7 +98,7 @@
             this.btnExit.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExit.Font = new System.Drawing.Font("Open Sans", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnExit.Location = new System.Drawing.Point(245, 425);
+            this.btnExit.Location = new System.Drawing.Point(235, 425);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(430, 50);
             this.btnExit.TabIndex = 4;
@@ -106,8 +109,10 @@
             // lblNickname
             // 
             this.lblNickname.AutoSize = true;
+            this.lblNickname.BackColor = System.Drawing.Color.Transparent;
+            this.lblNickname.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lblNickname.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblNickname.Location = new System.Drawing.Point(404, 20);
+            this.lblNickname.Location = new System.Drawing.Point(395, 20);
             this.lblNickname.Name = "lblNickname";
             this.lblNickname.Size = new System.Drawing.Size(111, 20);
             this.lblNickname.TabIndex = 5;
@@ -116,12 +121,24 @@
             // tbNickName
             // 
             this.tbNickName.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbNickName.Location = new System.Drawing.Point(245, 55);
+            this.tbNickName.Location = new System.Drawing.Point(235, 55);
             this.tbNickName.MaxLength = 255;
             this.tbNickName.Name = "tbNickName";
             this.tbNickName.Size = new System.Drawing.Size(430, 28);
             this.tbNickName.TabIndex = 6;
             this.tbNickName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(899, 506);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.WaitOnLoad = true;
             // 
             // MainForm
             // 
@@ -136,11 +153,14 @@
             this.Controls.Add(this.btnPackCreator);
             this.Controls.Add(this.btnConnectToLobby);
             this.Controls.Add(this.btnCreateLobby);
+            this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(915, 545);
             this.MinimumSize = new System.Drawing.Size(915, 545);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Главное меню";
+            this.Text = "Crocodile The Game";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,6 +175,7 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblNickname;
         private System.Windows.Forms.TextBox tbNickName;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

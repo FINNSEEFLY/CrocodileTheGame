@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.lblAbout = new System.Windows.Forms.Label();
@@ -103,11 +104,12 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.btnExit);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(320, 520);
             this.MinimumSize = new System.Drawing.Size(320, 520);
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "О программе";
+            this.Text = "Crocodile The Game";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AboutForm_FormClosed);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

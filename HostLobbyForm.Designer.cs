@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HostLobbyForm));
             this.btnExit = new System.Windows.Forms.Button();
             this.btnStartGame = new System.Windows.Forms.Button();
             this.pnlInfo = new System.Windows.Forms.Panel();
@@ -224,6 +225,7 @@
             this.ClientSize = new System.Drawing.Size(339, 654);
             this.Controls.Add(this.pnlPlayers);
             this.Controls.Add(this.pnlControl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(355, 693);
             this.MinimumSize = new System.Drawing.Size(355, 693);
             this.Name = "HostLobbyForm";

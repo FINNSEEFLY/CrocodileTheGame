@@ -3,6 +3,7 @@
     public static class TcpConst
     {
         public const int DEFAULT_PORT = 1337;
+
         // Не содержат тела
         public const int TYPE_FAILED = 0;
         public const int TYPE_DISCONNECT = 1;
@@ -12,6 +13,7 @@
         public const int TYPE_YOU_LEADER = 5;
         public const int TYPE_YOU_CHATTER = 6;
         public const int TYPE_CLEAR_CANVAS = 7;
+
         // Содержат тело
         public const int TYPE_USER_LIST = 8;       
         public const int TYPE_NICKNAME = 9;

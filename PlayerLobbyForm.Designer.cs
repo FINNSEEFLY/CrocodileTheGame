@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerLobbyForm));
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.lblListOfPlayers = new System.Windows.Forms.Label();
             this.ltPlayers = new System.Windows.Forms.ListBox();
@@ -89,6 +90,7 @@
             this.Controls.Add(this.ltPlayers);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.pnlInfo);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(360, 510);
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "PlayerLobbyForm";

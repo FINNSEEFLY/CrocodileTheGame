@@ -27,8 +27,7 @@ namespace CrocodileTheGame
             {
                 return new byte[1];
             }
-        }
-        
+        } 
         public byte[] ReceiveMessage(int messagelength)
         {
             var receiveData = new byte[messagelength];
@@ -56,7 +55,6 @@ namespace CrocodileTheGame
                 return false;
             }
         }
-
         public bool SendMessage(byte type, byte[] messageBytes)
         {
             try
@@ -74,7 +72,6 @@ namespace CrocodileTheGame
                 return false;
             }
         }
-
         public bool SendMessage(byte type)
         {
             try

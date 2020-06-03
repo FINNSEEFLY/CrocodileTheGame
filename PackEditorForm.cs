@@ -16,22 +16,7 @@ namespace CrocodileTheGame
         {
             InitializeComponent();
         }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            ListWord.Clear();
-            Owner.Show();
-            Dispose();
-        }
-
-        private void PackEditorForm_Load(object sender, EventArgs e)
-        {
-            tbWord.Enabled = false;
-            btnDelete.Enabled = false;
-            btnAdd.Enabled = false;
-            tbPackName.Enabled = false;
-            btnSave.Enabled = false;
-        }
+        
 
         private void PrepareToWork()
         {
@@ -44,7 +29,6 @@ namespace CrocodileTheGame
             ListWord.Clear();
             ltWords.Items.Clear();
         }
-
         private void PreapreToNotWork()
         {
             tbPackName.Enabled = false;
@@ -57,10 +41,6 @@ namespace CrocodileTheGame
             ltWords.Items.Clear();
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
-        {
-            PrepareToWork();
-        }
 
         private void TryToAdd()
         {
@@ -79,11 +59,15 @@ namespace CrocodileTheGame
             }
         }
 
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            PrepareToWork();
+        }
         private void btnAdd_Click(object sender, EventArgs e)
         {
             TryToAdd();
         }
-
         private void tbWord_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -92,7 +76,6 @@ namespace CrocodileTheGame
                 TryToAdd();
             }
         }
-
         private void btnDelete_Click(object sender, EventArgs e)
         {
             var value = (string)ltWords.SelectedItem;
@@ -102,7 +85,6 @@ namespace CrocodileTheGame
                 ListWord.Remove(value);
             }
         }
-
         private void btnLoad_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
@@ -152,7 +134,6 @@ namespace CrocodileTheGame
             }
 
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (tbPackName.Text.Trim() == "")
@@ -183,10 +164,24 @@ namespace CrocodileTheGame
             }
 
         }
-
         private void PackEditorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             FinalFree();
         }
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            ListWord.Clear();
+            Owner.Show();
+            Dispose();
+        }
+        private void PackEditorForm_Load(object sender, EventArgs e)
+        {
+            tbWord.Enabled = false;
+            btnDelete.Enabled = false;
+            btnAdd.Enabled = false;
+            tbPackName.Enabled = false;
+            btnSave.Enabled = false;
+        }
+
     }
 }

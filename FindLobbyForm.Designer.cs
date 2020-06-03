@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FindLobbyForm));
             this.btnUpdate = new System.Windows.Forms.Button();
             this.ltLobby = new System.Windows.Forms.ListBox();
             this.pnlInfo = new System.Windows.Forms.Panel();
@@ -121,6 +122,7 @@
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnExit);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(360, 510);
             this.MinimumSize = new System.Drawing.Size(360, 510);
             this.Name = "FindLobbyForm";

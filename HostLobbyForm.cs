@@ -27,79 +27,11 @@ namespace CrocodileTheGame
         private GameForm GameForm;
         public event Free FinalFree;
         public delegate void Free();
+
         public HostLobbyForm()
         {
             InitializeComponent();
         }
-
-        private void FreeResources()
-        {
-            Disconnect();
-            IsWaiting = false;
-            UdpListener.Dispose();
-            UdpSender.Dispose();
-            TcpListener.Stop();
-        }
-        private void CloseForm()
-        {
-            FreeResources();
-            Owner.Show();
-            Dispose();
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            CloseForm();
-        }
-
-        private void LobbyHostForm_Load(object sender, EventArgs e)
-        {
-            WordList = new List<string>();
-            LocalIP = CalculationsForNetwork.GetLocalIP();
-            LocalIPv4Address = IPAddress.Parse(LocalIP);
-            UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
-            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
-            IsWaiting = true;
-            UserList = new List<User>();
-            UserList.Add(new User() { Username = Nickname, IsHost = true, IPv4Address = LocalIPv4Address });
-            ltPlayers.DataSource = UserList;
-            ltPlayers.DisplayMember = "Username";
-            ltPlayers.ValueMember = "IPv4Address";
-            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
-            UdpSender.EnableBroadcast = true;
-            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
-            UdpListener.EnableBroadcast = true;
-            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpConst.DEFAULT_PORT);
-            tbNumOfRounds.Text = "3";
-            Task.Factory.StartNew(ListenBroadcastUDP);
-            Task.Factory.StartNew(ListeningForConnections);
-            if (!TryToLoadDefaultPack())
-            {
-                CloseForm();
-                return;
-            }
-            Owner.Hide();
-            SendBroadcastLobby();
-
-        }
-
-        private void SendBroadcastLobby()
-        {
-            var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
-            var data = new byte[nicknameBytes.Length + 1];
-            data[0] = (byte)UdpConst.TYPE_SERVER_EXIST;
-            Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
-            try
-            {
-                for (int i = 0; i < UdpConst.NUM_OF_UDP_PACKET; i++)
-                {
-                    Thread.Sleep(1);
-                    UdpSender.Send(data, data.Length);
-                }
-            }
-            catch { };
-        }
-
         private bool TryToLoadDefaultPack()
         {
             var path = Environment.CurrentDirectory+"\\res\\Default Pack.wrdpack";
@@ -163,6 +95,7 @@ namespace CrocodileTheGame
             }
         }
 
+
         private void ListenBroadcastUDP()
         {
             while (IsWaiting)
@@ -179,7 +112,6 @@ namespace CrocodileTheGame
                 catch { }
             }
         }
-
         private void ListeningForConnections()
         {
             TcpListener.Start();
@@ -201,7 +133,6 @@ namespace CrocodileTheGame
                 catch { }
             }
         }
-
         private void ListenTCP(User user)
         {
             while (user.Listen && ListenUsers)
@@ -256,7 +187,24 @@ namespace CrocodileTheGame
                 catch { };
             }
         }
+       
 
+        private void SendBroadcastLobby()
+        {
+            var nicknameBytes = Encoding.UTF8.GetBytes(Nickname);
+            var data = new byte[nicknameBytes.Length + 1];
+            data[0] = (byte)UdpConst.TYPE_SERVER_EXIST;
+            Buffer.BlockCopy(nicknameBytes, 0, data, 1, nicknameBytes.Length);
+            try
+            {
+                for (int i = 0; i < UdpConst.NUM_OF_UDP_PACKET; i++)
+                {
+                    Thread.Sleep(1);
+                    UdpSender.Send(data, data.Length);
+                }
+            }
+            catch { };
+        }
         private void Disconnect()
         {
             foreach (var user in UserList)
@@ -270,7 +218,21 @@ namespace CrocodileTheGame
             }
             UserList.Clear();
         }
-
+        private void SendAllBeginGame()
+        {
+            foreach (var user in UserList)
+            {
+                if (!user.IsHost)
+                {
+                    if (!user.SendBeginGame())
+                    {
+                        user.Listen = false;
+                        UserList.Remove(user);
+                        user.Dispose();
+                    }
+                }
+            }
+        }
         private void SendUsersList()
         {
             bool Failed = false;
@@ -300,7 +262,6 @@ namespace CrocodileTheGame
                 }));
             }
         }
-
         private void UpdatePlayerList()
         {
             ltPlayers.DataSource = null;
@@ -308,7 +269,53 @@ namespace CrocodileTheGame
             ltPlayers.DisplayMember = "Username";
             ltPlayers.ValueMember = "IPv4Address";
         }
+        private void BackToMain()
+        {
+            GameForm.Dispose();
+            Owner.Show();
+            Dispose();
+        }
 
+
+        private void btnStartGame_Click(object sender, EventArgs e)
+        {
+            int numOfRounds;
+            if (int.TryParse(tbNumOfRounds.Text.Trim(),out numOfRounds))
+            {
+                if (numOfRounds >= 1 && numOfRounds <= 30)
+                {
+                    ListenUsers = false;
+                    IsWaiting = false;
+                    UdpListener.Dispose();
+                    UdpSender.Dispose();
+                    TcpListener.Stop();
+                    SendAllBeginGame();
+                    GameForm = new GameForm(UserTypes.SERVER);
+                    GameForm.FinalFree += ClosingWithGameForm;
+                    GameForm.Nickname = Nickname;
+                    GameForm.UserList = UserList;
+                    GameForm.WordList = WordList;
+                    GameForm.MaxRound = numOfRounds;
+                    GameForm.BackToMain += BackToMain;
+                    GameForm.Owner = this;
+                    GameForm.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void HostLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeResources();
+            FinalFree();
+        }
         private void btnKick_Click(object sender, EventArgs e)
         {
             if (ltPlayers.SelectedIndex != -1)
@@ -328,7 +335,6 @@ namespace CrocodileTheGame
                 }
             }
         }
-
         private void btnLoadPack_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
@@ -340,7 +346,7 @@ namespace CrocodileTheGame
                 try
                 {
                     var indexOfName = firstLine.IndexOf("Name=");
-                    if (indexOfName!=-1)
+                    if (indexOfName != -1)
                     {
                         packName = firstLine.Substring(indexOfName + 5).Trim();
                     }
@@ -380,75 +386,61 @@ namespace CrocodileTheGame
                 }
             }
         }
-    
-        private void BackToMain()
+        private void btnExit_Click(object sender, EventArgs e)
         {
-            GameForm.Dispose();
-            Owner.Show();
-            Dispose();
+            CloseForm();
+        }
+        private void LobbyHostForm_Load(object sender, EventArgs e)
+        {
+            WordList = new List<string>();
+            LocalIP = CalculationsForNetwork.GetLocalIP();
+            LocalIPv4Address = IPAddress.Parse(LocalIP);
+            UdpBroadcastAddress = CalculationsForNetwork.GetBroadcastAddress(LocalIP);
+            MessageBox.Show("Ваше имя отображается как [ " + Nickname + " ]");
+            IsWaiting = true;
+            UserList = new List<User>();
+            UserList.Add(new User() { Username = Nickname, IsHost = true, IPv4Address = LocalIPv4Address });
+            ltPlayers.DataSource = UserList;
+            ltPlayers.DisplayMember = "Username";
+            ltPlayers.ValueMember = "IPv4Address";
+            UdpSender = new UdpClient(UdpBroadcastAddress, UdpConst.BROADCAST_PORT);
+            UdpSender.EnableBroadcast = true;
+            UdpListener = new UdpClient(UdpConst.BROADCAST_PORT);
+            UdpListener.EnableBroadcast = true;
+            TcpListener = new TcpListener(IPAddress.Parse(LocalIP), TcpConst.DEFAULT_PORT);
+            tbNumOfRounds.Text = "3";
+            Task.Factory.StartNew(ListenBroadcastUDP);
+            Task.Factory.StartNew(ListeningForConnections);
+            if (!TryToLoadDefaultPack())
+            {
+                CloseForm();
+                return;
+            }
+            Owner.Hide();
+            SendBroadcastLobby();
+
         }
 
-        private void SendAllBeginGame()
-        {
-            foreach(var user in UserList)
-            {
-                if (!user.IsHost)
-                {
-                    if (!user.SendBeginGame())
-                    {
-                        user.Listen = false;
-                        UserList.Remove(user);
-                        user.Dispose();
-                    }
-                }
-            }
-        }
-
-        private void btnStartGame_Click(object sender, EventArgs e)
-        {
-            int numOfRounds;
-            if (int.TryParse(tbNumOfRounds.Text.Trim(),out numOfRounds))
-            {
-                if (numOfRounds >= 1 && numOfRounds <= 30)
-                {
-                    ListenUsers = false;
-                    IsWaiting = false;
-                    UdpListener.Dispose();
-                    UdpSender.Dispose();
-                    TcpListener.Stop();
-                    SendAllBeginGame();
-                    GameForm = new GameForm(UserTypes.SERVER);
-                    GameForm.FinalFree += ClosingWithGameForm;
-                    GameForm.Nickname = Nickname;
-                    GameForm.UserList = UserList;
-                    GameForm.WordList = WordList;
-                    GameForm.MaxRound = numOfRounds;
-                    GameForm.BackToMain += BackToMain;
-                    GameForm.Owner = this;
-                    GameForm.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Некорректное значение количества раундов, введите число от 1 до 30", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void HostLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            FreeResources();
-            FinalFree();
-        }
 
         private void ClosingWithGameForm()
         {
             GameForm.Dispose();
             FinalFree();
         }
+        private void FreeResources()
+        {
+            Disconnect();
+            IsWaiting = false;
+            UdpListener.Dispose();
+            UdpSender.Dispose();
+            TcpListener.Stop();
+        }
+        private void CloseForm()
+        {
+            FreeResources();
+            Owner.Show();
+            Dispose();
+        }
+
     }
 }

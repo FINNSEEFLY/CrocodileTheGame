@@ -400,11 +400,12 @@
             this.Controls.Add(this.pnlCanvas);
             this.Controls.Add(this.pnlTools);
             this.Controls.Add(this.pnlRightSide);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(1150, 700);
             this.MinimumSize = new System.Drawing.Size(1150, 700);
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Игра";
+            this.Text = "Crocodile The Game";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
             this.Load += new System.EventHandler(this.GameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();

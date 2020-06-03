@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PackEditorForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
             this.lblPackName = new System.Windows.Forms.Label();
@@ -222,6 +223,7 @@
             this.ClientSize = new System.Drawing.Size(664, 451);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(680, 490);
             this.MinimumSize = new System.Drawing.Size(680, 490);
             this.Name = "PackEditorForm";
