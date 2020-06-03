@@ -50,13 +50,13 @@ namespace CrocodileTheGame
             data[2] = color.B;
             return SendMessage(TcpConst.TYPE_FILL_CANVAS, data);
         }
-        public bool SendDot(Color color, byte Radius, int x, int y)
+        public bool SendDot(Color color, byte radius, int x, int y)
         {
             var data = new byte[3 + 1 + 4 + 4];
             data[0] = color.R;
             data[1] = color.G;
             data[2] = color.B;
-            data[3] = Radius;
+            data[3] = radius;
             Buffer.BlockCopy(BitConverter.GetBytes(x), 0, data, 4, 4);
             Buffer.BlockCopy(BitConverter.GetBytes(y), 0, data, 8, 4);
             return SendMessage(TcpConst.TYPE_DOT, data);

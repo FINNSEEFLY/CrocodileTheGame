@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PackEditorForm));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlRightSide = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
             this.lblPackName = new System.Windows.Forms.Label();
             this.tbPackName = new System.Windows.Forms.TextBox();
@@ -40,31 +40,31 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlLeftSide = new System.Windows.Forms.Panel();
             this.ltWords = new System.Windows.Forms.ListBox();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pnlRightSide.SuspendLayout();
+            this.pnlLeftSide.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlRightSide
             // 
-            this.panel1.Controls.Add(this.btnDelete);
-            this.panel1.Controls.Add(this.lblPackName);
-            this.panel1.Controls.Add(this.tbPackName);
-            this.panel1.Controls.Add(this.btnCreate);
-            this.panel1.Controls.Add(this.lblWord);
-            this.panel1.Controls.Add(this.btnAdd);
-            this.panel1.Controls.Add(this.tbWord);
-            this.panel1.Controls.Add(this.btnSave);
-            this.panel1.Controls.Add(this.btnLoad);
-            this.panel1.Controls.Add(this.btnExit);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(470, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(194, 451);
-            this.panel1.TabIndex = 0;
+            this.pnlRightSide.Controls.Add(this.btnDelete);
+            this.pnlRightSide.Controls.Add(this.lblPackName);
+            this.pnlRightSide.Controls.Add(this.tbPackName);
+            this.pnlRightSide.Controls.Add(this.btnCreate);
+            this.pnlRightSide.Controls.Add(this.lblWord);
+            this.pnlRightSide.Controls.Add(this.btnAdd);
+            this.pnlRightSide.Controls.Add(this.tbWord);
+            this.pnlRightSide.Controls.Add(this.btnSave);
+            this.pnlRightSide.Controls.Add(this.btnLoad);
+            this.pnlRightSide.Controls.Add(this.btnExit);
+            this.pnlRightSide.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlRightSide.Location = new System.Drawing.Point(470, 0);
+            this.pnlRightSide.Name = "pnlRightSide";
+            this.pnlRightSide.Size = new System.Drawing.Size(194, 451);
+            this.pnlRightSide.TabIndex = 0;
             // 
             // btnDelete
             // 
@@ -187,14 +187,14 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // panel2
+            // pnlLeftSide
             // 
-            this.panel2.Controls.Add(this.ltWords);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(470, 451);
-            this.panel2.TabIndex = 1;
+            this.pnlLeftSide.Controls.Add(this.ltWords);
+            this.pnlLeftSide.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLeftSide.Location = new System.Drawing.Point(0, 0);
+            this.pnlLeftSide.Name = "pnlLeftSide";
+            this.pnlLeftSide.Size = new System.Drawing.Size(470, 451);
+            this.pnlLeftSide.TabIndex = 1;
             // 
             // ltWords
             // 
@@ -221,8 +221,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(664, 451);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlLeftSide);
+            this.Controls.Add(this.pnlRightSide);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(680, 490);
             this.MinimumSize = new System.Drawing.Size(680, 490);
@@ -231,23 +231,23 @@
             this.Text = "Редактор паков";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PackEditorForm_FormClosed);
             this.Load += new System.EventHandler(this.PackEditorForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.pnlRightSide.ResumeLayout(false);
+            this.pnlRightSide.PerformLayout();
+            this.pnlLeftSide.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlRightSide;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblWord;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox tbWord;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlLeftSide;
         private System.Windows.Forms.ListBox ltWords;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Label lblPackName;

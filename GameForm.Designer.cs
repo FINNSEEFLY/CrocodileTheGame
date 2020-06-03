@@ -38,7 +38,7 @@
             this.tbRound = new System.Windows.Forms.TextBox();
             this.lblRound = new System.Windows.Forms.Label();
             this.pnlPlayersText = new System.Windows.Forms.Panel();
-            this.lbPlayers = new System.Windows.Forms.Label();
+            this.lblPlayers = new System.Windows.Forms.Label();
             this.pnlPlayers = new System.Windows.Forms.Panel();
             this.ltPlayers = new System.Windows.Forms.ListBox();
             this.tbChat = new System.Windows.Forms.TextBox();
@@ -152,7 +152,7 @@
             // 
             // pnlPlayersText
             // 
-            this.pnlPlayersText.Controls.Add(this.lbPlayers);
+            this.pnlPlayersText.Controls.Add(this.lblPlayers);
             this.pnlPlayersText.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlPlayersText.Location = new System.Drawing.Point(0, 157);
             this.pnlPlayersText.Name = "pnlPlayersText";
@@ -161,13 +161,13 @@
             // 
             // lbPlayers
             // 
-            this.lbPlayers.AutoSize = true;
-            this.lbPlayers.Font = new System.Drawing.Font("Open Sans", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbPlayers.Location = new System.Drawing.Point(86, 5);
-            this.lbPlayers.Name = "lbPlayers";
-            this.lbPlayers.Size = new System.Drawing.Size(70, 23);
-            this.lbPlayers.TabIndex = 1;
-            this.lbPlayers.Text = "Игроки";
+            this.lblPlayers.AutoSize = true;
+            this.lblPlayers.Font = new System.Drawing.Font("Open Sans", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblPlayers.Location = new System.Drawing.Point(86, 5);
+            this.lblPlayers.Name = "lbPlayers";
+            this.lblPlayers.Size = new System.Drawing.Size(70, 23);
+            this.lblPlayers.TabIndex = 1;
+            this.lblPlayers.Text = "Игроки";
             // 
             // pnlPlayers
             // 
@@ -447,7 +447,7 @@
         private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.Label lblRound;
         private System.Windows.Forms.Panel pnlPlayersText;
-        private System.Windows.Forms.Label lbPlayers;
+        private System.Windows.Forms.Label lblPlayers;
         private System.Windows.Forms.Panel pnlPlayers;
         private System.Windows.Forms.ListBox ltPlayers;
         private System.Windows.Forms.TextBox tbRound;

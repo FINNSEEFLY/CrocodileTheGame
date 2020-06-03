@@ -76,7 +76,7 @@
             this.btnPackCreator.Name = "btnPackCreator";
             this.btnPackCreator.Size = new System.Drawing.Size(430, 50);
             this.btnPackCreator.TabIndex = 2;
-            this.btnPackCreator.Text = "Создатель паков";
+            this.btnPackCreator.Text = "Редактор паков";
             this.btnPackCreator.UseVisualStyleBackColor = true;
             this.btnPackCreator.Click += new System.EventHandler(this.btnPackCreator_Click);
             // 

@@ -37,7 +37,7 @@
             this.btnKick = new System.Windows.Forms.Button();
             this.btnLoadPack = new System.Windows.Forms.Button();
             this.pnlControl = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlSettings = new System.Windows.Forms.Panel();
             this.tbPack = new System.Windows.Forms.TextBox();
             this.lblNumOfRounds = new System.Windows.Forms.Label();
             this.tbNumOfRounds = new System.Windows.Forms.TextBox();
@@ -46,7 +46,7 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pnlInfo.SuspendLayout();
             this.pnlControl.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnlSettings.SuspendLayout();
             this.pnlPlayers.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -139,7 +139,7 @@
             // 
             // pnlControl
             // 
-            this.pnlControl.Controls.Add(this.panel1);
+            this.pnlControl.Controls.Add(this.pnlSettings);
             this.pnlControl.Controls.Add(this.btnLoadPack);
             this.pnlControl.Controls.Add(this.btnKick);
             this.pnlControl.Controls.Add(this.btnStartGame);
@@ -150,17 +150,17 @@
             this.pnlControl.Size = new System.Drawing.Size(339, 280);
             this.pnlControl.TabIndex = 6;
             // 
-            // panel1
+            // pnlSettings
             // 
-            this.panel1.Controls.Add(this.tbPack);
-            this.panel1.Controls.Add(this.lblNumOfRounds);
-            this.panel1.Controls.Add(this.tbNumOfRounds);
-            this.panel1.Controls.Add(this.lblPackName);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(339, 136);
-            this.panel1.TabIndex = 12;
+            this.pnlSettings.Controls.Add(this.tbPack);
+            this.pnlSettings.Controls.Add(this.lblNumOfRounds);
+            this.pnlSettings.Controls.Add(this.tbNumOfRounds);
+            this.pnlSettings.Controls.Add(this.lblPackName);
+            this.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSettings.Location = new System.Drawing.Point(0, 0);
+            this.pnlSettings.Name = "pnlSettings";
+            this.pnlSettings.Size = new System.Drawing.Size(339, 136);
+            this.pnlSettings.TabIndex = 12;
             // 
             // tbPack
             // 
@@ -236,8 +236,8 @@
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             this.pnlControl.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlSettings.ResumeLayout(false);
+            this.pnlSettings.PerformLayout();
             this.pnlPlayers.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -258,7 +258,7 @@
         private System.Windows.Forms.TextBox tbPack;
         private System.Windows.Forms.Label lblPackName;
         private System.Windows.Forms.TextBox tbNumOfRounds;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlSettings;      
         private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

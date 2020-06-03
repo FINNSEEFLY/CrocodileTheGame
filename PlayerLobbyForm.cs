@@ -90,8 +90,6 @@ namespace CrocodileTheGame
             }
         }
 
-        
-        
         private void UpdatePlayerList()
         {
             ltPlayers.Items.Clear();
@@ -103,7 +101,6 @@ namespace CrocodileTheGame
         }
 
 
-
         private void LobbyPlayerForm_Load(object sender, EventArgs e)
         {
             PlayerList = new List<string>();
@@ -111,20 +108,17 @@ namespace CrocodileTheGame
             Task.Factory.StartNew(ListenTCP);
             Server.SendRequestList();
         }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Server.SendDisconnect();
             CloseForm();
         }
-
         private void PlayerLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Server.SendDisconnect();
             FreeResources();
             FinalFree();
         }
-
 
 
         private void FreeResources()

@@ -32,10 +32,10 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.lblAbout = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlUpperBox = new System.Windows.Forms.Panel();
             this.tbAbout = new System.Windows.Forms.TextBox();
             this.pnlInfo.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnlUpperBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnExit
@@ -73,12 +73,12 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tbAbout);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 40);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(304, 401);
-            this.panel1.TabIndex = 7;
+            this.pnlUpperBox.Controls.Add(this.tbAbout);
+            this.pnlUpperBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlUpperBox.Location = new System.Drawing.Point(0, 40);
+            this.pnlUpperBox.Name = "panel1";
+            this.pnlUpperBox.Size = new System.Drawing.Size(304, 401);
+            this.pnlUpperBox.TabIndex = 7;
             // 
             // tbAbout
             // 
@@ -101,7 +101,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(304, 481);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlUpperBox);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.btnExit);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -113,8 +113,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AboutForm_FormClosed);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlUpperBox.ResumeLayout(false);
+            this.pnlUpperBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -123,7 +123,7 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.Label lblAbout;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlUpperBox;
         private System.Windows.Forms.TextBox tbAbout;
     }
 }

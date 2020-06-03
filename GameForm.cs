@@ -201,7 +201,7 @@ namespace CrocodileTheGame
                         Task.Factory.StartNew(() => HostListenTCP(UserList[UserList.IndexOf(user)]));
                     }
                 }
-                PrepareNextRound();
+                PrepareWhatsNext();
                 tbRound.Text = CurrentRound + " / " + MaxRound;
                 HostSendAllUserList();
                 Timer.Tick += new System.EventHandler(this.TimerHost_Tick);
@@ -727,7 +727,7 @@ namespace CrocodileTheGame
             if (TimeCounter == 0)
             {
                 Timer.Enabled = false;
-                PrepareNextRound();
+                PrepareWhatsNext();
             }
         }
         private void HostSendAllDisconnect()
@@ -794,7 +794,7 @@ namespace CrocodileTheGame
             }));
             UserList[UserList.IndexOf(winner)].Score += time * 10;
             Thread.Sleep(3500);
-            PrepareNextRound();
+            PrepareWhatsNext();
         }
         private void HostSendAllPrepareInfo(User lead)
         {
@@ -829,7 +829,53 @@ namespace CrocodileTheGame
                 HostSendAllUserList();
             }
         }
-        private void PrepareNextRound()
+        private void PreapreNextRound()
+        {
+            HostSendAllUserList();
+            this.Invoke(new MethodInvoker(() =>
+            {
+                UpdateUserList();
+            }));
+            TimeCounter = MAXTIME;
+            RandomWord();
+            var leader = SelectUser();
+            var user = UserList[UserList.IndexOf(leader)];
+            user.NumOfLeads += 1;
+            HostSendAllPrepareInfo(leader);
+            HostSendAllRounds();
+            this.Invoke(new MethodInvoker(() =>
+            {
+                tbRound.Text = CurrentRound + " / " + MaxRound;
+            }));
+            HostSendAllTime(MakeTime(MAXTIME));
+            HostSendAllClearCanvas();
+            this.Invoke(new MethodInvoker(() =>
+            {
+                tbRound.Text = CurrentRound + " / " + MaxRound;
+                ClearCanvas();
+            }));
+            if (leader.IsHost)
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    PrepareLeader();
+                    tbLeaderAndWord.Text = "Вы ведущий! | Нарисуйте: " + SelectedWord;
+                }));
+            }
+            else
+            {
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    PrepareChatter();
+                    tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
+                }));
+            }
+            this.Invoke(new MethodInvoker(() =>
+            {
+                Timer.Enabled = true;
+            }));
+        }
+        private void PrepareWhatsNext()
         {
             CurrentRound++;
             if (CurrentRound > MaxRound)
@@ -845,57 +891,8 @@ namespace CrocodileTheGame
             }
             else
             {
-                HostSendAllUserList();
-                this.Invoke(new MethodInvoker(() =>
-                {
-                    UpdateUserList();
-                }));
-                TimeCounter = MAXTIME;
-                RandomWord();
-                var leader = SelectUser();
-                var user = UserList[UserList.IndexOf(leader)];
-                user.NumOfLeads += 1;
-                HostSendAllPrepareInfo(leader);
-                HostSendAllRounds();
-                this.Invoke(new MethodInvoker(() =>
-                {
-                    tbRound.Text = CurrentRound + " / " + MaxRound;
-                }));
-                HostSendAllTime(MakeTime(MAXTIME));
-                HostSendAllClearCanvas();
-                this.Invoke(new MethodInvoker(() =>
-                {
-                    tbRound.Text = CurrentRound + " / " + MaxRound;
-                    ClearCanvas();
-                }));
-                if (leader.IsHost)
-                {
-                    this.Invoke(new MethodInvoker(() =>
-                    {
-                        PrepareLeader();
-                        tbLeaderAndWord.Text = "Вы ведущий! | Нарисуйте: " + SelectedWord;
-                    }));
-                }
-                else
-                {
-                    this.Invoke(new MethodInvoker(() =>
-                    {
-                        PrepareChatter();
-                        tbLeaderAndWord.Text = "Ведущий " + leader.Username + " | Количество букв: " + SelectedWord.Length;
-                    }));
-                }
-                this.Invoke(new MethodInvoker(() =>
-                {
-                    Timer.Enabled = true;
-                }));
+                PreapreNextRound();
             }
-            // Проверить не конец ли игры
-            // Если конец - объявить результаты
-            // Если не конец
-            // отрубить таймер себе
-            // Выбрать некст ведущего
-            // Запустить игру
-            // Восстановить таймеры
         }
         private void RandomWord()
         {

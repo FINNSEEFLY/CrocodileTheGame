@@ -32,7 +32,7 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.ltLobby = new System.Windows.Forms.ListBox();
             this.pnlInfo = new System.Windows.Forms.Panel();
-            this.lblServerLIst = new System.Windows.Forms.Label();
+            this.lblServerList = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlInfo.SuspendLayout();
@@ -66,7 +66,7 @@
             // pnlInfo
             // 
             this.pnlInfo.BackColor = System.Drawing.SystemColors.Window;
-            this.pnlInfo.Controls.Add(this.lblServerLIst);
+            this.pnlInfo.Controls.Add(this.lblServerList);
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlInfo.Name = "pnlInfo";
@@ -75,14 +75,14 @@
             // 
             // lblServerLIst
             // 
-            this.lblServerLIst.AutoSize = true;
-            this.lblServerLIst.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblServerLIst.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblServerLIst.Location = new System.Drawing.Point(90, 5);
-            this.lblServerLIst.Name = "lblServerLIst";
-            this.lblServerLIst.Size = new System.Drawing.Size(154, 28);
-            this.lblServerLIst.TabIndex = 0;
-            this.lblServerLIst.Text = "Список лобби";
+            this.lblServerList.AutoSize = true;
+            this.lblServerList.Font = new System.Drawing.Font("Open Sans", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblServerList.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblServerList.Location = new System.Drawing.Point(90, 5);
+            this.lblServerList.Name = "lblServerLIst";
+            this.lblServerList.Size = new System.Drawing.Size(154, 28);
+            this.lblServerList.TabIndex = 0;
+            this.lblServerList.Text = "Список лобби";
             // 
             // btnConnect
             // 
@@ -141,7 +141,7 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.ListBox ltLobby;
         private System.Windows.Forms.Panel pnlInfo;
-        private System.Windows.Forms.Label lblServerLIst;
+        private System.Windows.Forms.Label lblServerList;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnExit;
     }
