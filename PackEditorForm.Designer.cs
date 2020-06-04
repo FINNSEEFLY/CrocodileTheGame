@@ -116,11 +116,11 @@
             // 
             this.lblWord.AutoSize = true;
             this.lblWord.Font = new System.Drawing.Font("Open Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblWord.Location = new System.Drawing.Point(41, 20);
+            this.lblWord.Location = new System.Drawing.Point(39, 20);
             this.lblWord.Name = "lblWord";
-            this.lblWord.Size = new System.Drawing.Size(112, 17);
+            this.lblWord.Size = new System.Drawing.Size(119, 17);
             this.lblWord.TabIndex = 9;
-            this.lblWord.Text = "Работа с словами";
+            this.lblWord.Text = "Работа со словами";
             // 
             // btnAdd
             // 
